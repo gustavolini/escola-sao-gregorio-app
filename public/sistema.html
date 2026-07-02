@@ -35,9 +35,9 @@
   <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; background:linear-gradient(150deg, oklch(0.32 0.07 262) 0%, oklch(0.24 0.05 262) 55%, oklch(0.2 0.03 262) 100%)">
     <div style="width:400px; max-width:100%; background:#fff; border-radius:16px; box-shadow:0 24px 70px rgba(10,20,50,0.4); overflow:hidden">
       <div style="padding:32px 34px 24px; text-align:center; border-bottom:1px solid oklch(0.94 0.008 260)">
-        <div style="width:56px; height:56px; border-radius:13px; background:#2952a3; color:#fff; font-weight:800; font-size:21px; letter-spacing:-0.02em; display:flex; align-items:center; justify-content:center; margin:0 auto 14px">SG</div>
+        <div style="width:56px; height:56px; border-radius:13px; background:#2952a3; color:#fff; font-weight:800; font-size:21px; letter-spacing:-0.02em; display:flex; align-items:center; justify-content:center; margin:0 auto 14px">{{ escolaSigla }}</div>
         <div style="font-size:19px; font-weight:800; letter-spacing:-0.015em; color:oklch(0.24 0.02 260)">{{ escolaNome }}</div>
-        <div style="font-size:13px; color:oklch(0.55 0.02 260); margin-top:3px">Gestão Financeira · acesso restrito</div>
+        <div style="font-size:13px; color:oklch(0.55 0.02 260); margin-top:3px">{{ escolaSub }} · acesso restrito</div>
       </div>
       <div style="padding:26px 34px 30px; display:flex; flex-direction:column; gap:15px">
         <div>
@@ -63,10 +63,10 @@
 
   <aside style="width:236px; flex:0 0 236px; background:#fff; border-right:1px solid oklch(0.92 0.008 260); display:flex; flex-direction:column; padding:20px 14px; position:sticky; top:0; height:100vh">
     <div onClick="{{ openEmpresa }}" title="Cadastro da empresa" style="padding:6px 8px; margin-bottom:14px; display:flex; align-items:center; gap:11px; cursor:pointer; border-radius:10px" style-hover="background:oklch(0.965 0.006 255)">
-      <div style="{{ logoStyle }}">SG</div>
+      <div style="{{ logoStyle }}">{{ escolaSigla }}</div>
       <div>
-        <div style="font-size:14.5px; font-weight:700; line-height:1.15; letter-spacing:-0.01em">Escola São Gregório</div>
-        <div style="font-size:11.5px; color:oklch(0.56 0.02 260); margin-top:1px">Gestão Financeira</div>
+        <div style="font-size:14.5px; font-weight:700; line-height:1.15; letter-spacing:-0.01em">{{ escolaNome }}</div>
+        <div style="font-size:11.5px; color:oklch(0.56 0.02 260); margin-top:1px">{{ escolaSub }}</div>
       </div>
     </div>
     <div style="padding:0 4px 14px; margin-bottom:4px; border-bottom:1px solid oklch(0.94 0.008 260)">
@@ -446,7 +446,7 @@
 
         <div style="background:#fff; border:1px solid oklch(0.92 0.008 260); border-radius:12px; overflow:hidden">
           <div style="display:grid; grid-template-columns:2.3fr 1.3fr 1fr 1.05fr 1fr 1.5fr; gap:12px; padding:13px 20px; background:oklch(0.975 0.004 260); border-bottom:1px solid oklch(0.92 0.008 260); font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.55 0.02 260)">
-            <span>Descrição</span><span>Categoria</span><span>Vencimento</span><span style="text-align:right">Valor</span><span>Status</span><span style="text-align:right">Ações</span>
+            <span onClick="{{ contasHead.onDescricao }}" style="{{ contasHead.stDescricao }}">{{ contasHead.arrDescricao }}</span><span onClick="{{ contasHead.onCategoria }}" style="{{ contasHead.stCategoria }}">{{ contasHead.arrCategoria }}</span><span onClick="{{ contasHead.onVencimento }}" style="{{ contasHead.stVencimento }}">{{ contasHead.arrVencimento }}</span><span onClick="{{ contasHead.onValor }}" style="{{ contasHead.stValor }}">{{ contasHead.arrValor }}</span><span onClick="{{ contasHead.onStatus }}" style="{{ contasHead.stStatus }}">{{ contasHead.arrStatus }}</span><span style="text-align:right">Ações</span>
           </div>
           <sc-for list="{{ filteredBills }}" as="b" hint-placeholder-count="8">
             <div style="display:grid; grid-template-columns:2.3fr 1.3fr 1fr 1.05fr 1fr 1.5fr; gap:12px; padding:13px 20px; border-bottom:1px solid oklch(0.96 0.005 260); align-items:center">
@@ -1170,6 +1170,25 @@
     </div>
   </sc-if>
 
+  <!-- ============ MODAL: CONFIRMAR EXCLUSÃO ============ -->
+  <sc-if value="{{ confirmOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ confirmNo }}" style="position:fixed; inset:0; background:oklch(0.2 0.02 260 / 0.5); display:flex; align-items:center; justify-content:center; z-index:60; padding:20px">
+      <div onClick="{{ stop }}" style="background:#fff; border-radius:14px; width:420px; max-width:100%; box-shadow:0 20px 60px rgba(0,0,0,0.3); overflow:hidden">
+        <div style="padding:24px 26px 18px; display:flex; gap:15px; align-items:flex-start">
+          <div style="{{ confirmIconStyle }}">{{ confirmIcon }}</div>
+          <div>
+            <h3 style="margin:0; font-size:16.5px; font-weight:700; color:oklch(0.25 0.02 260)">{{ confirmMsg }} {{ confirmLabel }}</h3>
+            <div style="font-size:13px; color:oklch(0.5 0.02 260); margin-top:5px; line-height:1.5">{{ confirmSub }}</div>
+          </div>
+        </div>
+        <div style="padding:12px 26px 22px; display:flex; justify-content:flex-end; gap:10px">
+          <button onClick="{{ confirmNo }}" style="{{ cancelBtnStyle }}">Cancelar</button>
+          <button onClick="{{ confirmYes }}" style="{{ confirmBtnStyle }}">{{ confirmBtn }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
   <!-- ============ MODAL: USUÁRIO E SENHA (removido — a senha agora é o APP_SENHA do servidor) ============ -->
 
   <!-- ============ MODAL: GERENCIAR CATEGORIAS ============ -->
@@ -1330,11 +1349,27 @@
           <button onClick="{{ closeEmpresa }}" style="background:none; border:none; font-size:20px; cursor:pointer; color:oklch(0.55 0.02 260); line-height:1; padding:4px">✕</button>
         </div>
         <div style="padding:22px 24px; display:flex; flex-direction:column; gap:16px">
-          <div style="display:flex; gap:8px">
-            <sc-for list="{{ empresaTabs }}" as="t" hint-placeholder-count="2">
-              <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
-            </sc-for>
+          <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260)">Escola / Organização</div>
+          <div style="display:grid; grid-template-columns:1fr 96px; gap:14px">
+            <div><label style="{{ fieldLabel }}">Nome principal</label><input value="{{ orgNome }}" onChange="{{ onOrgNome }}" placeholder="Ex: Escola São Gregório" style="{{ inputStyle }}" /></div>
+            <div><label style="{{ fieldLabel }}">Sigla (logo)</label><input value="{{ orgSigla }}" onChange="{{ onOrgSigla }}" maxlength="3" placeholder="SG" style="{{ inputStyle }}" /></div>
           </div>
+          <div><label style="{{ fieldLabel }}">Subtítulo</label><input value="{{ orgSub }}" onChange="{{ onOrgSub }}" placeholder="Ex: Gestão Financeira" style="{{ inputStyle }}" /></div>
+          <div>
+            <label style="{{ fieldLabel }}">Quantas unidades / campus?</label>
+            <div style="display:flex; gap:10px; margin-top:6px">
+              <button onClick="{{ setUma }}" style="{{ orgUmaStyle }}">1 unidade</button>
+              <button onClick="{{ setDuas }}" style="{{ orgDuasStyle }}">2 unidades</button>
+            </div>
+          </div>
+          <div style="height:1px; background:oklch(0.93 0.008 260); margin:2px 0"></div>
+          <sc-if value="{{ duasUnidades }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; gap:8px">
+              <sc-for list="{{ empresaTabs }}" as="t" hint-placeholder-count="2">
+                <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
+              </sc-for>
+            </div>
+          </sc-if>
           <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260)">Identificação da unidade</div>
           <div style="display:grid; grid-template-columns:1fr 1.4fr; gap:14px">
             <div><label style="{{ fieldLabel }}">Nome da unidade</label><input value="{{ empresaForm.__uNome }}" onChange="{{ onEUNome }}" placeholder="Ex: Unidade I" style="{{ inputStyle }}" /></div>
@@ -1398,8 +1433,8 @@
 
         <div data-rep-block style="display:flex; align-items:flex-start; justify-content:space-between; gap:20px; border-bottom:2px solid oklch(0.27 0.02 260); padding-bottom:16px; margin-bottom:24px">
           <div style="display:flex; align-items:center; gap:11px">
-            <div style="{{ logoStyle }}">SG</div>
-            <div><div style="font-size:16px; font-weight:800; letter-spacing:-0.01em">Escola São Gregório</div><div style="font-size:12px; color:oklch(0.5 0.02 260)">Gestão Financeira</div></div>
+            <div style="{{ logoStyle }}">{{ escolaSigla }}</div>
+            <div><div style="font-size:16px; font-weight:800; letter-spacing:-0.01em">{{ escolaNome }}</div><div style="font-size:12px; color:oklch(0.5 0.02 260)">{{ escolaSub }}</div></div>
           </div>
           <div style="text-align:right">
             <div style="font-size:18px; font-weight:700; letter-spacing:-0.01em">{{ repTitle }}</div>
@@ -1584,6 +1619,9 @@ class Component extends DCLogic {
     {key:'u2', nome:'Unidade II', sub:'Fund. II e Ensino Médio', sigla:'II', cor:'oklch(0.5 0.13 162)'},
   ];
   get UNIDADES(){ const c=(this.state && this.state.unidadesCustom)||{}; return this.DEFAULT_UNIDADES.map(u=>({...u, ...(c[u.key]||{})})); }
+  seedOrg(){ return {nome:'Escola São Gregório', sub:'Gestão Financeira', sigla:'SG', numUnidades:2}; }
+  get ORG(){ return (this.state && this.state.org) || this.seedOrg(); }
+  get numUnidades(){ const n=this.ORG.numUnidades; return n===1?1:2; }
   seedEmpresas(){ return {
     u1:{razaoSocial:'Escola São Gregório I LTDA', cnpj:'12345678000190', banco:'237', agencia:'12345', agenciaDV:'6', conta:'0001234567', contaDV:'8', convenio:'', endereco:'Rua das Acácias', numero:'150', complemento:'', bairro:'Centro', cidade:'São Paulo', uf:'SP', cep:'01234567'},
     u2:{razaoSocial:'Escola São Gregório II LTDA', cnpj:'12345678000271', banco:'237', agencia:'12345', agenciaDV:'6', conta:'0007654321', contaDV:'0', convenio:'', endereco:'Rua das Acácias', numero:'168', complemento:'', bairro:'Centro', cidade:'São Paulo', uf:'SP', cep:'01234567'},
@@ -1593,14 +1631,15 @@ class Component extends DCLogic {
     view:'dashboard', competencia:'2026-06', unidade:'geral',
     bills:this.seedBills(), vendors:this.seedVendors(), festas:this.seedFestas(),
     logged:false, loginPass:'', loginLembrar:true, loginError:'', loginLoading:false, cloudStatus:'',
-    filterCat:'all', filterStatus:'all', search:'', flash:'',
+    filterCat:'all', filterStatus:'all', search:'', flash:'', sortKey:'vencimento', sortDir:'asc',
     selectedFesta:'f2', chartType:'hbar', selectedDay:'2026-06-28',
     reportOpen:false, reportType:'', reportMonth:'2026-06', reportFesta:'f2',
     empresas:this.seedEmpresas(),
     modalOpen:false, vendorModalOpen:false, festaModalOpen:false, custoModalOpen:false, empresaModalOpen:false,
     cnabModalOpen:false, cnabForm:null,
     valeModalOpen:false, valeForm:null, bonusModalOpen:false, bonusForm:null, importModalOpen:false, importText:'', importCat:'professores', importRows:null, importError:'',
-    cats:this.seedCats(), catRules:{}, catModalOpen:false, catForm:null, unidadesCustom:{},
+    cats:this.seedCats(), catRules:{}, catModalOpen:false, catForm:null, unidadesCustom:{}, org:this.seedOrg(),
+    confirmOpen:false, confirmMsg:'', confirmLabel:'', confirmSub:'', confirmBtn:'', confirmDanger:true, confirmIcon:'⚠',
     extratoModalOpen:false, extratoModo:'extrato', extratoTexto:'', extratoRows:null, extratoError:'', extratoFileName:'', extratoBanco:'', extratoIgnorados:0, extratoDups:0,
     form:null, vendorForm:null, festaForm:null, custoForm:null, empresaForm:null, formError:'',
   };
@@ -1608,13 +1647,14 @@ class Component extends DCLogic {
 
   API_URL='/api/data';
   componentDidMount(){
-    let bills=this.state.bills, vendors=this.state.vendors, festas=this.state.festas, empresas=this.state.empresas, cats=this.state.cats, catRules=this.state.catRules, unidadesCustom=this.state.unidadesCustom, logged=false;
+    let bills=this.state.bills, vendors=this.state.vendors, festas=this.state.festas, empresas=this.state.empresas, cats=this.state.cats, catRules=this.state.catRules, unidadesCustom=this.state.unidadesCustom, org=this.state.org, logged=false;
     try {
       const raw = localStorage.getItem('sg-financeiro-v2');
       if (raw){ const d = JSON.parse(raw); bills=d.bills||bills; vendors=d.vendors||vendors; festas=d.festas||festas;
         if(d.cats){ cats=this.mergeCats(d.cats); }
         if(d.catRules) catRules=d.catRules;
         if(d.unidadesCustom) unidadesCustom=d.unidadesCustom;
+        if(d.org) org={...this.seedOrg(), ...d.org};
         if(d.empresas) empresas=d.empresas;
         else if(d.empresa) empresas={u1:d.empresa, u2:this.seedEmpresas().u2}; // migração v2→v3
       }
@@ -1624,11 +1664,11 @@ class Component extends DCLogic {
     let savedSenha=null;
     try { savedSenha=localStorage.getItem('sg-senha'); } catch(e){}
     if(savedSenha){ this._senha=savedSenha; logged=true; }
-    this.setState({bills, vendors, festas, empresas, cats, catRules, unidadesCustom, logged});
+    this.setState({bills, vendors, festas, empresas, cats, catRules, unidadesCustom, org, logged});
     if(savedSenha) this.cloudPull(); // já logado neste computador: busca a versão da nuvem
   }
   // ---- sincronização com o banco Neon (/api/data) ----
-  snapshot(p){ p=p||{}; const s=this.state; return {bills:p.bills||s.bills, vendors:p.vendors||s.vendors, festas:p.festas||s.festas, empresas:p.empresas||s.empresas, cats:p.cats||s.cats, catRules:p.catRules||s.catRules, unidadesCustom:p.unidadesCustom||s.unidadesCustom}; }
+  snapshot(p){ p=p||{}; const s=this.state; return {bills:p.bills||s.bills, vendors:p.vendors||s.vendors, festas:p.festas||s.festas, empresas:p.empresas||s.empresas, cats:p.cats||s.cats, catRules:p.catRules||s.catRules, unidadesCustom:p.unidadesCustom||s.unidadesCustom, org:p.org||s.org}; }
   hydrate(dados){
     if(!dados || typeof dados!=='object' || Array.isArray(dados)) return false;
     const s=this.state;
@@ -1638,7 +1678,7 @@ class Component extends DCLogic {
       bills, vendors:dados.vendors||s.vendors, festas:dados.festas||s.festas,
       empresas:dados.empresas||s.empresas,
       cats:dados.cats?this.mergeCats(dados.cats):s.cats,
-      catRules:dados.catRules||s.catRules, unidadesCustom:dados.unidadesCustom||s.unidadesCustom,
+      catRules:dados.catRules||s.catRules, unidadesCustom:dados.unidadesCustom||s.unidadesCustom, org:dados.org||s.org,
     };
     this.setState(next);
     try { localStorage.setItem('sg-financeiro-v2', JSON.stringify(this.snapshot(next))); } catch(e){}
@@ -1725,7 +1765,7 @@ class Component extends DCLogic {
       return b;
     });
   }
-  persist(p){ const s=this.state; const payload={bills:p.bills||s.bills, vendors:p.vendors||s.vendors, festas:p.festas||s.festas, empresas:p.empresas||s.empresas, cats:p.cats||s.cats, catRules:p.catRules||s.catRules, unidadesCustom:p.unidadesCustom||s.unidadesCustom}; try { localStorage.setItem('sg-financeiro-v2', JSON.stringify(payload)); } catch(e){} this.cloudSave(payload); }
+  persist(p){ const s=this.state; const payload={bills:p.bills||s.bills, vendors:p.vendors||s.vendors, festas:p.festas||s.festas, empresas:p.empresas||s.empresas, cats:p.cats||s.cats, catRules:p.catRules||s.catRules, unidadesCustom:p.unidadesCustom||s.unidadesCustom, org:p.org||s.org}; try { localStorage.setItem('sg-financeiro-v2', JSON.stringify(payload)); } catch(e){} this.cloudSave(payload); }
   flash(msg){ this.setState({flash:msg}); clearTimeout(this._ft); this._ft=setTimeout(()=>this.setState({flash:''}),3800); }
 
   seedBills(){
@@ -1896,6 +1936,7 @@ class Component extends DCLogic {
 
   // ---- vales / adiantamentos ----
   selectDay(ds){ this.setState({selectedDay:ds}); }
+  setSort(key){ this.setState(s=>{ if(s.sortKey===key) return {sortDir:s.sortDir==='asc'?'desc':'asc'}; return {sortKey:key, sortDir:'asc'}; }); }
   payDay(ds){ const bills=this.state.bills.map(b=> b.vencimento===ds && this.aPagar(b) ? {...b, pago:true} : b); this.setState({bills}); this.persist({bills}); }
 
   openVales(billId){ this.setState({valeModalOpen:true, valeForm:{billId, descricao:'', valor:'', parcelas:'1', data:this.TODAY}}); }
@@ -2125,23 +2166,42 @@ class Component extends DCLogic {
     const c1=cnt(';'), c2=cnt(','), c3=cnt('\t');
     let delim=';'; if(c3>=c1 && c3>=c2 && c3>0) delim='\t'; else if(c2>c1) delim=','; else delim=';';
     const split=(l)=> l.split(delim).map(x=>x.trim().replace(/^"(.*)"$/,'$1'));
-    const banco=/ita[uú]/i.test(text)?'Itaú':(/bradesco/i.test(text)?'Bradesco':'');
+    const banco=/ita[uú]/i.test(text)?'Itaú':(/bradesco/i.test(text)?'Bradesco':(/c6\s*bank|banco\s*c6/i.test(text)||/c6bank/i.test(fileName||'')?'C6 Bank':(/nubank|\bnu\s*pagamentos/i.test(text)?'Nubank':(/\binter\b|banco inter/i.test(text)?'Inter':(/santander/i.test(text)?'Santander':(/\bcaixa\b/i.test(text)?'Caixa':(/banco do brasil|\bbb\b/i.test(text)?'Banco do Brasil':'')))))));
     let headerIdx=-1, header=null;
-    for(let i=0;i<Math.min(linesAll.length,10);i++){
+    for(let i=0;i<Math.min(linesAll.length,30);i++){
       const cells=split(linesAll[i]).map(x=>x.toLowerCase());
-      if(cells.some(x=>/data|dt\.?\s*mov/.test(x)) && cells.some(x=>/valor|d[eé]bito|cr[eé]dito|hist|lan[cç]|descri|movim/.test(x))){ headerIdx=i; header=cells; break; }
+      if(cells.some(x=>/data|dt\.?\s*mov/.test(x)) && cells.some(x=>/valor|montante|d[eé]bito|cr[eé]dito|hist|lan[cç]|descri|movim|t[ií]tulo|estabelec/.test(x))){ headerIdx=i; header=cells; break; }
     }
     let idxData=-1, idxDesc=-1, idxValor=-1, idxDeb=-1, idxCred=-1;
     if(header){
       header.forEach((h,i)=>{
-        if(idxData<0 && /data|dt/.test(h)) idxData=i;
+        if(idxData<0 && /data|dt/.test(h)){ idxData=i; return; } // coluna de data não pode virar descrição/valor
         if(idxDeb<0 && /d[eé]bito|sa[ií]da|\bdeb\b/.test(h)) idxDeb=i;
         else if(idxCred<0 && /cr[eé]dito|entrada|\bcred\b/.test(h)) idxCred=i;
         else if(idxValor<0 && /valor|montante/.test(h)) idxValor=i;
-        if(idxDesc<0 && /hist|lan[cç]|descri|movim/.test(h)) idxDesc=i;
+        else if(idxDesc<0 && /hist|lan[cç]|descri|movim|t[ií]tulo|estabelec|memo|operac|transac|detalhe|identific/.test(h)) idxDesc=i;
       });
+      // segurança: descrição nunca aponta para colunas de data/valor
+      if(idxDesc===idxData || idxDesc===idxValor || idxDesc===idxDeb || idxDesc===idxCred) idxDesc=-1;
     }
     const dataLines = headerIdx>=0 ? linesAll.slice(headerIdx+1) : linesAll;
+    // Descrição robusta: escolhe a coluna com mais texto (letras) entre as linhas de dados,
+    // ignorando as colunas de data/valor. Funciona em qualquer banco (C6, Nubank, Inter…),
+    // mesmo quando o cabeçalho tem "Título" e "Descrição" juntos.
+    (()=>{
+      const excl={}; [idxData,idxValor,idxDeb,idxCred].forEach(x=>{ if(x>=0) excl[x]=1; });
+      const letras={}; let amostradas=0;
+      for(const line of dataLines){
+        const cells=split(line); if(cells.length<2) continue;
+        let temData=false; for(let i=0;i<cells.length;i++){ if(this.extParseDate(cells[i])){ temData=true; break; } }
+        if(!temData) continue;
+        cells.forEach((c,i)=>{ if(excl[i]) return; if(this.extParseDate(c)) return; const n=(String(c).match(/[a-zA-ZÀ-ÿ]/g)||[]).length; if(n>=3) letras[i]=(letras[i]||0)+n; });
+        if(++amostradas>=25) break;
+      }
+      let melhor=-1, max=0;
+      Object.keys(letras).forEach(k=>{ if(letras[k]>max){ max=letras[k]; melhor=+k; } });
+      if(melhor>=0) idxDesc=melhor; // coluna mais textual vence a heurística de cabeçalho
+    })();
     const rows=[]; let ignorados=0;
     for(const line of dataLines){
       let cells=split(line); if(!cells.length) continue;
@@ -2155,7 +2215,8 @@ class Component extends DCLogic {
       if(!ds) continue;
       let desc='';
       if(idxDesc>=0) desc=cells[idxDesc]||'';
-      if(!desc){ let best=''; cells.forEach((c,i)=>{ if(i===di) return; if(this.extParseDate(c)) return; const letters=(c.match(/[a-zA-ZÀ-ÿ]/g)||[]).length; if(letters>=3 && c.length>best.length) best=c; }); desc=best; }
+      // se não achou coluna de descrição, ou veio vazia/parecendo data: pega o melhor texto da linha
+      if(!desc || this.extParseDate(desc)){ let best=''; cells.forEach((c,i)=>{ if(i===di||i===idxData||i===idxValor||i===idxDeb||i===idxCred) return; if(this.extParseDate(c)) return; const letters=(c.match(/[a-zA-ZÀ-ÿ]/g)||[]).length; if(letters>=3 && c.length>best.length) best=c; }); if(best) desc=best; }
       desc=String(desc).replace(/\s+/g,' ').trim();
       if(/^saldo|saldo anterior|saldo do dia|saldo em conta|saldo final/i.test(desc)) continue;
       let val=NaN;
@@ -2269,6 +2330,13 @@ class Component extends DCLogic {
   }
   fmtDoc(e){ const d=String((e&&e.cnpj)||'').replace(/\D/g,''); if((e&&e.docTipo)==='cpf'||d.length===11) return d.replace(/(\d{3})(\d{3})(\d{3})(\d{2})$/,'$1.$2.$3-$4'); return this.fmtCnpj(d); }
   closeEmpresa(){ this.setState({empresaModalOpen:false}); }
+  setOrg(patch){ const org={...this.ORG, ...patch}; this.setState({org}); this.persist({org}); }
+  setNumUnidades(n){ const patch={numUnidades:n===1?1:2}; const extra = (n===1) ? {unidade:'u1'} : {}; const org={...this.ORG, ...patch}; this.setState({org, ...extra}); this.persist({org}); }
+  askConfirm(opts, fn){ this._confirmFn=fn; this.setState({confirmOpen:true, confirmMsg:opts.msg||'Confirmar?', confirmLabel:opts.label||'', confirmSub:opts.sub||'', confirmBtn:opts.btn||'Confirmar', confirmDanger:opts.danger!==false, confirmIcon:opts.icon||(opts.danger!==false?'⚠':'✓')}); }
+  askDelete(label, fn){ this.askConfirm({msg:'Deseja mesmo excluir', label, sub:'Esta ação não pode ser desfeita.', btn:'Excluir', danger:true, icon:'⚠'}, fn); }
+  askSaveEmpresa(){ this.askConfirm({msg:'Salvar as alterações no cadastro?', sub:'Você está alterando dados sensíveis (CNPJ/CPF, conta bancária, dados da empresa). Confira antes de confirmar.', btn:'Salvar alterações', danger:false, icon:'💾'}, ()=>this.saveEmpresa()); }
+  confirmYes(){ const fn=this._confirmFn; this._confirmFn=null; this.setState({confirmOpen:false}); if(typeof fn==='function') fn(); }
+  confirmNo(){ this._confirmFn=null; this.setState({confirmOpen:false}); }
   saveEmpresa(){
     const f={...this.state.empresaForm}; const u=f.__unit||'u1';
     const unidadesCustom={...(this.state.unidadesCustom||{}), [u]:this.unidadeCustomFrom(f)};
@@ -2495,7 +2563,7 @@ class Component extends DCLogic {
     const max6=Math.max(...months6.map(m=>this.monthTotal(m,uni)),1);
     const monthlyComparison=months6.map(m=>{ const t=this.monthTotal(m,uni); const cur=m===comp; return {mes:this.monthShort(m).split('/')[0], shortFmt:this.brlk(t), barStyle:{width:'60%',maxWidth:'44px',height:(t/max6*84)+'%',minHeight:'5px',background:cur?PRIMARY:'oklch(0.84 0.035 255)',borderRadius:'6px 6px 0 0',transition:'height .4s ease'}, labelStyle:{fontSize:'12px',fontWeight:cur?700:500,color:cur?PRIMARY:'oklch(0.5 0.02 260)',textTransform:'capitalize'}}; });
 
-    const decorate=(b)=>{ const v=this.billView(b); v.onPagar=()=>this.markPaid(b.id); v.onEditar=()=>this.openEdit(b.id); v.onDelete=()=>this.deleteBill(b.id); v.onAnexar=(e)=>{const fl=e.target.files&&e.target.files[0]; if(fl) this.setComprovante(b.id,fl.name);}; v.anexarLabel=v.naoPago?(b.comprovante?'✓':'Anexar'):(b.comprovante?'✓ Anexado':'Anexar'); v.anexarLabel=b.comprovante?'✓ Anexado':'Anexar'; v.anexarTitle=b.comprovante?b.comprovante:'Anexar comprovante'; const tc=!!b.comprovante; v.anexarStyle={fontSize:'12px',padding:'5px 10px',borderRadius:'7px',cursor:'pointer',whiteSpace:'nowrap',border:'1px solid '+(tc?'oklch(0.85 0.06 158)':'oklch(0.9 0.008 260)'),color:tc?'oklch(0.44 0.11 158)':'oklch(0.5 0.02 260)',background:tc?'oklch(0.97 0.03 162)':'#fff'}; return v; };
+    const decorate=(b)=>{ const v=this.billView(b); v.onPagar=()=>this.markPaid(b.id); v.onEditar=()=>this.openEdit(b.id); v.onDelete=()=>this.askDelete('“'+(b.descricao||'este lançamento')+'”?', ()=>this.deleteBill(b.id)); v.onAnexar=(e)=>{const fl=e.target.files&&e.target.files[0]; if(fl) this.setComprovante(b.id,fl.name);}; v.anexarLabel=v.naoPago?(b.comprovante?'✓':'Anexar'):(b.comprovante?'✓ Anexado':'Anexar'); v.anexarLabel=b.comprovante?'✓ Anexado':'Anexar'; v.anexarTitle=b.comprovante?b.comprovante:'Anexar comprovante'; const tc=!!b.comprovante; v.anexarStyle={fontSize:'12px',padding:'5px 10px',borderRadius:'7px',cursor:'pointer',whiteSpace:'nowrap',border:'1px solid '+(tc?'oklch(0.85 0.06 158)':'oklch(0.9 0.008 260)'),color:tc?'oklch(0.44 0.11 158)':'oklch(0.5 0.02 260)',background:tc?'oklch(0.97 0.03 162)':'#fff'}; return v; };
 
     const upcoming=monthBills.filter(b=>this.statusOf(b)!=='pago').sort((a,b)=>a.vencimento<b.vencimento?-1:1).slice(0,7).map(decorate);
 
@@ -2569,8 +2637,28 @@ class Component extends DCLogic {
     if(this.props.esconderPagos) fb=fb.filter(b=>this.statusOf(b)!=='pago');
     const q=(S.search||'').toLowerCase();
     if(q) fb=fb.filter(b=>(b.descricao+' '+b.fornecedor+' '+(b.cargo||'')).toLowerCase().includes(q));
-    fb.sort((a,b)=>a.vencimento<b.vencimento?-1:1);
+    const catLabel=(k)=>{ const c=this.CATS.find(x=>x.key===k); return c?c.label:k; };
+    const stRank={pendente:0, atrasado:1, pago:2, cancelado:3};
+    const sk=S.sortKey||'vencimento', sdir=(S.sortDir==='desc')?-1:1;
+    const cmp=(a,b)=>{
+      let r=0;
+      if(sk==='descricao') r=(a.descricao||'').localeCompare(b.descricao||'','pt',{sensitivity:'base'});
+      else if(sk==='categoria') r=catLabel(a.categoria).localeCompare(catLabel(b.categoria),'pt',{sensitivity:'base'});
+      else if(sk==='valor') r=(a.valor||0)-(b.valor||0);
+      else if(sk==='status') r=(stRank[this.statusOf(a)]??9)-(stRank[this.statusOf(b)]??9);
+      else r = a.vencimento<b.vencimento?-1:(a.vencimento>b.vencimento?1:0);
+      if(r===0) r = a.vencimento<b.vencimento?-1:(a.vencimento>b.vencimento?1:0); // desempate por data
+      return r*sdir;
+    };
+    fb.sort(cmp);
     const filteredBills=fb.map(decorate);
+    const arrow=(k)=> sk===k ? (S.sortDir==='desc'?' ↓':' ↑') : '';
+    const headStyle=(k,align)=>({cursor:'pointer', userSelect:'none', color: sk===k?PRIMARY:'oklch(0.5 0.02 260)', fontWeight: sk===k?700:600, textAlign:align||'left', display:'flex', alignItems:'center', gap:'2px', justifyContent: align==='right'?'flex-end':'flex-start'});
+    const contasHead={
+      onDescricao:()=>this.setSort('descricao'), onCategoria:()=>this.setSort('categoria'), onVencimento:()=>this.setSort('vencimento'), onValor:()=>this.setSort('valor'), onStatus:()=>this.setSort('status'),
+      stDescricao:headStyle('descricao'), stCategoria:headStyle('categoria'), stVencimento:headStyle('vencimento'), stValor:headStyle('valor','right'), stStatus:headStyle('status'),
+      arrDescricao:'Descrição'+arrow('descricao'), arrCategoria:'Categoria'+arrow('categoria'), arrVencimento:'Vencimento'+arrow('vencimento'), arrValor:'Valor'+arrow('valor'), arrStatus:'Status'+arrow('status'),
+    };
 
     const chipStyle=(active)=>({display:'inline-flex',alignItems:'center',gap:'7px',padding:'7px 13px',borderRadius:'8px',fontSize:'12.5px',fontWeight:active?600:500,cursor:'pointer',border:'1px solid '+(active?'transparent':'oklch(0.9 0.008 260)'),background:active?PRIMARY:'#fff',color:active?'#fff':'oklch(0.36 0.02 260)',whiteSpace:'nowrap'});
     const chipDot=(active,color)=>({width:'8px',height:'8px',borderRadius:'2px',background:active?'#fff':color,flex:'0 0 auto'});
@@ -2593,7 +2681,7 @@ class Component extends DCLogic {
     ];
 
     // vendors
-    const vendorList=S.vendors.map(v=>{ const cat=this.CATS.find(c=>c.key===v.categoria)||{label:v.categoria,color:'#888'}; return {nome:v.nome, contato:v.contato, catLabel:cat.label, catDot:{width:'9px',height:'9px',borderRadius:'3px',background:cat.color,flex:'0 0 auto'}, onEditar:()=>this.openEditVendor(v.id), onDelete:()=>this.deleteVendor(v.id)}; });
+    const vendorList=S.vendors.map(v=>{ const cat=this.CATS.find(c=>c.key===v.categoria)||{label:v.categoria,color:'#888'}; return {nome:v.nome, contato:v.contato, catLabel:cat.label, catDot:{width:'9px',height:'9px',borderRadius:'3px',background:cat.color,flex:'0 0 auto'}, onEditar:()=>this.openEditVendor(v.id), onDelete:()=>this.askDelete('o fornecedor “'+v.nome+'”?', ()=>this.deleteVendor(v.id))}; });
 
     // festas
     const fstPill=(st)=>{ const m=this.FSTATUS[st]||this.FSTATUS.planejamento; return {meta:m, style:{background:m.bg,color:m.color,padding:'4px 11px',borderRadius:'20px',fontSize:'11.5px',fontWeight:600,whiteSpace:'nowrap'}}; };
@@ -2664,7 +2752,8 @@ class Component extends DCLogic {
 
     // ---- seletor de unidade ----
     const uniTabStyle=(active,cor)=>({display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'1px',padding:'8px 11px',borderRadius:'8px',cursor:'pointer',border:'1px solid '+(active?'transparent':'oklch(0.91 0.008 260)'),background:active?(cor||PRIMARY):'#fff',color:active?'#fff':'oklch(0.4 0.02 260)',width:'100%',textAlign:'left',transition:'background .12s'});
-    const unidadeTabs=[{key:'geral',nome:'Geral',sub:'As 2 unidades',cor:PRIMARY}, ...this.UNIDADES].map(u=>({
+    const uniList = this.numUnidades===1 ? [this.UNIDADES[0]] : [{key:'geral',nome:'Geral',sub:'As 2 unidades',cor:PRIMARY}, ...this.UNIDADES];
+    const unidadeTabs=uniList.map(u=>({
       key:u.key, nome:u.nome, sub:u.sub, active:uni===u.key,
       onClick:()=>this.setState({unidade:u.key}),
       style:uniTabStyle(uni===u.key, u.cor),
@@ -2732,7 +2821,17 @@ class Component extends DCLogic {
       onLoginPass:e=>this.onLoginPass(e.target.value),
       onLoginKey:e=>this.onLoginKey(e), toggleLembrar:()=>this.toggleLembrar(), doLogin:()=>this.doLogin(),
       logout:()=>this.logout(),
-      escolaNome:'Escola São Gregório',
+      escolaNome:this.ORG.nome||'Escola São Gregório', escolaSub:this.ORG.sub||'Gestão Financeira', escolaSigla:(this.ORG.sigla||'SG').slice(0,3),
+      orgNome:this.ORG.nome||'', orgSub:this.ORG.sub||'', orgSigla:this.ORG.sigla||'', orgNumUnidades:this.numUnidades,
+      onOrgNome:e=>this.setOrg({nome:e.target.value}), onOrgSub:e=>this.setOrg({sub:e.target.value}), onOrgSigla:e=>this.setOrg({sigla:(e.target.value||'').slice(0,3)}),
+      setUma:()=>this.setNumUnidades(1), setDuas:()=>this.setNumUnidades(2),
+      orgUmaStyle:{flex:1, padding:'9px 12px', borderRadius:'8px', fontSize:'12.5px', fontWeight:this.numUnidades===1?700:500, cursor:'pointer', border:'1px solid '+(this.numUnidades===1?'oklch(0.72 0.09 255)':'oklch(0.9 0.008 260)'), background:this.numUnidades===1?'oklch(0.96 0.02 255)':'#fff', color:this.numUnidades===1?'oklch(0.38 0.09 255)':'oklch(0.5 0.02 260)'},
+      orgDuasStyle:{flex:1, padding:'9px 12px', borderRadius:'8px', fontSize:'12.5px', fontWeight:this.numUnidades===2?700:500, cursor:'pointer', border:'1px solid '+(this.numUnidades===2?'oklch(0.72 0.09 255)':'oklch(0.9 0.008 260)'), background:this.numUnidades===2?'oklch(0.96 0.02 255)':'#fff', color:this.numUnidades===2?'oklch(0.38 0.09 255)':'oklch(0.5 0.02 260)'},
+      duasUnidades:this.numUnidades===2,
+      confirmOpen:S.confirmOpen, confirmMsg:S.confirmMsg, confirmLabel:S.confirmLabel, confirmSub:S.confirmSub||'', confirmBtn:S.confirmBtn||'Confirmar', confirmYes:()=>this.confirmYes(), confirmNo:()=>this.confirmNo(),
+      confirmIcon:S.confirmIcon||'⚠',
+      confirmIconStyle:{width:'42px', height:'42px', borderRadius:'11px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'20px', flex:'0 0 auto', background:S.confirmDanger?'oklch(0.95 0.04 25)':'oklch(0.95 0.03 255)', color:S.confirmDanger?'oklch(0.55 0.16 25)':'oklch(0.45 0.13 255)'},
+      confirmBtnStyle:{background:S.confirmDanger?'oklch(0.55 0.18 25)':PRIMARY, color:'#fff', border:'none', padding:'10px 18px', borderRadius:'9px', fontSize:'13.5px', fontWeight:700, cursor:'pointer'},
       cloudLabel:this.cloudLabel(), cloudDotStyle:this.cloudDotStyle(),
       ...this.getReport(),
       goContas:()=>this.setState({view:'contas'}),
@@ -2772,7 +2871,7 @@ class Component extends DCLogic {
       temAClassificar:aClassMes.length>0, aClassCount:aClassMes.length, aClassTotalFmt:this.brl0(aClassMes.reduce((a,b)=>a+b.valor,0)),
       irAClassificar:()=>this.setState({view:'contas', filterCat:'a_classificar', filterStatus:'all'}),
       catChips, statusChips, search:S.search, onSearch:(e)=>this.setState({search:e.target.value}),
-      filteredBills, listaVazia:filteredBills.length===0, iconBtnStyle, delBtnStyle,
+      filteredBills, listaVazia:filteredBills.length===0, iconBtnStyle, delBtnStyle, contasHead,
       resumoContagem:filteredBills.length+(filteredBills.length===1?' conta exibida':' contas exibidas'), totalFiltradoFmt:this.brl(sum(fb)),
       vendorList,
       festaCards, festaSel,
@@ -2797,7 +2896,7 @@ class Component extends DCLogic {
       onCpf:e=>uf('cpf',e.target.value), onBanco:e=>uf('banco',e.target.value), onAgencia:e=>uf('agencia',e.target.value), onAgenciaDV:e=>uf('agenciaDV',e.target.value), onConta:e=>uf('conta',e.target.value), onContaDV:e=>uf('contaDV',e.target.value), onMetodo:e=>uf('metodo',e.target.value), onPixChave:e=>uf('pixChave',e.target.value),
       onPis:e=>uf('pis',e.target.value), onEmail:e=>uf('email',e.target.value),
       closeModal:()=>this.closeModal(), saveBill:()=>this.saveBill(), stop:(e)=>e.stopPropagation(),
-      deleteFromModal:()=> f.id?this.deleteBill(f.id):this.closeModal(),
+      deleteFromModal:()=> f.id?this.askDelete('“'+(f.descricao||'este lançamento')+'”?', ()=>this.deleteBill(f.id)):this.closeModal(),
       modalDeleteStyle:{background:'#fff',color:f.id?'oklch(0.55 0.13 25)':'transparent',border:f.id?'1px solid oklch(0.9 0.03 25)':'none',padding:'10px 15px',borderRadius:'9px',fontSize:'13px',fontWeight:600,cursor:f.id?'pointer':'default',visibility:f.id?'visible':'hidden'},
       inputStyle, fieldLabel, cancelBtnStyle,
       // expose cargoOrForn for modal field binding
@@ -2806,7 +2905,7 @@ class Component extends DCLogic {
       onVNome:e=>uvf('nome',e.target.value), onVCategoria:e=>uvf('categoria',e.target.value), onVContato:e=>uvf('contato',e.target.value),
       closeVendorModal:()=>this.closeVendorModal(), saveVendor:()=>this.saveVendor(),
       empresaModalOpen:S.empresaModalOpen, empresaForm:ef, empresaModalSub:(this.UNIDADES.find(u=>u.key===(ef.__unit||'u1'))||{nome:''}).nome+' · conta de débito Bradesco',
-      empresaTabs:this.UNIDADES.map(u=>{ const active=(ef.__unit||'u1')===u.key; return { label:u.nome+' — '+u.sub, onClick:()=>this.switchEmpresaUnit(u.key),
+      empresaTabs:(this.numUnidades===1?[this.UNIDADES[0]]:this.UNIDADES).map(u=>{ const active=(ef.__unit||'u1')===u.key; return { label:u.nome+' — '+u.sub, onClick:()=>this.switchEmpresaUnit(u.key),
         style:{padding:'8px 14px', borderRadius:'8px', fontSize:'12.5px', fontWeight:active?700:500, cursor:'pointer', border:'1px solid '+(active?'oklch(0.72 0.09 255)':'oklch(0.9 0.008 260)'), background:active?'oklch(0.96 0.02 255)':'#fff', color:active?'oklch(0.38 0.09 255)':'oklch(0.5 0.02 260)'} }; }),
       empresaDocLabel:(ef.docTipo==='cpf'?'CPF':'CNPJ'), empresaDocPlaceholder:(ef.docTipo==='cpf'?'000.000.000-00':'00.000.000/0000-00'),
       onEDocCnpj:()=>uef('docTipo','cnpj'), onEDocCpf:()=>uef('docTipo','cpf'),
@@ -2815,7 +2914,7 @@ class Component extends DCLogic {
       onEEmail:e=>uef('email',e.target.value), onETelefone:e=>uef('telefone',e.target.value),
       onEUNome:e=>uef('__uNome',e.target.value), onEUSub:e=>uef('__uSub',e.target.value),
       onENome:e=>uef('razaoSocial',e.target.value), onECnpj:e=>uef('cnpj',e.target.value), onEBanco:e=>uef('banco',e.target.value), onEAgencia:e=>uef('agencia',e.target.value), onEAgenciaDV:e=>uef('agenciaDV',e.target.value), onEConta:e=>uef('conta',e.target.value), onEContaDV:e=>uef('contaDV',e.target.value), onEEndereco:e=>uef('endereco',e.target.value), onENumero:e=>uef('numero',e.target.value), onEBairro:e=>uef('bairro',e.target.value), onECidade:e=>uef('cidade',e.target.value), onEUf:e=>uef('uf',e.target.value), onECep:e=>uef('cep',e.target.value),
-      closeEmpresa:()=>this.closeEmpresa(), saveEmpresa:()=>this.saveEmpresa(),
+      closeEmpresa:()=>this.closeEmpresa(), saveEmpresa:()=>this.askSaveEmpresa(),
       // vale modal
       valeModalOpen:S.valeModalOpen, valeForm:S.valeForm||{},
       valeColaborador:(()=>{ const b=S.valeForm&&S.bills.find(x=>x.id===S.valeForm.billId); return b?b.descricao:''; })(),
