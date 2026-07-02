@@ -31,6 +31,34 @@
 </helmet>
 
 <div style="font-family:'Public Sans',-apple-system,sans-serif; color:oklch(0.27 0.02 260); -webkit-font-smoothing:antialiased">
+<sc-if value="{{ notLogged }}" hint-placeholder-val="{{ true }}">
+  <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; background:linear-gradient(150deg, oklch(0.32 0.07 262) 0%, oklch(0.24 0.05 262) 55%, oklch(0.2 0.03 262) 100%)">
+    <div style="width:400px; max-width:100%; background:#fff; border-radius:16px; box-shadow:0 24px 70px rgba(10,20,50,0.4); overflow:hidden">
+      <div style="padding:32px 34px 24px; text-align:center; border-bottom:1px solid oklch(0.94 0.008 260)">
+        <div style="width:56px; height:56px; border-radius:13px; background:#2952a3; color:#fff; font-weight:800; font-size:21px; letter-spacing:-0.02em; display:flex; align-items:center; justify-content:center; margin:0 auto 14px">SG</div>
+        <div style="font-size:19px; font-weight:800; letter-spacing:-0.015em; color:oklch(0.24 0.02 260)">{{ escolaNome }}</div>
+        <div style="font-size:13px; color:oklch(0.55 0.02 260); margin-top:3px">Gestão Financeira · acesso restrito</div>
+      </div>
+      <div style="padding:26px 34px 30px; display:flex; flex-direction:column; gap:15px">
+        <div>
+          <label style="font-size:12.5px; font-weight:600; color:oklch(0.42 0.02 260)">Senha de acesso</label>
+          <input value="{{ loginPass }}" onChange="{{ onLoginPass }}" onKeyDown="{{ onLoginKey }}" type="password" placeholder="••••••••" autofocus="1" style="width:100%; box-sizing:border-box; padding:11px 13px; border:1px solid oklch(0.88 0.008 260); border-radius:9px; font-size:14px; margin-top:6px; background:#fff; color:oklch(0.27 0.02 260)" />
+        </div>
+        <sc-if value="{{ loginHasError }}" hint-placeholder-val="{{ false }}">
+          <div style="background:oklch(0.96 0.04 25); color:oklch(0.45 0.13 25); padding:9px 13px; border-radius:8px; font-size:12.5px">{{ loginError }}</div>
+        </sc-if>
+        <label style="display:flex; align-items:center; gap:9px; font-size:13px; color:oklch(0.45 0.02 260); cursor:pointer">
+          <input type="checkbox" checked="{{ loginLembrar }}" onChange="{{ toggleLembrar }}" style="width:16px; height:16px; accent-color:#2952a3; cursor:pointer" />
+          Manter conectado neste computador
+        </label>
+        <button onClick="{{ doLogin }}" style="width:100%; padding:12px; background:#2952a3; color:#fff; border:none; border-radius:9px; font-size:14.5px; font-weight:700; cursor:pointer; margin-top:2px">{{ loginBtnLabel }}</button>
+        <div style="font-size:11.5px; color:oklch(0.62 0.02 260); text-align:center; line-height:1.5; margin-top:4px">Acesso protegido. Os dados ficam salvos na nuvem e sincronizam entre os computadores da escola.</div>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ logged }}" hint-placeholder-val="{{ false }}">
 <div data-app-root="1" style="display:flex; min-height:100vh; background:oklch(0.975 0.004 255)">
 
   <aside style="width:236px; flex:0 0 236px; background:#fff; border-right:1px solid oklch(0.92 0.008 260); display:flex; flex-direction:column; padding:20px 14px; position:sticky; top:0; height:100vh">
@@ -64,6 +92,10 @@
       <div style="font-size:11.5px; color:oklch(0.56 0.02 260); letter-spacing:0.02em; text-transform:uppercase; font-weight:600">Total previsto · {{ mesCurto }}</div>
       <div style="font-family:'IBM Plex Mono',monospace; font-size:19px; font-weight:600; margin-top:5px; color:oklch(0.3 0.02 260)">{{ totalMesFmt }}</div>
       <div style="font-size:12px; color:oklch(0.58 0.02 260); margin-top:3px">{{ atalho }}</div>
+    </div>
+    <div style="margin-top:12px; padding-top:12px; border-top:1px solid oklch(0.94 0.008 260); display:flex; flex-direction:column; gap:3px">
+      <div style="display:flex; align-items:center; gap:8px; padding:6px 10px; font-size:11.5px; color:oklch(0.5 0.02 260)"><span style="{{ cloudDotStyle }}"></span>{{ cloudLabel }}</div>
+      <button onClick="{{ logout }}" style="display:flex; align-items:center; gap:9px; width:100%; text-align:left; background:none; border:none; padding:8px 10px; border-radius:8px; font-size:12.5px; font-weight:500; color:oklch(0.5 0.1 25); cursor:pointer" style-hover="background:oklch(0.96 0.03 25)">⎋ Sair</button>
     </div>
   </aside>
 
@@ -694,6 +726,7 @@
     </div>
   </main>
   </div>
+</sc-if>
 
   <!-- ============ MODAL: CONTA ============ -->
   <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
@@ -1137,6 +1170,8 @@
     </div>
   </sc-if>
 
+  <!-- ============ MODAL: USUÁRIO E SENHA (removido — a senha agora é o APP_SENHA do servidor) ============ -->
+
   <!-- ============ MODAL: GERENCIAR CATEGORIAS ============ -->
   <sc-if value="{{ catModalOpen }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ closeCatModal }}" style="position:fixed; inset:0; background:oklch(0.2 0.02 260 / 0.45); display:flex; align-items:center; justify-content:center; z-index:50; padding:20px">
@@ -1557,6 +1592,7 @@ class Component extends DCLogic {
   state = {
     view:'dashboard', competencia:'2026-06', unidade:'geral',
     bills:this.seedBills(), vendors:this.seedVendors(), festas:this.seedFestas(),
+    logged:false, loginPass:'', loginLembrar:true, loginError:'', loginLoading:false, cloudStatus:'',
     filterCat:'all', filterStatus:'all', search:'', flash:'',
     selectedFesta:'f2', chartType:'hbar', selectedDay:'2026-06-28',
     reportOpen:false, reportType:'', reportMonth:'2026-06', reportFesta:'f2',
@@ -1570,8 +1606,9 @@ class Component extends DCLogic {
   };
   BANCOS=[['237','Bradesco'],['001','Banco do Brasil'],['104','Caixa Econômica'],['341','Itaú'],['033','Santander'],['260','Nubank'],['077','Inter'],['336','C6 Bank'],['748','Sicredi'],['756','Sicoob']];
 
+  API_URL='/api/data';
   componentDidMount(){
-    let bills=this.state.bills, vendors=this.state.vendors, festas=this.state.festas, empresas=this.state.empresas, cats=this.state.cats, catRules=this.state.catRules, unidadesCustom=this.state.unidadesCustom;
+    let bills=this.state.bills, vendors=this.state.vendors, festas=this.state.festas, empresas=this.state.empresas, cats=this.state.cats, catRules=this.state.catRules, unidadesCustom=this.state.unidadesCustom, logged=false;
     try {
       const raw = localStorage.getItem('sg-financeiro-v2');
       if (raw){ const d = JSON.parse(raw); bills=d.bills||bills; vendors=d.vendors||vendors; festas=d.festas||festas;
@@ -1584,8 +1621,77 @@ class Component extends DCLogic {
     } catch(e){}
     bills=this.backfillBank(bills);
     bills=this.backfillUnidade(bills);
-    this.setState({bills, vendors, festas, empresas, cats, catRules, unidadesCustom});
+    let savedSenha=null;
+    try { savedSenha=localStorage.getItem('sg-senha'); } catch(e){}
+    if(savedSenha){ this._senha=savedSenha; logged=true; }
+    this.setState({bills, vendors, festas, empresas, cats, catRules, unidadesCustom, logged});
+    if(savedSenha) this.cloudPull(); // já logado neste computador: busca a versão da nuvem
   }
+  // ---- sincronização com o banco Neon (/api/data) ----
+  snapshot(p){ p=p||{}; const s=this.state; return {bills:p.bills||s.bills, vendors:p.vendors||s.vendors, festas:p.festas||s.festas, empresas:p.empresas||s.empresas, cats:p.cats||s.cats, catRules:p.catRules||s.catRules, unidadesCustom:p.unidadesCustom||s.unidadesCustom}; }
+  hydrate(dados){
+    if(!dados || typeof dados!=='object' || Array.isArray(dados)) return false;
+    const s=this.state;
+    let bills=dados.bills||s.bills;
+    bills=this.backfillUnidade(this.backfillBank(bills));
+    const next={
+      bills, vendors:dados.vendors||s.vendors, festas:dados.festas||s.festas,
+      empresas:dados.empresas||s.empresas,
+      cats:dados.cats?this.mergeCats(dados.cats):s.cats,
+      catRules:dados.catRules||s.catRules, unidadesCustom:dados.unidadesCustom||s.unidadesCustom,
+    };
+    this.setState(next);
+    try { localStorage.setItem('sg-financeiro-v2', JSON.stringify(this.snapshot(next))); } catch(e){}
+    return true;
+  }
+  cloudPull(){
+    if(!this._senha) return;
+    this.setState({cloudStatus:'sincronizando'});
+    fetch(this.API_URL, {headers:{'x-senha':this._senha}}).then(r=>{
+      if(r.status===401){ this.flash('Sua senha de acesso mudou no servidor. Entre novamente.'); this.logout(); return null; }
+      if(!r.ok) throw new Error('rede');
+      return r.json();
+    }).then(dados=>{ if(dados===undefined) return; this.hydrate(dados); this.setState({cloudStatus:'ok'}); })
+      .catch(()=>this.setState({cloudStatus:'offline'}));
+  }
+  cloudSave(payload){
+    if(!this._senha) return; // sem sessão de nuvem: fica só no navegador
+    clearTimeout(this._syncTimer);
+    this.setState({cloudStatus:'salvando'});
+    this._syncTimer=setTimeout(()=>{
+      fetch(this.API_URL, {method:'POST', headers:{'Content-Type':'application/json','x-senha':this._senha}, body:JSON.stringify(payload)})
+        .then(r=>{ if(r.status===401){ this.setState({cloudStatus:'erro'}); return; } this.setState({cloudStatus:r.ok?'ok':'erro'}); })
+        .catch(()=>this.setState({cloudStatus:'offline'}));
+    }, 700);
+  }
+  onLoginPass(v){ this.setState({loginPass:v, loginError:''}); }
+  toggleLembrar(){ this.setState(s=>({loginLembrar:!s.loginLembrar})); }
+  doLogin(){
+    const senha=this.state.loginPass||'';
+    if(!senha){ this.setState({loginError:'Digite a senha.'}); return; }
+    this.setState({loginLoading:true, loginError:''});
+    fetch(this.API_URL, {headers:{'x-senha':senha}}).then(r=>{
+      if(r.status===401){ this.setState({loginLoading:false, loginError:'Senha incorreta.', loginPass:''}); return; }
+      if(!r.ok) throw new Error('rede');
+      return r.json().then(dados=>{
+        this._senha=senha;
+        try { if(this.state.loginLembrar) localStorage.setItem('sg-senha', senha); else localStorage.removeItem('sg-senha'); } catch(e){}
+        const nuvemVazia = !dados || !dados.bills; // primeira vez: banco ainda sem dados
+        this.hydrate(dados);
+        this.setState({logged:true, loginLoading:false, loginPass:'', loginError:'', cloudStatus:'ok'});
+        if(nuvemVazia){ this.cloudSave(this.snapshot()); } // semeia a nuvem com o que já existe neste computador
+      });
+    }).catch(()=>{
+      // sem internet: permite entrar offline apenas se a senha já foi usada com sucesso neste computador
+      let cached=null; try { cached=localStorage.getItem('sg-senha'); } catch(e){}
+      if(cached && cached===senha){ this._senha=senha; this.setState({logged:true, loginLoading:false, loginPass:'', loginError:'', cloudStatus:'offline'}); }
+      else this.setState({loginLoading:false, loginError:'Sem conexão com o servidor. Verifique a internet e tente de novo.', loginPass:''});
+    });
+  }
+  onLoginKey(e){ if(e.key==='Enter') this.doLogin(); }
+  logout(){ this._senha=null; try { localStorage.removeItem('sg-senha'); } catch(e){} this.setState({logged:false, loginPass:'', loginError:'', cloudStatus:''}); }
+  cloudLabel(){ const m={sincronizando:'Sincronizando…', salvando:'Salvando…', ok:'Salvo na nuvem', offline:'Offline — salvo no computador', erro:'Erro ao salvar'}; return m[this.state.cloudStatus]||'Somente neste computador'; }
+  cloudDotStyle(){ const c={ok:'oklch(0.6 0.14 158)', salvando:'oklch(0.7 0.13 90)', sincronizando:'oklch(0.7 0.13 90)', offline:'oklch(0.65 0.02 260)', erro:'oklch(0.6 0.18 25)'}[this.state.cloudStatus]||'oklch(0.75 0.02 260)'; return {width:'8px', height:'8px', borderRadius:'50%', background:c, flex:'0 0 auto'}; }
   mergeCats(saved){
     const out=Array.isArray(saved)?saved.map(c=>({...c})):[];
     const keys=new Set(out.map(c=>c.key));
@@ -1619,7 +1725,7 @@ class Component extends DCLogic {
       return b;
     });
   }
-  persist(p){ try { const s=this.state; localStorage.setItem('sg-financeiro-v2', JSON.stringify({bills:p.bills||s.bills, vendors:p.vendors||s.vendors, festas:p.festas||s.festas, empresas:p.empresas||s.empresas, cats:p.cats||s.cats, catRules:p.catRules||s.catRules, unidadesCustom:p.unidadesCustom||s.unidadesCustom})); } catch(e){} }
+  persist(p){ const s=this.state; const payload={bills:p.bills||s.bills, vendors:p.vendors||s.vendors, festas:p.festas||s.festas, empresas:p.empresas||s.empresas, cats:p.cats||s.cats, catRules:p.catRules||s.catRules, unidadesCustom:p.unidadesCustom||s.unidadesCustom}; try { localStorage.setItem('sg-financeiro-v2', JSON.stringify(payload)); } catch(e){} this.cloudSave(payload); }
   flash(msg){ this.setState({flash:msg}); clearTimeout(this._ft); this._ft=setTimeout(()=>this.setState({flash:''}),3800); }
 
   seedBills(){
@@ -2619,6 +2725,15 @@ class Component extends DCLogic {
       festaOptions:S.festas.map(f=>({id:f.id, nome:f.nome})),
       openMensal:()=>this.openReport('mensal'), openAnual:()=>this.openReport('anual'), openFestaRep:()=>this.openReport('festa'), openFolhaRep:()=>this.openReport('folha'), openCategorias:()=>this.openReport('categorias'),
       closeReport:()=>this.closeReport(), doPrint:()=>window.print(),
+      // login / autenticação
+      logged:S.logged, notLogged:!S.logged,
+      loginPass:S.loginPass, loginLembrar:S.loginLembrar, loginLoading:S.loginLoading, loginBtnLabel:S.loginLoading?'Entrando…':'Entrar',
+      loginError:S.loginError, loginHasError:!!S.loginError,
+      onLoginPass:e=>this.onLoginPass(e.target.value),
+      onLoginKey:e=>this.onLoginKey(e), toggleLembrar:()=>this.toggleLembrar(), doLogin:()=>this.doLogin(),
+      logout:()=>this.logout(),
+      escolaNome:'Escola São Gregório',
+      cloudLabel:this.cloudLabel(), cloudDotStyle:this.cloudDotStyle(),
       ...this.getReport(),
       goContas:()=>this.setState({view:'contas'}),
       temAtraso:atrB.length>0, alertaAtraso:atrB.length+(atrB.length===1?' conta vencida — total de ':' contas vencidas — total de ')+this.brl0(atr), payBtnStyle,

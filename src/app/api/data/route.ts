@@ -1,7 +1,21 @@
-﻿import { sql } from '@/lib/db';
+import { sql } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET() {
+// Confere a senha enviada pelo sistema (cabeçalho "x-senha") contra o APP_SENHA
+// configurado no Vercel. Enquanto o APP_SENHA não existir, o acesso fica liberado
+// (para não travar nada antes de você configurar). Assim que você definir o
+// APP_SENHA nas variáveis de ambiente do Vercel, ele passa a ser exigido.
+function senhaOk(req: NextRequest): boolean {
+  const esperada = process.env.APP_SENHA;
+  if (!esperada) return true; // ainda não configurado → libera
+  return req.headers.get('x-senha') === esperada;
+}
+
+const semAcesso = () =>
+  NextResponse.json({ error: 'sem acesso' }, { status: 401 });
+
+export async function GET(req: NextRequest) {
+  if (!senhaOk(req)) return semAcesso();
   try {
     await sql`CREATE TABLE IF NOT EXISTS estado (id TEXT PRIMARY KEY, dados JSONB NOT NULL, atualizado_em TIMESTAMP DEFAULT NOW())`;
     const rows = await sql`SELECT dados FROM estado WHERE id = 'principal'`;
@@ -13,6 +27,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  if (!senhaOk(req)) return semAcesso();
   try {
     const dados = await req.json();
     await sql`CREATE TABLE IF NOT EXISTS estado (id TEXT PRIMARY KEY, dados JSONB NOT NULL, atualizado_em TIMESTAMP DEFAULT NOW())`;
