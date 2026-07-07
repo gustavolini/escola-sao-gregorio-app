@@ -61,26 +61,26 @@
 <sc-if value="{{ logged }}" hint-placeholder-val="{{ false }}">
 <div data-app-root="1" style="display:flex; min-height:100vh; background:oklch(0.975 0.004 255)">
 
-  <aside style="width:236px; flex:0 0 236px; background:#fff; border-right:1px solid oklch(0.92 0.008 260); display:flex; flex-direction:column; padding:20px 14px; position:sticky; top:0; height:100vh">
-    <div onClick="{{ openEmpresa }}" title="Cadastro da empresa" style="padding:6px 8px; margin-bottom:14px; display:flex; align-items:center; gap:11px; cursor:pointer; border-radius:10px" style-hover="background:oklch(0.965 0.006 255)">
+  <aside style="width:236px; flex:0 0 236px; background:#fff; border-right:1px solid oklch(0.92 0.008 260); display:flex; flex-direction:column; padding:16px 14px; position:sticky; top:0; height:100vh; overflow-y:auto">
+    <div onClick="{{ openEmpresa }}" title="Cadastro da empresa" style="padding:6px 8px; margin-bottom:12px; display:flex; align-items:center; gap:11px; cursor:pointer; border-radius:10px" style-hover="background:oklch(0.965 0.006 255)">
       <div style="{{ logoStyle }}">{{ escolaSigla }}</div>
       <div>
         <div style="font-size:14.5px; font-weight:700; line-height:1.15; letter-spacing:-0.01em">{{ escolaNome }}</div>
         <div style="font-size:11.5px; color:oklch(0.56 0.02 260); margin-top:1px">{{ escolaSub }}</div>
       </div>
     </div>
-    <div style="padding:0 4px 14px; margin-bottom:4px; border-bottom:1px solid oklch(0.94 0.008 260)">
-      <div style="font-size:10.5px; color:oklch(0.56 0.02 260); letter-spacing:0.04em; text-transform:uppercase; font-weight:600; padding:0 4px 8px">Unidade</div>
-      <div style="display:flex; flex-direction:column; gap:5px">
-        <sc-for list="{{ unidadeTabs }}" as="u" hint-placeholder-count="3">
-          <button onClick="{{ u.onClick }}" style="{{ u.style }}">
-            <span style="{{ u.nomeStyle }}">{{ u.nome }}</span>
-            <span style="{{ u.subStyle }}">{{ u.sub }}</span>
-          </button>
-        </sc-for>
-      </div>
+    <div style="padding:0 4px 12px; margin-bottom:4px; border-bottom:1px solid oklch(0.94 0.008 260)">
+      <div style="font-size:10.5px; color:oklch(0.56 0.02 260); letter-spacing:0.04em; text-transform:uppercase; font-weight:600; padding:0 0 7px">Unidade</div>
+      <sc-if value="{{ unidadeUnica }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:9px 12px; border:1px solid oklch(0.91 0.008 260); border-radius:9px; font-size:13px; font-weight:600; color:oklch(0.3 0.02 260)">{{ escopoNome }}</div>
+      </sc-if>
+      <sc-if value="{{ unidadeMulti }}" hint-placeholder-val="{{ true }}">
+        <select value="{{ unidadeSelValue }}" onChange="{{ onUnidadeSel }}" style="{{ unidadeSelStyle }}">
+          <sc-for list="{{ unidadeSelOptions }}" as="u" hint-placeholder-count="3"><option value="{{ u.key }}">{{ u.label }}</option></sc-for>
+        </select>
+      </sc-if>
     </div>
-    <nav style="display:flex; flex-direction:column; gap:3px">
+    <nav style="display:flex; flex-direction:column; gap:2px">
       <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="6">
         <button onClick="{{ n.onClick }}" style="{{ n.style }}">
           <span style="{{ n.dotStyle }}"></span>
@@ -88,14 +88,14 @@
         </button>
       </sc-for>
     </nav>
-    <div style="margin-top:auto; padding:16px 10px 4px; border-top:1px solid oklch(0.94 0.008 260)">
-      <div style="font-size:11.5px; color:oklch(0.56 0.02 260); letter-spacing:0.02em; text-transform:uppercase; font-weight:600">Total previsto · {{ mesCurto }}</div>
-      <div style="font-family:'IBM Plex Mono',monospace; font-size:19px; font-weight:600; margin-top:5px; color:oklch(0.3 0.02 260)">{{ totalMesFmt }}</div>
-      <div style="font-size:12px; color:oklch(0.58 0.02 260); margin-top:3px">{{ atalho }}</div>
+    <div style="margin-top:auto; padding:14px 10px 4px; border-top:1px solid oklch(0.94 0.008 260)">
+      <div style="font-size:11px; color:oklch(0.56 0.02 260); letter-spacing:0.02em; text-transform:uppercase; font-weight:600">Saldo do mês · {{ mesCurto }}</div>
+      <div style="{{ sidebarSaldoStyle }}">{{ sidebarSaldoFmt }}</div>
+      <div style="font-size:11px; color:oklch(0.58 0.02 260); margin-top:2px">{{ sidebarSaldoSub }}</div>
     </div>
-    <div style="margin-top:12px; padding-top:12px; border-top:1px solid oklch(0.94 0.008 260); display:flex; flex-direction:column; gap:3px">
-      <div style="display:flex; align-items:center; gap:8px; padding:6px 10px; font-size:11.5px; color:oklch(0.5 0.02 260)"><span style="{{ cloudDotStyle }}"></span>{{ cloudLabel }}</div>
-      <button onClick="{{ logout }}" style="display:flex; align-items:center; gap:9px; width:100%; text-align:left; background:none; border:none; padding:8px 10px; border-radius:8px; font-size:12.5px; font-weight:500; color:oklch(0.5 0.1 25); cursor:pointer" style-hover="background:oklch(0.96 0.03 25)">⎋ Sair</button>
+    <div style="margin-top:10px; padding-top:10px; border-top:1px solid oklch(0.94 0.008 260); display:flex; flex-direction:column; gap:2px">
+      <div style="display:flex; align-items:center; gap:8px; padding:5px 10px; font-size:11.5px; color:oklch(0.5 0.02 260)"><span style="{{ cloudDotStyle }}"></span>{{ cloudLabel }}</div>
+      <button onClick="{{ logout }}" style="display:flex; align-items:center; gap:9px; width:100%; text-align:left; background:none; border:none; padding:7px 10px; border-radius:8px; font-size:12.5px; font-weight:500; color:oklch(0.5 0.1 25); cursor:pointer" style-hover="background:oklch(0.96 0.03 25)">⎋ Sair</button>
     </div>
   </aside>
 
@@ -127,6 +127,32 @@
       <!-- ============ PAINEL ============ -->
       <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
       <div>
+        <div style="{{ saldoCardStyle }}">
+          <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap">
+            <div>
+              <div style="font-size:12px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:oklch(0.5 0.02 260)">Saldo do mês · {{ mesLabel }}</div>
+              <div style="{{ saldoMesValueStyle }}">{{ saldoMesFmt }}</div>
+              <div style="font-size:12.5px; color:oklch(0.5 0.02 260); margin-top:5px">Receitas − Despesas previstas do mês</div>
+            </div>
+            <div style="display:flex; gap:26px; align-items:flex-end">
+              <div>
+                <div style="font-size:11px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:oklch(0.56 0.02 260)">Receitas</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; color:oklch(0.44 0.11 158); margin-top:3px">{{ saldoReceitasFmt }}</div>
+              </div>
+              <div style="font-size:22px; color:oklch(0.7 0.02 260); padding-bottom:2px">−</div>
+              <div>
+                <div style="font-size:11px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:oklch(0.56 0.02 260)">Despesas</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; color:oklch(0.5 0.14 28); margin-top:3px">{{ saldoDespesasFmt }}</div>
+              </div>
+              <div style="border-left:1px solid oklch(0.88 0.02 260); padding-left:22px">
+                <div style="font-size:11px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:oklch(0.56 0.02 260)">Realizado</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; color:oklch(0.34 0.02 260); margin-top:3px">{{ saldoRealizadoFmt }}</div>
+                <div style="font-size:11px; color:oklch(0.58 0.02 260); margin-top:2px">{{ saldoRealizadoSub }}</div>
+              </div>
+              <button onClick="{{ goReceber }}" style="{{ genBtnStyle }}">Ver contas a receber →</button>
+            </div>
+          </div>
+        </div>
         <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:18px">
           <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
             <div style="background:#fff; border:1px solid oklch(0.92 0.008 260); border-radius:12px; padding:17px 18px 16px">
@@ -381,17 +407,27 @@
           </sc-for>
         </div>
 
+        <sc-if value="{{ folhaHasSel }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ bulkBarStyle }}">
+            <span style="font-size:13.5px; font-weight:700; color:oklch(0.32 0.08 255)">{{ folhaSelLabel }}</span>
+            <div style="margin-left:auto; display:flex; gap:9px">
+              <button onClick="{{ onFolhaClearSel }}" style="{{ bulkClearBtnStyle }}">Limpar seleção</button>
+              <button onClick="{{ onFolhaBulkDelete }}" style="{{ bulkDelBtnStyle }}">Excluir selecionados</button>
+            </div>
+          </div>
+        </sc-if>
         <sc-for list="{{ folhaGrupos }}" as="g" hint-placeholder-count="2">
           <div style="background:#fff; border:1px solid oklch(0.92 0.008 260); border-radius:12px; overflow:hidden; margin-bottom:16px">
             <div style="display:flex; align-items:center; justify-content:space-between; padding:15px 20px; border-bottom:1px solid oklch(0.94 0.006 260)">
               <h3 style="margin:0; font-size:15px; font-weight:700; display:flex; align-items:center; gap:9px"><span style="{{ g.dotStyle }}"></span>{{ g.titulo }} <span style="font-size:12.5px; font-weight:500; color:oklch(0.56 0.02 260)">· {{ g.count }}</span></h3>
               <div style="text-align:right"><span style="font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:14px">{{ g.totalFmt }}</span><sc-if value="{{ g.temVales }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px; color:oklch(0.5 0.12 50); margin-top:1px">{{ g.liquidoLabel }}</div></sc-if></div>
             </div>
-            <div style="display:grid; grid-template-columns:1.7fr 1.25fr 0.95fr 0.95fr 0.8fr 1.5fr; gap:12px; padding:11px 20px; background:oklch(0.978 0.004 260); border-bottom:1px solid oklch(0.94 0.006 260); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.56 0.02 260)">
-              <span>Nome</span><span>Cargo / Disciplina</span><span style="text-align:right">Salário</span><span style="text-align:right">Líquido</span><span>Status</span><span style="text-align:right">Ações</span>
+            <div style="display:grid; grid-template-columns:34px 1.7fr 1.25fr 0.95fr 0.95fr 0.8fr 1.5fr; gap:12px; padding:11px 20px; background:oklch(0.978 0.004 260); border-bottom:1px solid oklch(0.94 0.006 260); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.56 0.02 260)">
+              <span style="display:flex; align-items:center"><input type="checkbox" checked="{{ g.allSel }}" onChange="{{ g.onToggleAll }}" style="{{ checkboxStyle }}" title="Selecionar todos" /></span><span>Nome</span><span>Cargo / Disciplina</span><span style="text-align:right">Salário</span><span style="text-align:right">Líquido</span><span>Status</span><span style="text-align:right">Ações</span>
             </div>
             <sc-for list="{{ g.linhas }}" as="b" hint-placeholder-count="6">
-              <div style="display:grid; grid-template-columns:1.7fr 1.25fr 0.95fr 0.95fr 0.8fr 1.5fr; gap:12px; padding:12px 20px; border-bottom:1px solid oklch(0.96 0.005 260); align-items:center">
+              <div style="display:grid; grid-template-columns:34px 1.7fr 1.25fr 0.95fr 0.95fr 0.8fr 1.5fr; gap:12px; padding:12px 20px; border-bottom:1px solid oklch(0.96 0.005 260); align-items:center">
+                <div style="display:flex; align-items:center"><input type="checkbox" checked="{{ b.selected }}" onChange="{{ b.onToggleSel }}" style="{{ checkboxStyle }}" /></div>
                 <div style="min-width:0"><div style="font-size:13.5px; font-weight:600">{{ b.descricao }}</div><div style="{{ b.bankStyle }}">{{ b.bankResumo }}</div></div>
                 <div style="font-size:12.5px; color:oklch(0.5 0.02 260)">{{ b.cargo }}</div>
                 <div style="text-align:right"><div style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:600">{{ b.valorFmt }}</div><sc-if value="{{ b.temBonus }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:oklch(0.44 0.11 158); margin-top:1px">{{ b.bonusTotalFmt }}</div></sc-if><sc-if value="{{ b.temVale }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:oklch(0.5 0.12 50); margin-top:1px">{{ b.valesTotalFmt }}</div></sc-if></div>
@@ -444,12 +480,22 @@
           </div>
         </div>
 
+        <sc-if value="{{ contasHasSel }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ bulkBarStyle }}">
+            <span style="font-size:13.5px; font-weight:700; color:oklch(0.32 0.08 255)">{{ contasSelLabel }}</span>
+            <div style="margin-left:auto; display:flex; gap:9px">
+              <button onClick="{{ onContasClearSel }}" style="{{ bulkClearBtnStyle }}">Limpar seleção</button>
+              <button onClick="{{ onContasBulkDelete }}" style="{{ bulkDelBtnStyle }}">Excluir selecionadas</button>
+            </div>
+          </div>
+        </sc-if>
         <div style="background:#fff; border:1px solid oklch(0.92 0.008 260); border-radius:12px; overflow:hidden">
-          <div style="display:grid; grid-template-columns:2.3fr 1.3fr 1fr 1.05fr 1fr 1.5fr; gap:12px; padding:13px 20px; background:oklch(0.975 0.004 260); border-bottom:1px solid oklch(0.92 0.008 260); font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.55 0.02 260)">
-            <span onClick="{{ contasHead.onDescricao }}" style="{{ contasHead.stDescricao }}">{{ contasHead.arrDescricao }}</span><span onClick="{{ contasHead.onCategoria }}" style="{{ contasHead.stCategoria }}">{{ contasHead.arrCategoria }}</span><span onClick="{{ contasHead.onVencimento }}" style="{{ contasHead.stVencimento }}">{{ contasHead.arrVencimento }}</span><span onClick="{{ contasHead.onValor }}" style="{{ contasHead.stValor }}">{{ contasHead.arrValor }}</span><span onClick="{{ contasHead.onStatus }}" style="{{ contasHead.stStatus }}">{{ contasHead.arrStatus }}</span><span style="text-align:right">Ações</span>
+          <div style="display:grid; grid-template-columns:34px 2.3fr 1.3fr 1fr 1.05fr 1fr 1.5fr; gap:12px; padding:13px 20px; background:oklch(0.975 0.004 260); border-bottom:1px solid oklch(0.92 0.008 260); font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.55 0.02 260)">
+            <span style="display:flex; align-items:center"><input type="checkbox" checked="{{ contasAllSel }}" onChange="{{ onContasToggleAll }}" style="{{ checkboxStyle }}" title="Selecionar todas" /></span><span onClick="{{ contasHead.onDescricao }}" style="{{ contasHead.stDescricao }}">{{ contasHead.arrDescricao }}</span><span onClick="{{ contasHead.onCategoria }}" style="{{ contasHead.stCategoria }}">{{ contasHead.arrCategoria }}</span><span onClick="{{ contasHead.onVencimento }}" style="{{ contasHead.stVencimento }}">{{ contasHead.arrVencimento }}</span><span onClick="{{ contasHead.onValor }}" style="{{ contasHead.stValor }}">{{ contasHead.arrValor }}</span><span onClick="{{ contasHead.onStatus }}" style="{{ contasHead.stStatus }}">{{ contasHead.arrStatus }}</span><span style="text-align:right">Ações</span>
           </div>
           <sc-for list="{{ filteredBills }}" as="b" hint-placeholder-count="8">
-            <div style="display:grid; grid-template-columns:2.3fr 1.3fr 1fr 1.05fr 1fr 1.5fr; gap:12px; padding:13px 20px; border-bottom:1px solid oklch(0.96 0.005 260); align-items:center">
+            <div style="display:grid; grid-template-columns:34px 2.3fr 1.3fr 1fr 1.05fr 1fr 1.5fr; gap:12px; padding:13px 20px; border-bottom:1px solid oklch(0.96 0.005 260); align-items:center">
+              <div style="display:flex; align-items:center"><input type="checkbox" checked="{{ b.selected }}" onChange="{{ b.onToggleSel }}" style="{{ checkboxStyle }}" /></div>
               <div style="min-width:0">
                 <div style="font-size:13.5px; font-weight:600; display:flex; align-items:center; gap:7px">
                   <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ b.descricao }}</span>
@@ -490,6 +536,97 @@
         <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 6px 0; font-size:13px; color:oklch(0.5 0.02 260)">
           <span>{{ resumoContagem }}</span>
           <span style="font-family:'IBM Plex Mono',monospace; font-weight:600; color:oklch(0.3 0.02 260)">Total filtrado: {{ totalFiltradoFmt }}</span>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ============ CONTAS A RECEBER ============ -->
+      <sc-if value="{{ isReceber }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:16px">
+          <sc-for list="{{ recKpis }}" as="k" hint-placeholder-count="4">
+            <div style="background:#fff; border:1px solid oklch(0.92 0.008 260); border-radius:12px; padding:17px 18px 16px">
+              <div style="font-size:11.5px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:oklch(0.56 0.02 260)">{{ k.label }}</div>
+              <div style="{{ k.valueStyle }}">{{ k.value }}</div>
+              <div style="font-size:12.5px; color:oklch(0.56 0.02 260); margin-top:5px">{{ k.sub }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="background:#fff; border:1px solid oklch(0.92 0.008 260); border-radius:12px; padding:16px 18px; margin-bottom:16px">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:13px">
+            <span style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.56 0.02 260); margin-right:4px">Categoria</span>
+            <sc-for list="{{ rcatChips }}" as="ch" hint-placeholder-count="6">
+              <button onClick="{{ ch.onClick }}" style="{{ ch.style }}"><span style="{{ ch.dotStyle }}"></span><span>{{ ch.label }}</span></button>
+            </sc-for>
+            <button onClick="{{ openRCatModal }}" style="display:inline-flex; align-items:center; gap:6px; padding:7px 13px; border-radius:8px; font-size:12.5px; font-weight:600; cursor:pointer; border:1px dashed oklch(0.8 0.02 260); background:#fff; color:oklch(0.45 0.02 260); margin-left:6px">⚙ Editar categorias</button>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap">
+            <span style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.56 0.02 260); margin-right:4px">Status</span>
+            <sc-for list="{{ rstatusChips }}" as="ch" hint-placeholder-count="4">
+              <button onClick="{{ ch.onClick }}" style="{{ ch.style }}"><span style="{{ ch.dotStyle }}"></span><span>{{ ch.label }}</span></button>
+            </sc-for>
+            <div style="margin-left:auto">
+              <input value="{{ searchRec }}" onChange="{{ onSearchRec }}" placeholder="Buscar descrição ou pagador…" style="width:240px; padding:8px 12px; border:1px solid oklch(0.9 0.008 260); border-radius:8px; font-size:13px; background:oklch(0.985 0.003 260)" />
+            </div>
+          </div>
+        </div>
+
+        <sc-if value="{{ receberHasSel }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ bulkBarStyle }}">
+            <span style="font-size:13.5px; font-weight:700; color:oklch(0.32 0.08 255)">{{ receberSelLabel }}</span>
+            <div style="margin-left:auto; display:flex; gap:9px">
+              <button onClick="{{ onReceberClearSel }}" style="{{ bulkClearBtnStyle }}">Limpar seleção</button>
+              <button onClick="{{ onReceberBulkDelete }}" style="{{ bulkDelBtnStyle }}">Excluir selecionadas</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="background:#fff; border:1px solid oklch(0.92 0.008 260); border-radius:12px; overflow:hidden">
+          <div style="display:grid; grid-template-columns:34px 2.3fr 1.3fr 1fr 1.05fr 1fr 1.4fr; gap:12px; padding:13px 20px; background:oklch(0.975 0.004 260); border-bottom:1px solid oklch(0.92 0.008 260); font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.55 0.02 260)">
+            <span style="display:flex; align-items:center"><input type="checkbox" checked="{{ receberAllSel }}" onChange="{{ onReceberToggleAll }}" style="{{ checkboxStyle }}" title="Selecionar todas" /></span><span onClick="{{ receberHead.onDescricao }}" style="{{ receberHead.stDescricao }}">{{ receberHead.arrDescricao }}</span><span onClick="{{ receberHead.onCategoria }}" style="{{ receberHead.stCategoria }}">{{ receberHead.arrCategoria }}</span><span onClick="{{ receberHead.onVencimento }}" style="{{ receberHead.stVencimento }}">{{ receberHead.arrVencimento }}</span><span onClick="{{ receberHead.onValor }}" style="{{ receberHead.stValor }}">{{ receberHead.arrValor }}</span><span onClick="{{ receberHead.onStatus }}" style="{{ receberHead.stStatus }}">{{ receberHead.arrStatus }}</span><span style="text-align:right">Ações</span>
+          </div>
+          <sc-for list="{{ receitaList }}" as="r" hint-placeholder-count="6">
+            <div style="display:grid; grid-template-columns:34px 2.3fr 1.3fr 1fr 1.05fr 1fr 1.4fr; gap:12px; padding:13px 20px; border-bottom:1px solid oklch(0.96 0.005 260); align-items:center">
+              <div style="display:flex; align-items:center">
+                <sc-if value="{{ r.selectable }}" hint-placeholder-val="{{ true }}">
+                  <input type="checkbox" checked="{{ r.selected }}" onChange="{{ r.onToggleSel }}" style="{{ checkboxStyle }}" />
+                </sc-if>
+              </div>
+              <div style="min-width:0">
+                <div style="font-size:13.5px; font-weight:600; display:flex; align-items:center; gap:7px">
+                  <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ r.descricao }}</span>
+                  <span style="{{ r.unidadeTagStyle }}">{{ r.unidadeSigla }}</span>
+                  <span style="{{ r.recDotStyle }}">{{ r.recLabel }}</span>
+                </div>
+                <div style="font-size:12px; color:oklch(0.56 0.02 260); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ r.pagador }}</div>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px; min-width:0">
+                <span style="{{ r.catDot }}"></span>
+                <span style="font-size:12.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ r.catLabel }}</span>
+              </div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:13px">{{ r.vencFmt }}</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:600; text-align:right; color:oklch(0.4 0.1 158)">{{ r.valorFmt }}</div>
+              <div><span style="{{ r.pillStyle }}">{{ r.statusLabel }}</span></div>
+              <div style="display:flex; align-items:center; justify-content:flex-end; gap:6px">
+                <sc-if value="{{ r.naoRecebido }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ r.onReceber }}" style="{{ payBtnStyle }}">{{ r.recBtnLabel }}</button>
+                </sc-if>
+                <button onClick="{{ r.onEditar }}" style="{{ iconBtnStyle }}">{{ r.editBtnLabel }}</button>
+                <sc-if value="{{ r.editable }}" hint-placeholder-val="{{ true }}">
+                  <button onClick="{{ r.onDelete }}" style="{{ delBtnStyle }}">✕</button>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ receberVazia }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:48px 20px; text-align:center; color:oklch(0.6 0.02 260); font-size:14px">Nenhuma receita encontrada. Use “+ Nova receita” ou importe entradas do extrato.</div>
+          </sc-if>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 6px 0; font-size:13px; color:oklch(0.5 0.02 260)">
+          <span>{{ receberContagem }}</span>
+          <span style="font-family:'IBM Plex Mono',monospace; font-weight:600; color:oklch(0.3 0.1 158)">Total filtrado: {{ receberTotalFmt }}</span>
         </div>
       </div>
       </sc-if>
@@ -587,12 +724,22 @@
       <!-- ============ FORNECEDORES ============ -->
       <sc-if value="{{ isFornecedores }}" hint-placeholder-val="{{ false }}">
       <div>
+        <sc-if value="{{ vendorHasSel }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ bulkBarStyle }}">
+            <span style="font-size:13.5px; font-weight:700; color:oklch(0.32 0.08 255)">{{ vendorSelLabel }}</span>
+            <div style="margin-left:auto; display:flex; gap:9px">
+              <button onClick="{{ onVendorClearSel }}" style="{{ bulkClearBtnStyle }}">Limpar seleção</button>
+              <button onClick="{{ onVendorBulkDelete }}" style="{{ bulkDelBtnStyle }}">Excluir selecionados</button>
+            </div>
+          </div>
+        </sc-if>
         <div style="background:#fff; border:1px solid oklch(0.92 0.008 260); border-radius:12px; overflow:hidden">
-          <div style="display:grid; grid-template-columns:1.6fr 1.4fr 1.6fr 0.8fr; gap:12px; padding:13px 20px; background:oklch(0.975 0.004 260); border-bottom:1px solid oklch(0.92 0.008 260); font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.55 0.02 260)">
-            <span>Fornecedor</span><span>Categoria</span><span>Contato</span><span style="text-align:right">Ações</span>
+          <div style="display:grid; grid-template-columns:34px 1.6fr 1.4fr 1.6fr 0.8fr; gap:12px; padding:13px 20px; background:oklch(0.975 0.004 260); border-bottom:1px solid oklch(0.92 0.008 260); font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.55 0.02 260)">
+            <span style="display:flex; align-items:center"><input type="checkbox" checked="{{ vendorAllSel }}" onChange="{{ onVendorToggleAll }}" style="{{ checkboxStyle }}" title="Selecionar todos" /></span><span>Fornecedor</span><span>Categoria</span><span>Contato</span><span style="text-align:right">Ações</span>
           </div>
           <sc-for list="{{ vendorList }}" as="v" hint-placeholder-count="8">
-            <div style="display:grid; grid-template-columns:1.6fr 1.4fr 1.6fr 0.8fr; gap:12px; padding:14px 20px; border-bottom:1px solid oklch(0.96 0.005 260); align-items:center">
+            <div style="display:grid; grid-template-columns:34px 1.6fr 1.4fr 1.6fr 0.8fr; gap:12px; padding:14px 20px; border-bottom:1px solid oklch(0.96 0.005 260); align-items:center">
+              <div style="display:flex; align-items:center"><input type="checkbox" checked="{{ v.selected }}" onChange="{{ v.onToggleSel }}" style="{{ checkboxStyle }}" /></div>
               <div style="font-size:13.5px; font-weight:600">{{ v.nome }}</div>
               <div style="display:flex; align-items:center; gap:8px"><span style="{{ v.catDot }}"></span><span style="font-size:12.5px">{{ v.catLabel }}</span></div>
               <div style="font-size:13px; color:oklch(0.45 0.02 260)">{{ v.contato }}</div>
@@ -622,6 +769,16 @@
             <div style="display:flex; align-items:center; gap:10px; flex:0 0 auto">
               <input type="month" value="{{ reportMonth }}" onChange="{{ onReportMonth }}" style="padding:8px 11px; border:1px solid oklch(0.9 0.008 260); border-radius:8px; font-size:13px; background:oklch(0.985 0.003 260)" />
               <button onClick="{{ openMensal }}" style="{{ primaryBtnStyle }}">Exportar PDF</button>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 20px; border-bottom:1px solid oklch(0.96 0.005 260)">
+            <div style="min-width:0">
+              <div style="font-size:13.5px; font-weight:600">Relatório de recebimentos</div>
+              <div style="font-size:12px; color:oklch(0.56 0.02 260); margin-top:2px">Entradas do mês: mensalidades, festas, material e demais receitas</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; flex:0 0 auto">
+              <input type="month" value="{{ reportMonth }}" onChange="{{ onReportMonth }}" style="padding:8px 11px; border:1px solid oklch(0.9 0.008 260); border-radius:8px; font-size:13px; background:oklch(0.985 0.003 260)" />
+              <button onClick="{{ openRecebimentos }}" style="{{ primaryBtnStyle }}">Exportar PDF</button>
             </div>
           </div>
           <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 20px; border-bottom:1px solid oklch(0.96 0.005 260)">
@@ -837,6 +994,124 @@
           <div style="display:flex; gap:10px">
             <button onClick="{{ closeModal }}" style="{{ cancelBtnStyle }}">Cancelar</button>
             <button onClick="{{ saveBill }}" style="{{ primaryBtnStyle }}">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ MODAL: RECEITA ============ -->
+  <sc-if value="{{ receitaModalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeReceitaModal }}" style="position:fixed; inset:0; background:oklch(0.2 0.02 260 / 0.45); display:flex; align-items:center; justify-content:center; z-index:50; padding:20px">
+      <div onClick="{{ stop }}" style="background:#fff; border-radius:14px; width:540px; max-width:100%; max-height:90vh; overflow:auto; box-shadow:0 20px 60px rgba(0,0,0,0.25)">
+        <div style="padding:20px 24px; border-bottom:1px solid oklch(0.93 0.008 260); display:flex; align-items:center; justify-content:space-between">
+          <h3 style="margin:0; font-size:17px; font-weight:700">{{ receitaModalTitle }}</h3>
+          <button onClick="{{ closeReceitaModal }}" style="background:none; border:none; font-size:20px; cursor:pointer; color:oklch(0.55 0.02 260); line-height:1; padding:4px">✕</button>
+        </div>
+        <div style="padding:22px 24px; display:flex; flex-direction:column; gap:16px">
+          <div>
+            <label style="{{ fieldLabel }}">Descrição</label>
+            <input value="{{ receitaForm.descricao }}" onChange="{{ onRDescricao }}" placeholder="Ex: Mensalidades — Unidade I" style="{{ inputStyle }}" />
+          </div>
+          <div>
+            <label style="{{ fieldLabel }}">Unidade</label>
+            <select value="{{ receitaForm.unidade }}" onChange="{{ onRUnidade }}" style="{{ inputStyle }}">
+              <sc-for list="{{ rUnidadeOptions }}" as="u" hint-placeholder-count="2"><option value="{{ u.key }}">{{ u.nome }}</option></sc-for>
+            </select>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px">
+            <div>
+              <label style="{{ fieldLabel }}">Categoria</label>
+              <select value="{{ receitaForm.categoria }}" onChange="{{ onRCategoria }}" style="{{ inputStyle }}">
+                <sc-for list="{{ rcategorias }}" as="c" hint-placeholder-count="5"><option value="{{ c.key }}">{{ c.label }}</option></sc-for>
+              </select>
+            </div>
+            <div>
+              <label style="{{ fieldLabel }}">Pagador / origem</label>
+              <input value="{{ receitaForm.pagador }}" onChange="{{ onRPagador }}" placeholder="Ex: Responsáveis" style="{{ inputStyle }}" />
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px">
+            <div>
+              <label style="{{ fieldLabel }}">Valor (R$)</label>
+              <input value="{{ receitaForm.valor }}" onChange="{{ onRValor }}" inputmode="decimal" placeholder="0,00" style="{{ inputStyle }}" />
+            </div>
+            <div>
+              <label style="{{ fieldLabel }}">Data prevista</label>
+              <input type="date" value="{{ receitaForm.vencimento }}" onChange="{{ onRVencimento }}" style="{{ inputStyle }}" />
+            </div>
+          </div>
+          <sc-if value="{{ rShowParcelas }}" hint-placeholder-val="{{ false }}">
+            <div style="background:oklch(0.978 0.004 260); border:1px solid oklch(0.93 0.008 260); border-radius:9px; padding:13px 14px">
+              <div style="display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:center">
+                <div>
+                  <label style="{{ fieldLabel }}">Parcelas</label>
+                  <select value="{{ receitaForm.parcelas }}" onChange="{{ onRParcelas }}" style="{{ inputStyle }}">
+                    <sc-for list="{{ rParcelaOpcoes }}" as="p" hint-placeholder-count="12"><option value="{{ p.v }}">{{ p.label }}</option></sc-for>
+                  </select>
+                </div>
+                <div style="font-size:12.5px; color:oklch(0.5 0.02 260); line-height:1.5; padding-top:18px">{{ rParcelaResumo }}</div>
+              </div>
+            </div>
+          </sc-if>
+          <div style="display:flex; gap:20px; padding-top:2px">
+            <label style="display:flex; align-items:center; gap:9px; font-size:13.5px; cursor:pointer">
+              <input type="checkbox" checked="{{ receitaForm.recorrente }}" onChange="{{ onRRecorrente }}" style="width:17px; height:17px; accent-color:{{ primaryColor }}; cursor:pointer" />
+              Receita recorrente (mensal)
+            </label>
+            <label style="display:flex; align-items:center; gap:9px; font-size:13.5px; cursor:pointer">
+              <input type="checkbox" checked="{{ receitaForm.recebido }}" onChange="{{ onRRecebido }}" style="width:17px; height:17px; accent-color:{{ primaryColor }}; cursor:pointer" />
+              Já recebido
+            </label>
+          </div>
+          <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+            <div style="background:oklch(0.96 0.04 25); color:oklch(0.45 0.13 25); padding:9px 13px; border-radius:8px; font-size:13px">{{ formError }}</div>
+          </sc-if>
+        </div>
+        <div style="padding:16px 24px; border-top:1px solid oklch(0.93 0.008 260); display:flex; justify-content:space-between; align-items:center; gap:12px">
+          <button onClick="{{ receitaDeleteFromModal }}" style="{{ receitaDeleteStyle }}">Excluir</button>
+          <div style="display:flex; gap:10px">
+            <button onClick="{{ closeReceitaModal }}" style="{{ cancelBtnStyle }}">Cancelar</button>
+            <button onClick="{{ saveReceita }}" style="{{ primaryBtnStyle }}">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ MODAL: CATEGORIAS DE RECEITA ============ -->
+  <sc-if value="{{ rcatModalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeRCatModal }}" style="position:fixed; inset:0; background:oklch(0.2 0.02 260 / 0.45); display:flex; align-items:center; justify-content:center; z-index:50; padding:20px">
+      <div onClick="{{ stop }}" style="background:#fff; border-radius:14px; width:560px; max-width:100%; max-height:90vh; overflow:auto; box-shadow:0 20px 60px rgba(0,0,0,0.25)">
+        <div style="padding:20px 24px; border-bottom:1px solid oklch(0.93 0.008 260); display:flex; align-items:center; justify-content:space-between">
+          <h3 style="margin:0; font-size:17px; font-weight:700">Categorias de receita</h3>
+          <button onClick="{{ closeRCatModal }}" style="background:none; border:none; font-size:20px; cursor:pointer; color:oklch(0.55 0.02 260); line-height:1; padding:4px">✕</button>
+        </div>
+        <div style="padding:20px 24px; display:flex; flex-direction:column; gap:8px">
+          <sc-for list="{{ rcatManage }}" as="c" hint-placeholder-count="5">
+            <div style="display:flex; align-items:center; gap:11px; padding:9px 12px; border:1px solid oklch(0.93 0.008 260); border-radius:9px">
+              <span style="{{ c.dotStyle }}"></span>
+              <span style="flex:1; font-size:13.5px; font-weight:500">{{ c.label }}</span>
+              <button onClick="{{ c.onEdit }}" style="background:#fff; border:1px solid oklch(0.9 0.008 260); border-radius:7px; padding:5px 11px; font-size:12px; font-weight:500; cursor:pointer; color:oklch(0.42 0.02 260)">Editar</button>
+              <sc-if value="{{ c.deletable }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ c.onDelete }}" style="background:#fff; border:1px solid oklch(0.9 0.02 25); border-radius:7px; padding:5px 10px; font-size:12px; cursor:pointer; color:oklch(0.55 0.1 25)">✕</button>
+              </sc-if>
+              <sc-if value="{{ c.fixa }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size:10.5px; color:oklch(0.6 0.02 260); font-weight:600; padding:0 4px">fixa</span>
+              </sc-if>
+            </div>
+          </sc-for>
+          <div style="border-top:1px solid oklch(0.93 0.008 260); margin-top:8px; padding-top:16px">
+            <div style="font-size:12.5px; font-weight:700; color:oklch(0.45 0.02 260); margin-bottom:10px">{{ rcatFormTitle }}</div>
+            <input value="{{ rcatForm.label }}" onChange="{{ onRCatLabel }}" placeholder="Nome da categoria" style="{{ inputStyle }}" />
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:13px">
+              <sc-for list="{{ rcatPalette }}" as="p" hint-placeholder-count="12">
+                <div onClick="{{ p.onClick }}" style="{{ p.style }}"></div>
+              </sc-for>
+            </div>
+            <div style="display:flex; justify-content:flex-end; margin-top:16px">
+              <button onClick="{{ saveRCat }}" style="{{ primaryBtnStyle }}">{{ rcatSaveLabel }}</button>
+            </div>
           </div>
         </div>
       </div>
@@ -1122,7 +1397,7 @@
               </div>
 
               <div style="display:flex; align-items:center; gap:10px; background:oklch(0.97 0.018 255); border:1px solid oklch(0.9 0.025 255); border-radius:9px; padding:9px 13px; margin-bottom:10px; font-size:12.5px; color:oklch(0.4 0.05 255)">
-                <span>➜ Vão para: <strong>{{ extratoUnidadeNome }}</strong>, marcados como <strong>pagos</strong>. Você pode editar a unidade e a categoria depois em “Contas a Pagar”.</span>
+                <span>➜ {{ extratoDestinoTexto }}</span>
               </div>
 
               <sc-if value="{{ extratoTemDups }}" hint-placeholder-val="{{ false }}">
@@ -1144,10 +1419,10 @@
                     <div style="{{ r.rowStyle }}">
                       <input type="checkbox" checked="{{ r.incluir }}" onChange="{{ r.onToggle }}" style="width:16px; height:16px; cursor:pointer; accent-color:oklch(0.5 0.13 255)" />
                       <span style="font-family:'IBM Plex Mono',monospace">{{ r.data }}</span>
-                      <span style="{{ r.descStyle }}">{{ r.descricao }}<span style="{{ r.badgeStyle }}">{{ r.badgeText }}</span></span>
+                      <span style="{{ r.descStyle }}"><span style="{{ r.tipoStyle }}">{{ r.tipoLabel }}</span><span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ r.descricao }}</span><span style="{{ r.badgeStyle }}">{{ r.badgeText }}</span></span>
                       <span style="{{ r.valStyle }}">{{ r.valorFmt }}</span>
                       <select value="{{ r.categoria }}" onChange="{{ r.onCat }}" style="{{ r.catSelStyle }}">
-                        <sc-for list="{{ extratoCatOptions }}" as="o" hint-placeholder-count="9"><option value="{{ o.key }}">{{ o.label }}</option></sc-for>
+                        <sc-for list="{{ r.catOptions }}" as="o" hint-placeholder-count="9"><option value="{{ o.key }}">{{ o.label }}</option></sc-for>
                       </select>
                     </div>
                   </sc-for>
@@ -1155,7 +1430,7 @@
               </div>
 
               <sc-if value="{{ extratoTemAClass }}" hint-placeholder-val="{{ false }}">
-                <div style="font-size:12px; color:oklch(0.5 0.13 68); margin-top:9px">⚠ {{ extratoAClass }} gasto(s) ficaram como “A classificar”. Escolha a categoria acima — o sistema vai lembrar da sua escolha nas próximas importações.</div>
+                <div style="font-size:12px; color:oklch(0.5 0.13 68); margin-top:9px">⚠ {{ extratoAClass }} lançamento(s) ficaram como “A classificar”. Escolha a categoria acima — o sistema vai lembrar da sua escolha nas próximas importações.</div>brar da sua escolha nas próximas importações.</div>
               </sc-if>
             </div>
           </sc-if>
@@ -1163,7 +1438,7 @@
         <div style="padding:16px 24px; border-top:1px solid oklch(0.93 0.008 260); display:flex; justify-content:space-between; align-items:center; gap:10px">
           <button onClick="{{ closeExtrato }}" style="{{ cancelBtnStyle }}">Cancelar</button>
           <sc-if value="{{ extratoHasRows }}" hint-placeholder-val="{{ false }}">
-            <button onClick="{{ confirmExtrato }}" style="{{ primaryBtnStyle }}">Importar {{ extratoCount }} gasto(s) · {{ extratoTotalFmt }}</button>
+            <button onClick="{{ confirmExtrato }}" style="{{ primaryBtnStyle }}">{{ extratoConfirmLabel }}</button>
           </sc-if>
         </div>
       </div>
@@ -1376,16 +1651,16 @@
             <div><label style="{{ fieldLabel }}">Descrição (segmento)</label><input value="{{ empresaForm.__uSub }}" onChange="{{ onEUSub }}" placeholder="Ex: Ed. Infantil e Fund. I" style="{{ inputStyle }}" /></div>
           </div>
           <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260); margin-top:2px">Dados da empresa</div>
-          <div style="display:grid; grid-template-columns:1.6fr 1fr; gap:14px">
+          <div style="display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,1fr); gap:14px">
             <div><label style="{{ fieldLabel }}">Razão social</label><input value="{{ empresaForm.razaoSocial }}" onChange="{{ onENome }}" style="{{ inputStyle }}" /></div>
-            <div>
+            <div style="min-width:0">
               <label style="{{ fieldLabel }}">{{ empresaDocLabel }}</label>
-              <div style="display:flex; gap:8px; align-items:stretch">
+              <div style="display:flex; gap:8px; align-items:stretch; margin-top:6px">
                 <div style="display:flex; border:1px solid oklch(0.9 0.008 260); border-radius:8px; overflow:hidden; flex:0 0 auto">
                   <button onClick="{{ onEDocCnpj }}" style="{{ eDocCnpjStyle }}">CNPJ</button>
                   <button onClick="{{ onEDocCpf }}" style="{{ eDocCpfStyle }}">CPF</button>
                 </div>
-                <div style="flex:1"><input value="{{ empresaForm.cnpj }}" onChange="{{ onECnpj }}" inputmode="numeric" placeholder="{{ empresaDocPlaceholder }}" style="{{ inputStyle }}" /></div>
+                <div style="flex:1; min-width:0"><input value="{{ empresaForm.cnpj }}" onChange="{{ onECnpj }}" inputmode="numeric" placeholder="{{ empresaDocPlaceholder }}" style="{{ inputStyleDoc }}" /></div>
               </div>
             </div>
           </div>
@@ -1479,6 +1754,35 @@
                 <span style="font-family:'IBM Plex Mono',monospace">{{ b.vencFmt }}</span>
                 <span style="font-family:'IBM Plex Mono',monospace; text-align:right; font-weight:600">{{ b.valorFmt }}</span>
                 <span><span style="{{ b.statusStyle }}">{{ b.statusLabel }}</span></span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- RECEBIMENTOS -->
+        <sc-if value="{{ repIsRecebimentos }}" hint-placeholder-val="{{ false }}">
+          <div data-rep-block style="margin-bottom:26px">
+            <h3 style="margin:0 0 11px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.42 0.02 260)">Receitas por categoria</h3>
+            <div style="display:grid; grid-template-columns:2.4fr 1fr 0.6fr; gap:12px; padding:8px 4px; border-bottom:1.5px solid oklch(0.88 0.008 260); font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.56 0.02 260)"><span>Categoria</span><span style="text-align:right">Valor</span><span style="text-align:right">%</span></div>
+            <sc-for list="{{ repRecCat }}" as="c" hint-placeholder-count="5">
+              <div style="display:grid; grid-template-columns:2.4fr 1fr 0.6fr; gap:12px; padding:8px 4px; border-bottom:1px solid oklch(0.95 0.005 260); font-size:12.5px; align-items:center">
+                <span style="display:flex; align-items:center; gap:8px"><span style="{{ c.dotStyle }}"></span>{{ c.label }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace; text-align:right">{{ c.valorFmt }}</span>
+                <span style="text-align:right; color:oklch(0.55 0.02 260)">{{ c.share }}</span>
+              </div>
+            </sc-for>
+            <div style="display:grid; grid-template-columns:2.4fr 1fr 0.6fr; gap:12px; padding:9px 4px; font-size:12.5px; font-weight:700; border-top:1.5px solid oklch(0.88 0.008 260)"><span>Total</span><span style="font-family:'IBM Plex Mono',monospace; text-align:right">{{ repRecTotalFmt }}</span><span></span></div>
+          </div>
+          <div data-rep-block>
+            <h3 style="margin:0 0 11px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.42 0.02 260)">Recebimentos do mês</h3>
+            <div style="display:grid; grid-template-columns:2.3fr 1.2fr 1fr 1fr 1fr; gap:10px; padding:8px 4px; border-bottom:1.5px solid oklch(0.88 0.008 260); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.03em; color:oklch(0.56 0.02 260)"><span>Descrição</span><span>Categoria</span><span>Data</span><span style="text-align:right">Valor</span><span>Status</span></div>
+            <sc-for list="{{ repRecLista }}" as="r" hint-placeholder-count="8">
+              <div style="display:grid; grid-template-columns:2.3fr 1.2fr 1fr 1fr 1fr; gap:10px; padding:8px 4px; border-bottom:1px solid oklch(0.95 0.005 260); font-size:12px; align-items:center">
+                <span style="font-weight:500">{{ r.descricao }}</span>
+                <span style="color:oklch(0.5 0.02 260)">{{ r.catLabel }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace">{{ r.vencFmt }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace; text-align:right; font-weight:600">{{ r.valorFmt }}</span>
+                <span><span style="{{ r.statusStyle }}">{{ r.statusLabel }}</span></span>
               </div>
             </sc-for>
           </div>
@@ -1627,11 +1931,53 @@ class Component extends DCLogic {
     u2:{razaoSocial:'Escola São Gregório II LTDA', cnpj:'12345678000271', banco:'237', agencia:'12345', agenciaDV:'6', conta:'0007654321', contaDV:'0', convenio:'', endereco:'Rua das Acácias', numero:'168', complemento:'', bairro:'Centro', cidade:'São Paulo', uf:'SP', cep:'01234567'},
   }; }
 
+  DEFAULT_RCATS = [
+    {key:'mensalidade', label:'Mensalidades',      color:'oklch(0.52 0.13 155)'},
+    {key:'festas',      label:'Festas / eventos',  color:'oklch(0.55 0.14 330)'},
+    {key:'material',    label:'Material didático', color:'oklch(0.56 0.12 195)'},
+    {key:'matriculas',  label:'Matrículas',        color:'oklch(0.52 0.13 255)'},
+    {key:'outros',      label:'Outros / diversos', color:'oklch(0.6 0.04 260)'},
+    {key:'a_classificar', label:'A classificar',   color:'oklch(0.68 0.02 260)'},
+  ];
+  RCAT_LOCK = {festas:true, a_classificar:true};
+  RSTMETA = {
+    recebido: {label:'Recebido', color:'oklch(0.44 0.11 158)', bg:'oklch(0.95 0.045 162)'},
+    pendente: {label:'A receber', color:'oklch(0.5 0.13 68)',  bg:'oklch(0.96 0.05 82)'},
+    atrasado: {label:'Atrasado', color:'oklch(0.5 0.18 25)',   bg:'oklch(0.95 0.045 25)'},
+    cancelado:{label:'Cancelado',color:'oklch(0.5 0.02 260)',  bg:'oklch(0.945 0.005 260)'},
+  };
+  RKEYWORD_RULES = [
+    [/MATRICUL|REMATRICUL|INSCRICAO|INSCRIÇ/, 'matriculas'],
+    [/MATERIAL|APOSTIL|\bLIVRO|\bKIT\b|UNIFORME|AGENDA ESCOLAR/, 'material'],
+    [/FESTA|EVENTO|QUERMESSE|KERMESSE|\bBINGO\b|\bRIFA\b|BAZAR|ARRAIA|JULINA|JUNINA|BARRAC/, 'festas'],
+    [/MENSALID|BOLETO|PARCELA|SEMESTR|ANUIDAD|\bTUIT|RESPONSAVEL|RESPONSÁVEL|\bALUNO|ENCARGO ESCOLAR|ESCOLARIDADE/, 'mensalidade'],
+  ];
+  seedRcats(){ return this.DEFAULT_RCATS.map(c=>({...c})); }
+  get RCATS(){ return (this.state && this.state.rcats) || this.DEFAULT_RCATS; }
+  seedReceitas(){ return [
+    {id:'r1', descricao:'Mensalidades — Unidade I',  categoria:'mensalidade', unidade:'u1', pagador:'Responsáveis', valor:162000, vencimento:'2026-06-10', recorrente:true,  recebido:true,  cancelado:false},
+    {id:'r2', descricao:'Mensalidades — Unidade II', categoria:'mensalidade', unidade:'u2', pagador:'Responsáveis', valor:176000, vencimento:'2026-06-10', recorrente:true,  recebido:false, cancelado:false},
+    {id:'r3', descricao:'Material didático — 2º sem.', categoria:'material',   unidade:'u1', pagador:'Responsáveis', valor:9800,  vencimento:'2026-06-15', recorrente:false, recebido:true,  cancelado:false},
+    {id:'r4', descricao:'Matrículas — novos alunos',  categoria:'matriculas',  unidade:'u2', pagador:'Responsáveis', valor:14500, vencimento:'2026-06-05', recorrente:false, recebido:true,  cancelado:false},
+    {id:'r5', descricao:'Mensalidades avulsas atrasadas', categoria:'mensalidade', unidade:'u1', pagador:'Diversos', valor:6200, vencimento:'2026-06-18', recorrente:false, recebido:false, cancelado:false},
+  ]; }
+  mergeRcats(saved){
+    const out=Array.isArray(saved)?saved.map(c=>({...c})):[];
+    const keys=new Set(out.map(c=>c.key));
+    this.DEFAULT_RCATS.forEach(dc=>{ if(this.RCAT_LOCK[dc.key] && !keys.has(dc.key)){ if(dc.key==='a_classificar') out.push({...dc}); else out.unshift({...dc}); keys.add(dc.key); } });
+    const ac=out.filter(c=>c.key==='a_classificar'); const rest=out.filter(c=>c.key!=='a_classificar');
+    return [...rest, ...ac];
+  }
+
   state = {
     view:'dashboard', competencia:'2026-06', unidade:'geral',
+    receitas:this.seedReceitas(), rcats:this.seedRcats(), catRulesRec:{},
+    filterRCat:'all', filterRStatus:'all', searchRec:'', sortKeyRec:'vencimento', sortDirRec:'asc',
+    receitaModalOpen:false, receitaForm:null, rcatModalOpen:false, rcatForm:null,
     bills:this.seedBills(), vendors:this.seedVendors(), festas:this.seedFestas(),
     logged:false, loginPass:'', loginLembrar:true, loginError:'', loginLoading:false, cloudStatus:'',
     filterCat:'all', filterStatus:'all', search:'', flash:'', sortKey:'vencimento', sortDir:'asc',
+    sel:{contas:{}, folha:{}, vendors:{}, receber:{}},
     selectedFesta:'f2', chartType:'hbar', selectedDay:'2026-06-28',
     reportOpen:false, reportType:'', reportMonth:'2026-06', reportFesta:'f2',
     empresas:this.seedEmpresas(),
@@ -1648,6 +1994,7 @@ class Component extends DCLogic {
   API_URL='/api/data';
   componentDidMount(){
     let bills=this.state.bills, vendors=this.state.vendors, festas=this.state.festas, empresas=this.state.empresas, cats=this.state.cats, catRules=this.state.catRules, unidadesCustom=this.state.unidadesCustom, org=this.state.org, logged=false;
+    let receitas=this.state.receitas, rcats=this.state.rcats, catRulesRec=this.state.catRulesRec;
     try {
       const raw = localStorage.getItem('sg-financeiro-v2');
       if (raw){ const d = JSON.parse(raw); bills=d.bills||bills; vendors=d.vendors||vendors; festas=d.festas||festas;
@@ -1657,6 +2004,9 @@ class Component extends DCLogic {
         if(d.org) org={...this.seedOrg(), ...d.org};
         if(d.empresas) empresas=d.empresas;
         else if(d.empresa) empresas={u1:d.empresa, u2:this.seedEmpresas().u2}; // migração v2→v3
+        if(d.receitas) receitas=d.receitas;
+        if(d.rcats) rcats=this.mergeRcats(d.rcats);
+        if(d.catRulesRec) catRulesRec=d.catRulesRec;
       }
     } catch(e){}
     bills=this.backfillBank(bills);
@@ -1664,11 +2014,11 @@ class Component extends DCLogic {
     let savedSenha=null;
     try { savedSenha=localStorage.getItem('sg-senha'); } catch(e){}
     if(savedSenha){ this._senha=savedSenha; logged=true; }
-    this.setState({bills, vendors, festas, empresas, cats, catRules, unidadesCustom, org, logged});
+    this.setState({bills, vendors, festas, empresas, cats, catRules, unidadesCustom, org, receitas, rcats, catRulesRec, logged});
     if(savedSenha) this.cloudPull(); // já logado neste computador: busca a versão da nuvem
   }
   // ---- sincronização com o banco Neon (/api/data) ----
-  snapshot(p){ p=p||{}; const s=this.state; return {bills:p.bills||s.bills, vendors:p.vendors||s.vendors, festas:p.festas||s.festas, empresas:p.empresas||s.empresas, cats:p.cats||s.cats, catRules:p.catRules||s.catRules, unidadesCustom:p.unidadesCustom||s.unidadesCustom, org:p.org||s.org}; }
+  snapshot(p){ p=p||{}; const s=this.state; return {bills:p.bills||s.bills, vendors:p.vendors||s.vendors, festas:p.festas||s.festas, empresas:p.empresas||s.empresas, cats:p.cats||s.cats, catRules:p.catRules||s.catRules, unidadesCustom:p.unidadesCustom||s.unidadesCustom, org:p.org||s.org, receitas:p.receitas||s.receitas, rcats:p.rcats||s.rcats, catRulesRec:p.catRulesRec||s.catRulesRec}; }
   hydrate(dados){
     if(!dados || typeof dados!=='object' || Array.isArray(dados)) return false;
     const s=this.state;
@@ -1679,6 +2029,9 @@ class Component extends DCLogic {
       empresas:dados.empresas||s.empresas,
       cats:dados.cats?this.mergeCats(dados.cats):s.cats,
       catRules:dados.catRules||s.catRules, unidadesCustom:dados.unidadesCustom||s.unidadesCustom, org:dados.org||s.org,
+      receitas:dados.receitas||s.receitas,
+      rcats:dados.rcats?this.mergeRcats(dados.rcats):s.rcats,
+      catRulesRec:dados.catRulesRec||s.catRulesRec,
     };
     this.setState(next);
     try { localStorage.setItem('sg-financeiro-v2', JSON.stringify(this.snapshot(next))); } catch(e){}
@@ -1897,6 +2250,58 @@ class Component extends DCLogic {
   // ---- bill mutations ----
   markPaid(id){ const bills=this.state.bills.map(b=>b.id===id?{...b,pago:true}:b); this.setState({bills}); this.persist({bills}); }
   deleteBill(id){ const bills=this.state.bills.filter(b=>b.id!==id); this.setState({bills,modalOpen:false}); this.persist({bills}); }
+  // ---- seleção em massa ----
+  selMap(group){ return (this.state.sel&&this.state.sel[group])||{}; }
+  selIds(group){ return Object.keys(this.selMap(group)); }
+  selCount(group){ return this.selIds(group).length; }
+  selAllChecked(group, ids){ if(!ids.length) return false; const m=this.selMap(group); return ids.every(id=>m[id]); }
+  toggleSel(group, id){ this.setState(s=>{ const g={...((s.sel&&s.sel[group])||{})}; if(g[id]) delete g[id]; else g[id]=true; return {sel:{...s.sel,[group]:g}}; }); }
+  toggleSelAll(group, ids){ this.setState(s=>{ const cur=(s.sel&&s.sel[group])||{}; const all=ids.length>0&&ids.every(id=>cur[id]); const g={}; if(!all) ids.forEach(id=>{ g[id]=true; }); return {sel:{...s.sel,[group]:g}}; }); }
+  clearSel(group){ this.setState(s=>({sel:{...s.sel,[group]:{}}})); }
+  bulkDeleteBills(group, noun, nounPl){ const ids=this.selIds(group); const n=ids.length; if(!n) return; const label=n>1?nounPl:noun; this.askConfirm({msg:'Excluir '+n+' '+label+' selecionado'+(n>1?'s':'')+'?', sub:'Esta ação não pode ser desfeita.', btn:'Excluir '+n, danger:true, icon:'⚠'}, ()=>{ const set={}; ids.forEach(id=>{ set[id]=1; }); const bills=this.state.bills.filter(b=>!set[b.id]); this.setState(s=>({bills, sel:{...s.sel,[group]:{}}})); this.persist({bills}); }); }
+  bulkDeleteVendors(){ const ids=this.selIds('vendors'); const n=ids.length; if(!n) return; this.askConfirm({msg:'Excluir '+n+' fornecedor'+(n>1?'es':'')+' selecionado'+(n>1?'s':'')+'?', sub:'Esta ação não pode ser desfeita.', btn:'Excluir '+n, danger:true, icon:'⚠'}, ()=>{ const set={}; ids.forEach(id=>{ set[id]=1; }); const vendors=this.state.vendors.filter(v=>!set[v.id]); this.setState(s=>({vendors, sel:{...s.sel,vendors:{}}})); this.persist({vendors}); }); }
+  // ---- receitas (contas a receber) ----
+  statusRec(r){ if(r.cancelado) return 'cancelado'; if(r.recebido) return 'recebido'; return r.vencimento < this.TODAY ? 'atrasado' : 'pendente'; }
+  aReceber(r){ const s=this.statusRec(r); return s==='pendente'||s==='atrasado'; }
+  rcatLabel(k){ const c=this.RCATS.find(x=>x.key===k); return c?c.label:k; }
+  festaReceitas(){ return (this.state.festas||[]).map(f=>{ const c=this.festaCalc(f); return {id:'fst_'+f.id, festaId:f.id, descricao:'Arrecadação — '+f.nome, categoria:'festas', unidade:'geral', pagador:'Alunos / responsáveis', valor:c.arrecad||0, vencimento:f.data, recorrente:false, recebido:f.status==='realizada', cancelado:false, fromFesta:true}; }).filter(r=>r.valor>0); }
+  receitasDoMes(comp, uni){
+    const reais=(this.state.receitas||[]).filter(r=>r.vencimento.slice(0,7)===comp && (uni==='geral'||(r.unidade||'u1')===uni));
+    const fst=(uni==='geral') ? this.festaReceitas().filter(r=>r.vencimento.slice(0,7)===comp) : [];
+    return [...reais, ...fst];
+  }
+  setStatusRec(id, status){ const receitas=this.state.receitas.map(r=> r.id!==id?r:{...r, recebido:status==='recebido', cancelado:status==='cancelado'}); this.setState({receitas}); this.persist({receitas}); }
+  markReceived(id){ const receitas=this.state.receitas.map(r=>r.id===id?{...r,recebido:true}:r); this.setState({receitas}); this.persist({receitas}); }
+  openAddReceita(cat){ const c=this.state.competencia; const u=this.state.unidade==='geral'?'u1':this.state.unidade; this.setState({view:'receber', receitaModalOpen:true, formError:'', receitaForm:{id:null, descricao:'', categoria:(cat&&cat!=='festas'&&cat!=='all')?cat:'mensalidade', unidade:u, pagador:'', valor:'', vencimento:c+'-10', recorrente:false, recebido:false, parcelas:'1'}}); }
+  openEditReceita(id){ const r=this.state.receitas.find(x=>x.id===id); if(!r) return; this.setState({receitaModalOpen:true, formError:'', receitaForm:{...r, valor:String(r.valor).replace('.',','), parcelas:'1'}}); }
+  closeReceitaModal(){ this.setState({receitaModalOpen:false}); }
+  saveReceita(){
+    const f=this.state.receitaForm; if(!f) return;
+    if(!f.descricao || !f.descricao.trim()){ this.setState({formError:'Informe uma descrição.'}); return; }
+    const valor=this.parseNum(f.valor);
+    if(valor<=0){ this.setState({formError:'Informe um valor válido.'}); return; }
+    const rec={descricao:f.descricao.trim(), categoria:f.categoria||'mensalidade', unidade:f.unidade||'u1', pagador:f.pagador||'', valor, vencimento:f.vencimento, recorrente:!!f.recorrente, recebido:!!f.recebido, cancelado:false};
+    const np=Math.max(1, Math.min(36, parseInt(f.parcelas)||1));
+    let receitas;
+    if(f.id){ receitas=this.state.receitas.map(r=>r.id===f.id?{...r,...rec}:r); }
+    else if(np>1){
+      const base=Date.now(); const grupo='rc'+base; const novos=[]; const perc=Math.round((valor/np)*100)/100;
+      for(let i=0;i<np;i++){ const val=i===np-1? Math.round((valor-perc*(np-1))*100)/100 : perc; novos.push({...rec, id:grupo+'_'+i, valor:val, vencimento:this.addMonths(f.vencimento.slice(0,7),i)+'-'+f.vencimento.slice(8), descricao:rec.descricao+' ('+(i+1)+'/'+np+')', parcela:i+1, parcelaGrupo:grupo, recorrente:false}); }
+      receitas=[...this.state.receitas, ...novos];
+    } else { receitas=[...this.state.receitas, {...rec, id:'r'+Date.now()}]; }
+    this.setState({receitas, receitaModalOpen:false, formError:'', competencia:f.vencimento.slice(0,7)}); this.persist({receitas});
+  }
+  deleteReceita(id){ const receitas=this.state.receitas.filter(r=>r.id!==id); this.setState({receitas, receitaModalOpen:false}); this.persist({receitas}); }
+  generateNextReceitas(){ const cur=this.state.competencia, next=this.addMonths(cur,1); const recur=(this.state.receitas||[]).filter(r=>r.vencimento.slice(0,7)===cur && r.recorrente && !r.cancelado); if(!recur.length){ this.flash('Nenhuma receita recorrente em '+this.monthName(cur)+'.'); return; } const jaTem=new Set((this.state.receitas||[]).filter(r=>r.vencimento.slice(0,7)===next).map(r=>this.normDesc(r.descricao)+'|'+r.unidade)); const novos=recur.filter(r=>!jaTem.has(this.normDesc(r.descricao)+'|'+r.unidade)).map((r,i)=>({...r, id:'rg'+Date.now()+i, vencimento:next+'-'+r.vencimento.slice(8), recebido:false, cancelado:false})); if(!novos.length){ this.flash('As receitas recorrentes já existem em '+this.monthName(next)+'.'); return; } const receitas=[...this.state.receitas, ...novos]; this.setState({receitas, competencia:next, view:'receber'}); this.persist({receitas}); this.flash(novos.length+' receita(s) recorrente(s) geradas para '+this.monthName(next)+'.'); }
+  bulkDeleteReceitas(){ const ids=this.selIds('receber').filter(id=>!/^fst_/.test(id)); const n=ids.length; if(!n){ this.flash('As receitas de festas são geridas na aba Festas.'); this.clearSel('receber'); return; } this.askConfirm({msg:'Excluir '+n+(n>1?' receitas selecionadas':' receita selecionada')+'?', sub:'Esta ação não pode ser desfeita.', btn:'Excluir '+n, danger:true, icon:'⚠'}, ()=>{ const set={}; ids.forEach(id=>{set[id]=1;}); const receitas=this.state.receitas.filter(r=>!set[r.id]); this.setState(s=>({receitas, sel:{...s.sel,receber:{}}})); this.persist({receitas}); }); }
+  setSortRec(key){ this.setState(s=>{ if(s.sortKeyRec===key) return {sortDirRec:s.sortDirRec==='asc'?'desc':'asc'}; return {sortKeyRec:key, sortDirRec:'asc'}; }); }
+  classifyReceita(desc){ const sig=this.merchantSig(desc); const learned=(this.state.catRulesRec||{})[sig]; if(learned) return learned; const up=(desc||'').toUpperCase(); for(const pair of this.RKEYWORD_RULES){ if(pair[0].test(up)) return pair[1]; } return 'a_classificar'; }
+  openRCatModal(){ this.setState({rcatModalOpen:true, rcatForm:{key:null, label:'', color:this.CAT_PALETTE[0]}}); }
+  closeRCatModal(){ this.setState({rcatModalOpen:false}); }
+  rcatEdit(key){ const c=this.RCATS.find(x=>x.key===key); if(!c) return; this.setState({rcatForm:{key:c.key, label:c.label, color:c.color}}); }
+  rcatFormSet(patch){ this.setState(s=>({rcatForm:{...s.rcatForm, ...patch}})); }
+  saveRCat(){ const f=this.state.rcatForm; if(!f||!f.label||!f.label.trim()){ return; } let rcats; if(f.key){ rcats=this.RCATS.map(c=>c.key===f.key?{...c, label:f.label.trim(), color:f.color}:c); } else { const key='rc_'+Date.now(); rcats=[...this.RCATS.filter(c=>c.key!=='a_classificar'), {key, label:f.label.trim(), color:f.color}, ...this.RCATS.filter(c=>c.key==='a_classificar')]; } this.setState({rcats, rcatForm:{key:null, label:'', color:this.CAT_PALETTE[0]}}); this.persist({rcats}); }
+  deleteRCat(key){ if(this.RCAT_LOCK[key]) return; this.askDelete('a categoria de receita? Lançamentos nela vão para “A classificar”.', ()=>{ const rcats=this.RCATS.filter(c=>c.key!==key); const receitas=this.state.receitas.map(r=>r.categoria===key?{...r, categoria:'a_classificar'}:r); this.setState({rcats, receitas}); this.persist({rcats, receitas}); }); }
   setComprovante(id,name){ const bills=this.state.bills.map(b=>b.id===id?{...b,comprovante:name}:b); this.setState({bills}); this.persist({bills}); }
   openAdd(cat){ const c=this.state.competencia; const u=this.state.unidade==='geral'?'u1':this.state.unidade; this.setState({modalOpen:true, formError:'', form:{id:null, descricao:'', categoria:cat||'contas', unidade:u, cargo:'', fornecedor:'', valor:'', vencimento:c+'-10', recorrente:false, pago:false, comprovante:'', parcelas:'1', cpf:'', pis:'', email:'', banco:'237', agencia:'', agenciaDV:'', conta:'', contaDV:'', tipoConta:'cc', metodo:'credito', pixChave:''}}); }
   openAddFolha(cat){ const c=this.state.competencia; const u=this.state.unidade==='geral'?'u1':this.state.unidade; this.setState({view:'folha', modalOpen:true, formError:'', form:{id:null, descricao:'', categoria:cat, unidade:u, cargo:'', fornecedor:'Folha de Pagamento', valor:'', vencimento:c+'-05', recorrente:true, pago:false, comprovante:'', parcelas:'1', cpf:'', pis:'', email:'', banco:'237', agencia:'', agenciaDV:'', conta:'', contaDV:'', tipoConta:'cc', metodo:'credito', pixChave:''}}); }
@@ -2219,37 +2624,38 @@ class Component extends DCLogic {
       if(!desc || this.extParseDate(desc)){ let best=''; cells.forEach((c,i)=>{ if(i===di||i===idxData||i===idxValor||i===idxDeb||i===idxCred) return; if(this.extParseDate(c)) return; const letters=(c.match(/[a-zA-ZÀ-ÿ]/g)||[]).length; if(letters>=3 && c.length>best.length) best=c; }); if(best) desc=best; }
       desc=String(desc).replace(/\s+/g,' ').trim();
       if(/^saldo|saldo anterior|saldo do dia|saldo em conta|saldo final/i.test(desc)) continue;
-      let val=NaN;
+      let val=NaN, tipo=null;
       if(idxDeb>=0){
         const dv=this.extParseVal(cells[idxDeb]);
         const cv=idxCred>=0?this.extParseVal(cells[idxCred]):NaN;
-        if(!isNaN(dv) && Math.abs(dv)>0) val=-Math.abs(dv);
-        else if(!isNaN(cv) && Math.abs(cv)>0){ ignorados++; continue; }
+        if(!isNaN(dv) && Math.abs(dv)>0){ val=Math.abs(dv); tipo='saida'; }
+        else if(!isNaN(cv) && Math.abs(cv)>0){ val=Math.abs(cv); tipo='entrada'; }
         else continue;
       } else {
-        if(idxValor>=0) val=this.extParseVal(cells[idxValor]);
-        if(isNaN(val)){ for(let i=cells.length-1;i>=0;i--){ if(i===di) continue; if(!/\d/.test(cells[i])) continue; const v=this.extParseVal(cells[i]); if(!isNaN(v)){ val=v; break; } } }
+        let v0=NaN;
+        if(idxValor>=0) v0=this.extParseVal(cells[idxValor]);
+        if(isNaN(v0)){ for(let i=cells.length-1;i>=0;i--){ if(i===di) continue; if(!/\d/.test(cells[i])) continue; const vv=this.extParseVal(cells[i]); if(!isNaN(vv)){ v0=vv; break; } } }
+        if(isNaN(v0) || v0===0) continue;
+        if(v0<0){ val=Math.abs(v0); tipo='saida'; } else { val=v0; tipo='entrada'; }
       }
-      if(isNaN(val) || val===0) continue;
-      let valor;
-      if(modo==='cartao' && idxDeb<0){
-        // fatura de cartão: valores positivos são compras; negativos são pagamento de fatura/estorno
-        if(val<0){ ignorados++; continue; }
-        valor=val;
-      } else {
-        if(val>0){ ignorados++; continue; }
-        valor=Math.abs(val);
+      if(isNaN(val) || val===0 || !tipo) continue;
+      if(modo==='cartao'){
+        // fatura de cartão: só compras (saídas)
+        if(idxDeb>=0){ if(tipo!=='saida'){ ignorados++; continue; } }
+        else { if(tipo!=='entrada'){ ignorados++; continue; } tipo='saida'; } // valor positivo na fatura é compra
       }
-      const categoria=this.classifyExtrato(desc);
-      rows.push({ incluir:true, data:ds, descricao:desc||'Lançamento', valor, categoria, auto: categoria!=='a_classificar' });
+      const valor=val;
+      const categoria = tipo==='entrada' ? this.classifyReceita(desc) : this.classifyExtrato(desc);
+      rows.push({ incluir:true, tipo, data:ds, descricao:desc||'Lançamento', valor, categoria, auto: categoria!=='a_classificar' });
     }
-    // deduplicação: marca o que já existe no sistema (data + valor + descrição)
+    // deduplicação: marca o que já existe no sistema (data + valor + descrição), separando entradas de saídas
     const seen={};
-    this.state.bills.forEach(b=>{ if(b.cancelado) return; const k=b.vencimento+'|'+Number(b.valor).toFixed(2)+'|'+this.normDesc(b.descricao); seen[k]=(seen[k]||0)+1; });
+    this.state.bills.forEach(b=>{ if(b.cancelado) return; const k='s|'+b.vencimento+'|'+Number(b.valor).toFixed(2)+'|'+this.normDesc(b.descricao); seen[k]=(seen[k]||0)+1; });
+    (this.state.receitas||[]).forEach(r=>{ if(r.cancelado) return; const k='e|'+r.vencimento+'|'+Number(r.valor).toFixed(2)+'|'+this.normDesc(r.descricao); seen[k]=(seen[k]||0)+1; });
     let dups=0;
-    rows.forEach(r=>{ const k=r.data+'|'+r.valor.toFixed(2)+'|'+this.normDesc(r.descricao); if(seen[k]>0){ seen[k]--; r.dup=true; r.incluir=false; dups++; } });
+    rows.forEach(r=>{ const k=(r.tipo==='entrada'?'e|':'s|')+r.data+'|'+r.valor.toFixed(2)+'|'+this.normDesc(r.descricao); if(seen[k]>0){ seen[k]--; r.dup=true; r.incluir=false; dups++; } });
     rows.sort((a,b)=> a.data<b.data?-1:1);
-    if(!rows.length){ this.setState({extratoRows:null, extratoError:(modo==='cartao'?'Não encontrei compras nesta fatura. Confira se o arquivo/texto tem data, descrição e valor em cada linha.':'Não encontrei saídas/gastos neste extrato. Confira se o arquivo/texto tem colunas de data e valor.'), extratoFileName:fileName, extratoBanco:banco, extratoIgnorados:ignorados}); return; }
+    if(!rows.length){ this.setState({extratoRows:null, extratoError:(modo==='cartao'?'Não encontrei compras nesta fatura. Confira se o arquivo/texto tem data, descrição e valor em cada linha.':'Não encontrei lançamentos neste extrato. Confira se o arquivo/texto tem colunas de data e valor.'), extratoFileName:fileName, extratoBanco:banco, extratoIgnorados:ignorados}); return; }
     this.setState({extratoRows:rows, extratoError:'', extratoFileName:fileName, extratoBanco:banco, extratoIgnorados:ignorados, extratoDups:dups});
   }
   toggleExtratoRow(i){ this.setState(s=>{ const rows=s.extratoRows.slice(); rows[i]={...rows[i], incluir:!rows[i].incluir}; return {extratoRows:rows}; }); }
@@ -2260,16 +2666,24 @@ class Component extends DCLogic {
     if(!rows.length){ this.flash('Selecione ao menos um lançamento para importar.'); return; }
     const ui=this.state.unidade==='geral'?'u1':this.state.unidade;
     const lote='ex'+Date.now();
-    const novos=rows.map((r,i)=>({ id:lote+'_'+i, descricao:r.descricao, categoria:r.categoria, unidade:ui, cargo:'', fornecedor:this.merchantName(r.descricao), valor:r.valor, vencimento:r.data, recorrente:false, pago:true, comprovante:'', origem:'extrato', loteExtrato:lote }));
+    const saidas=rows.filter(r=>r.tipo!=='entrada');
+    const entradas=rows.filter(r=>r.tipo==='entrada');
+    const novosBills=saidas.map((r,i)=>({ id:lote+'_s'+i, descricao:r.descricao, categoria:r.categoria, unidade:ui, cargo:'', fornecedor:this.merchantName(r.descricao), valor:r.valor, vencimento:r.data, recorrente:false, pago:true, comprovante:'', origem:'extrato', loteExtrato:lote }));
+    const novasRec=entradas.map((r,i)=>({ id:lote+'_r'+i, descricao:r.descricao, categoria:r.categoria, unidade:ui, pagador:this.merchantName(r.descricao), valor:r.valor, vencimento:r.data, recorrente:false, recebido:true, cancelado:false, origem:'extrato', loteExtrato:lote }));
     const catRules={...(this.state.catRules||{})};
-    rows.forEach(r=>{ if(r.categoria && r.categoria!=='a_classificar'){ const sig=this.merchantSig(r.descricao); if(sig) catRules[sig]=r.categoria; } });
-    const bills=[...this.state.bills, ...novos];
+    const catRulesRec={...(this.state.catRulesRec||{})};
+    saidas.forEach(r=>{ if(r.categoria && r.categoria!=='a_classificar'){ const sig=this.merchantSig(r.descricao); if(sig) catRules[sig]=r.categoria; } });
+    entradas.forEach(r=>{ if(r.categoria && r.categoria!=='a_classificar'){ const sig=this.merchantSig(r.descricao); if(sig) catRulesRec[sig]=r.categoria; } });
+    const bills=[...this.state.bills, ...novosBills];
+    const receitas=[...this.state.receitas, ...novasRec];
     const counts={}; rows.forEach(r=>{ const m=r.data.slice(0,7); counts[m]=(counts[m]||0)+1; });
     const mes=Object.keys(counts).sort((a,b)=>counts[b]-counts[a])[0] || this.state.competencia;
-    const selectedDay = rows[0].data.slice(0,7)===mes ? rows[0].data : this.state.selectedDay;
-    this.setState({bills, catRules, extratoModalOpen:false, view:'pagamentos', competencia:mes, selectedDay});
-    this.persist({bills, catRules});
-    this.flash(novos.length+' gasto(s) do extrato importado(s) e marcado(s) como pago(s) em '+this.monthName(mes)+'.');
+    const view = novosBills.length>=novasRec.length ? 'pagamentos' : 'receber';
+    const selectedDay = (novosBills.length && saidas[0] && saidas[0].data.slice(0,7)===mes) ? saidas[0].data : this.state.selectedDay;
+    this.setState({bills, receitas, catRules, catRulesRec, extratoModalOpen:false, view, competencia:mes, selectedDay});
+    this.persist({bills, receitas, catRules, catRulesRec});
+    const partes=[]; if(novosBills.length) partes.push(novosBills.length+' saída(s) → contas a pagar (pagas)'); if(novasRec.length) partes.push(novasRec.length+' entrada(s) → contas a receber (recebidas)');
+    this.flash('Importado em '+this.monthName(mes)+': '+partes.join(' · ')+'.');
   }
 
   // ---- vendor mutations ----
@@ -2473,7 +2887,7 @@ class Component extends DCLogic {
     const rmono=(c)=>({fontFamily:"'IBM Plex Mono',monospace",fontSize:'19px',fontWeight:600,marginTop:'6px',color:c});
     const dot=(c)=>({width:'9px',height:'9px',borderRadius:'3px',background:c,flex:'0 0 auto'});
     const gerado=this.fmtDateFull(this.TODAY);
-    const out={reportOpen:S.reportOpen, repGerado:gerado, repTemResumo:false, repResumo:[], repIsMensal:false, repIsAnual:false, repIsFesta:false, repIsFolha:false, repIsCategorias:false, repTitle:'', repPeriodo:''};
+    const out={reportOpen:S.reportOpen, repGerado:gerado, repTemResumo:false, repResumo:[], repIsMensal:false, repIsRecebimentos:false, repIsAnual:false, repIsFesta:false, repIsFolha:false, repIsCategorias:false, repTitle:'', repPeriodo:''};
     const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 
     if(type==='mensal'){
@@ -2484,6 +2898,17 @@ class Component extends DCLogic {
       out.repMensalCat=this.CATS.map(c=>({...c,valor:sum(mb.filter(b=>b.categoria===c.key))})).filter(c=>c.valor>0).sort((a,b)=>b.valor-a.valor).map(c=>({label:c.label,valorFmt:this.brl(c.valor),share:Math.round(c.valor/tot*100)+'%',dotStyle:dot(c.color)}));
       out.repMensalTotalFmt=this.brl(tot);
       out.repMensalContas=mb.slice().sort((a,b)=>a.vencimento<b.vencimento?-1:1).map(b=>{ const st=this.statusOf(b); const cat=this.CATS.find(c=>c.key===b.categoria)||{label:b.categoria}; return {descricao:b.descricao,catLabel:cat.label,vencFmt:this.fmtDateFull(b.vencimento),valorFmt:this.brl(b.valor),statusLabel:this.STMETA[st].label,statusStyle:pill(st)}; });
+    } else if(type==='recebimentos'){
+      const mr=this.receitasDoMes(month, uni);
+      const s2=(arr)=>arr.reduce((a,r)=>a+r.valor,0);
+      const rec=mr.filter(r=>this.statusRec(r)==='recebido'), pend=mr.filter(r=>this.statusRec(r)==='pendente'), atr=mr.filter(r=>this.statusRec(r)==='atrasado');
+      const totR=s2(mr.filter(r=>!r.cancelado));
+      out.repIsRecebimentos=true; out.repTemResumo=true; out.repTitle='Relatório de Recebimentos'; out.repPeriodo=cap(this.monthName(month));
+      out.repResumo=[{label:'Receita total',value:this.brl0(totR),sub:mr.length+' lançamentos',valueStyle:rmono('oklch(0.27 0.02 260)')},{label:'Recebido',value:this.brl0(s2(rec)),sub:Math.round(s2(rec)/totR*100||0)+'%',valueStyle:rmono('oklch(0.44 0.11 158)')},{label:'A receber',value:this.brl0(s2(pend)+s2(atr)),sub:(pend.length+atr.length)+' em aberto',valueStyle:rmono('oklch(0.5 0.13 68)')},{label:'Em atraso',value:this.brl0(s2(atr)),sub:atr.length+' vencidas',valueStyle:rmono('oklch(0.5 0.18 25)')}];
+      out.repRecCat=this.RCATS.map(c=>({...c,valor:s2(mr.filter(r=>r.categoria===c.key))})).filter(c=>c.valor>0).sort((a,b)=>b.valor-a.valor).map(c=>({label:c.label,valorFmt:this.brl(c.valor),share:Math.round(c.valor/totR*100)+'%',dotStyle:dot(c.color)}));
+      out.repRecTotalFmt=this.brl(totR);
+      const rpill=(st)=>{ const m=this.RSTMETA[st]; return {background:m.bg,color:m.color,padding:'3px 9px',borderRadius:'20px',fontSize:'10.5px',fontWeight:600,whiteSpace:'nowrap'}; };
+      out.repRecLista=mr.slice().sort((a,b)=>a.vencimento<b.vencimento?-1:1).map(r=>{ const st=this.statusRec(r); const cat=this.RCATS.find(c=>c.key===r.categoria)||{label:r.categoria}; return {descricao:r.descricao,catLabel:cat.label,vencFmt:this.fmtDateFull(r.vencimento),valorFmt:this.brl(r.valor),statusLabel:this.RSTMETA[st].label,statusStyle:rpill(st)}; });
     } else if(type==='anual'){
       const yb=S.bills.filter(b=>b.vencimento.slice(0,4)==='2026' && inUnit(b));
       const tot=sum(yb), pg=sum(yb.filter(b=>b.pago)), ab=tot-pg;
@@ -2651,7 +3076,10 @@ class Component extends DCLogic {
       return r*sdir;
     };
     fb.sort(cmp);
-    const filteredBills=fb.map(decorate);
+    const selContasMap=(S.sel&&S.sel.contas)||{};
+    const contasIds=fb.map(b=>b.id);
+    const filteredBills=fb.map(b=>{ const v=decorate(b); v.selected=!!selContasMap[b.id]; v.onToggleSel=()=>this.toggleSel('contas',b.id); return v; });
+    const contasSelN=Object.keys(selContasMap).length;
     const arrow=(k)=> sk===k ? (S.sortDir==='desc'?' ↓':' ↑') : '';
     const headStyle=(k,align)=>({cursor:'pointer', userSelect:'none', color: sk===k?PRIMARY:'oklch(0.5 0.02 260)', fontWeight: sk===k?700:600, textAlign:align||'left', display:'flex', alignItems:'center', gap:'2px', justifyContent: align==='right'?'flex-end':'flex-start'});
     const contasHead={
@@ -2666,12 +3094,61 @@ class Component extends DCLogic {
     const stDefs=[['all','Todos','oklch(0.7 0.02 260)'],['pendente','Pendente','oklch(0.5 0.13 68)'],['atrasado','Atrasado','oklch(0.5 0.18 25)'],['pago','Pago','oklch(0.44 0.11 158)']];
     const statusChips=stDefs.map(d=>({label:d[1], onClick:()=>this.setState({filterStatus:d[0]}), style:chipStyle(S.filterStatus===d[0]), dotStyle:chipDot(S.filterStatus===d[0],d[2])}));
 
+    // ---- contas a receber ----
+    const monthReceitas=this.receitasDoMes(comp, uni);
+    const recAtivas=monthReceitas.filter(r=>!r.cancelado);
+    const recTotal=recAtivas.reduce((s,r)=>s+r.valor,0);
+    const recRecebidoArr=monthReceitas.filter(r=>this.statusRec(r)==='recebido');
+    const recPendArr=monthReceitas.filter(r=>this.statusRec(r)==='pendente');
+    const recAtrasadoArr=monthReceitas.filter(r=>this.statusRec(r)==='atrasado');
+    const recRecebido=recRecebidoArr.reduce((s,r)=>s+r.valor,0);
+    const recAReceber=recPendArr.concat(recAtrasadoArr).reduce((s,r)=>s+r.valor,0);
+    const recAtrasado=recAtrasadoArr.reduce((s,r)=>s+r.valor,0);
+    const saldoMes=recTotal-total;         // previsto: receitas − despesas do mês
+    const saldoRealizado=recRecebido-pago; // efetivo: recebido − pago
+    let fr=monthReceitas.slice();
+    if(S.filterRCat!=='all') fr=fr.filter(r=>r.categoria===S.filterRCat);
+    if(S.filterRStatus!=='all') fr=fr.filter(r=>this.statusRec(r)===S.filterRStatus);
+    const qr=(S.searchRec||'').toLowerCase().trim();
+    if(qr) fr=fr.filter(r=>(r.descricao||'').toLowerCase().includes(qr)||(r.pagador||'').toLowerCase().includes(qr));
+    const rStRank={pendente:0, atrasado:1, recebido:2, cancelado:3};
+    const rsk=S.sortKeyRec||'vencimento', rsdir=(S.sortDirRec==='desc')?-1:1;
+    const rcmp=(a,b)=>{ let r=0; if(rsk==='descricao') r=(a.descricao||'').localeCompare(b.descricao||''); else if(rsk==='categoria') r=this.rcatLabel(a.categoria).localeCompare(this.rcatLabel(b.categoria)); else if(rsk==='valor') r=a.valor-b.valor; else if(rsk==='status') r=rStRank[this.statusRec(a)]-rStRank[this.statusRec(b)]; else r=a.vencimento<b.vencimento?-1:(a.vencimento>b.vencimento?1:0); return r*rsdir; };
+    fr.sort(rcmp);
+    const selReceberMap=(S.sel&&S.sel.receber)||{};
+    const receberIds=fr.filter(r=>!r.fromFesta).map(r=>r.id);
+    const receitaList=fr.map(r=>{ const st=this.statusRec(r); const sm=this.RSTMETA[st]; const cat=this.RCATS.find(c=>c.key===r.categoria)||{label:r.categoria,color:'#888'}; const uM=unitMeta(r.unidade); return {
+      id:r.id, descricao:r.descricao, pagador:r.pagador||'—', valorFmt:this.brl(r.valor),
+      catLabel:cat.label, catDot:{width:'9px',height:'9px',borderRadius:'3px',background:cat.color,flex:'0 0 auto'},
+      vencFmt:this.fmtDate(r.vencimento),
+      statusLabel:sm.label, pillStyle:{background:sm.bg,color:sm.color,padding:'4px 11px',borderRadius:'20px',fontSize:'11.5px',fontWeight:600,whiteSpace:'nowrap',display:'inline-block'},
+      unidadeSigla:r.fromFesta?'Festa':(uM?uM.sigla:''), unidadeTagStyle:{fontSize:'10px',fontWeight:700,padding:'1px 6px',borderRadius:'5px',background:r.fromFesta?'oklch(0.95 0.04 330)':'oklch(0.95 0.02 255)',color:r.fromFesta?'oklch(0.5 0.14 330)':'oklch(0.45 0.08 255)',whiteSpace:'nowrap'},
+      recLabel:r.recorrente?'↻':'', recDotStyle:{fontSize:'11px',color:'oklch(0.5 0.1 155)',fontWeight:700},
+      fromFesta:!!r.fromFesta, editable:!r.fromFesta, naoRecebido:st!=='recebido'&&st!=='cancelado',
+      selectable:!r.fromFesta, selected:!!selReceberMap[r.id], onToggleSel:()=>{ if(!r.fromFesta) this.toggleSel('receber', r.id); },
+      onReceber:()=>{ if(r.fromFesta){ this.setState({view:'festas', selectedFesta:r.festaId}); } else this.markReceived(r.id); },
+      recBtnLabel:r.fromFesta?'Ver festa':'Receber',
+      onEditar:()=>{ if(r.fromFesta){ this.setState({view:'festas', selectedFesta:r.festaId}); } else this.openEditReceita(r.id); },
+      editBtnLabel:r.fromFesta?'Festa':'Editar',
+      onDelete:()=>{ if(!r.fromFesta) this.askDelete('“'+(r.descricao||'esta receita')+'”?', ()=>this.deleteReceita(r.id)); },
+    }; });
+    const receberSelN=Object.keys(selReceberMap).length;
+    const rcatChips=[{key:'all',label:'Todas',color:'oklch(0.7 0.02 260)'}, ...this.RCATS].map(c=>{ const active=S.filterRCat===c.key; return {label:c.label, onClick:()=>this.setState({filterRCat:c.key}), style:chipStyle(active), dotStyle:c.key==='all'?chipDot(active,'oklch(0.7 0.02 260)'):chipDot(active,c.color)}; });
+    const rstDefs=[['all','Todos','oklch(0.7 0.02 260)'],['recebido','Recebido',this.RSTMETA.recebido.color],['pendente','A receber',this.RSTMETA.pendente.color],['atrasado','Atrasado',this.RSTMETA.atrasado.color]];
+    const rstatusChips=rstDefs.map(d=>({label:d[1], onClick:()=>this.setState({filterRStatus:d[0]}), style:chipStyle(S.filterRStatus===d[0]), dotStyle:chipDot(S.filterRStatus===d[0],d[2])}));
+    const rHeadStyle=(k,align)=>({cursor:'pointer', userSelect:'none', color: rsk===k?PRIMARY:'oklch(0.55 0.02 260)', fontWeight: rsk===k?700:700, textAlign:align||'left', display:'flex', alignItems:'center', gap:'3px', justifyContent: align==='right'?'flex-end':'flex-start'});
+    const rArrow=(k)=> rsk===k ? (S.sortDirRec==='desc'?' ↓':' ↑') : '';
+    const receberHead={ onDescricao:()=>this.setSortRec('descricao'), onCategoria:()=>this.setSortRec('categoria'), onVencimento:()=>this.setSortRec('vencimento'), onValor:()=>this.setSortRec('valor'), onStatus:()=>this.setSortRec('status'), stDescricao:rHeadStyle('descricao'), stCategoria:rHeadStyle('categoria'), stVencimento:rHeadStyle('vencimento'), stValor:rHeadStyle('valor','right'), stStatus:rHeadStyle('status'), arrDescricao:'Descrição'+rArrow('descricao'), arrCategoria:'Categoria'+rArrow('categoria'), arrVencimento:'Vencimento'+rArrow('vencimento'), arrValor:'Valor'+rArrow('valor'), arrStatus:'Status'+rArrow('status') };
+    const rcatManage=this.RCATS.map(c=>({ key:c.key, label:c.label, dotStyle:{width:'13px',height:'13px',borderRadius:'3px',background:c.color,flex:'0 0 auto'}, deletable:!this.RCAT_LOCK[c.key], fixa:!!this.RCAT_LOCK[c.key], onEdit:()=>this.rcatEdit(c.key), onDelete:()=>this.deleteRCat(c.key) }));
+
     // folha
-    const folhaDecorate=(b)=>{ const v=decorate(b); const vt=this.valesTotal(b); const bt=this.bonusTotal(b); const liq=this.liquidoOf(b); v.temVale=vt>0; v.valesTotalFmt='− '+this.brl(vt); v.temBonus=bt>0; v.bonusTotalFmt='+ '+this.brl(bt); v.liquidoFmt=this.brl(liq); v.valesCount=(b.vales||[]).length; v.valeBtnLabel=vt>0?('Vale · '+this.brl0(vt)):'Vale'; v.valeBtnStyle={background:vt>0?'oklch(0.96 0.05 50)':'#fff', color:vt>0?'oklch(0.5 0.12 50)':'oklch(0.45 0.02 260)', border:'1px solid '+(vt>0?'oklch(0.85 0.07 50)':'oklch(0.9 0.008 260)'), padding:'5px 10px', borderRadius:'7px', fontSize:'12px', fontWeight:600, cursor:'pointer', whiteSpace:'nowrap'}; v.bonusBtnLabel=bt>0?('Bônus · '+this.brl0(bt)):'Bônus'; v.bonusBtnStyle={background:bt>0?'oklch(0.95 0.05 162)':'#fff', color:bt>0?'oklch(0.44 0.11 158)':'oklch(0.45 0.02 260)', border:'1px solid '+(bt>0?'oklch(0.83 0.08 158)':'oklch(0.9 0.008 260)'), padding:'5px 10px', borderRadius:'7px', fontSize:'12px', fontWeight:600, cursor:'pointer', whiteSpace:'nowrap'}; const liqColor=vt>0?'oklch(0.5 0.12 50)':(bt>0?'oklch(0.44 0.11 158)':'oklch(0.27 0.02 260)'); v.liquidoStyle={fontFamily:"'IBM Plex Mono',monospace", fontSize:'13.5px', fontWeight:700, textAlign:'right', color:liqColor}; v.onVale=()=>this.openVales(b.id); v.onBonus=()=>this.openBonus(b.id); return v; };
-    const folhaCat=(key,titulo,singular,color)=>{ const arr=monthBills.filter(b=>b.categoria===key).sort((a,b)=>a.descricao<b.descricao?-1:1); const linhas=arr.map(folhaDecorate); const t=sum(arr); const liqT=arr.reduce((s,b)=>s+this.liquidoOf(b),0); const temVales=t!==liqT; return {key, titulo, singular, count:linhas.length+(linhas.length===1?' pessoa':' pessoas'), totalFmt:this.brl0(t), liquidoFmt:this.brl0(liqT), temVales, liquidoLabel:'líquido '+this.brl0(liqT), dotStyle:{width:'11px',height:'11px',borderRadius:'3px',background:color}, linhas, onAdd:()=>this.openAddFolha(key)}; };
+    const folhaDecorate=(b)=>{ const v=decorate(b); const vt=this.valesTotal(b); const bt=this.bonusTotal(b); const liq=this.liquidoOf(b); v.temVale=vt>0; v.valesTotalFmt='− '+this.brl(vt); v.temBonus=bt>0; v.bonusTotalFmt='+ '+this.brl(bt); v.liquidoFmt=this.brl(liq); v.valesCount=(b.vales||[]).length; v.valeBtnLabel=vt>0?('Vale · '+this.brl0(vt)):'Vale'; v.valeBtnStyle={background:vt>0?'oklch(0.96 0.05 50)':'#fff', color:vt>0?'oklch(0.5 0.12 50)':'oklch(0.45 0.02 260)', border:'1px solid '+(vt>0?'oklch(0.85 0.07 50)':'oklch(0.9 0.008 260)'), padding:'5px 10px', borderRadius:'7px', fontSize:'12px', fontWeight:600, cursor:'pointer', whiteSpace:'nowrap'}; v.bonusBtnLabel=bt>0?('Bônus · '+this.brl0(bt)):'Bônus'; v.bonusBtnStyle={background:bt>0?'oklch(0.95 0.05 162)':'#fff', color:bt>0?'oklch(0.44 0.11 158)':'oklch(0.45 0.02 260)', border:'1px solid '+(bt>0?'oklch(0.83 0.08 158)':'oklch(0.9 0.008 260)'), padding:'5px 10px', borderRadius:'7px', fontSize:'12px', fontWeight:600, cursor:'pointer', whiteSpace:'nowrap'}; const liqColor=vt>0?'oklch(0.5 0.12 50)':(bt>0?'oklch(0.44 0.11 158)':'oklch(0.27 0.02 260)'); v.liquidoStyle={fontFamily:"'IBM Plex Mono',monospace", fontSize:'13.5px', fontWeight:700, textAlign:'right', color:liqColor}; v.onVale=()=>this.openVales(b.id); v.onBonus=()=>this.openBonus(b.id); v.selected=!!((S.sel&&S.sel.folha)||{})[b.id]; v.onToggleSel=()=>this.toggleSel('folha',b.id); return v; };
+    const selFolhaMap=(S.sel&&S.sel.folha)||{};
+    const folhaCat=(key,titulo,singular,color)=>{ const arr=monthBills.filter(b=>b.categoria===key).sort((a,b)=>a.descricao<b.descricao?-1:1); const linhas=arr.map(folhaDecorate); const t=sum(arr); const liqT=arr.reduce((s,b)=>s+this.liquidoOf(b),0); const temVales=t!==liqT; const gIds=arr.map(b=>b.id); return {key, titulo, singular, count:linhas.length+(linhas.length===1?' pessoa':' pessoas'), totalFmt:this.brl0(t), liquidoFmt:this.brl0(liqT), temVales, liquidoLabel:'líquido '+this.brl0(liqT), dotStyle:{width:'11px',height:'11px',borderRadius:'3px',background:color}, linhas, allSel:this.selAllChecked('folha',gIds), onToggleAll:()=>this.toggleSelAll('folha',gIds), onAdd:()=>this.openAddFolha(key)}; };
     const folhaGrupos=[folhaCat('professores','Professores','professor','oklch(0.52 0.13 255)'), folhaCat('funcionarios','Funcionários','funcionário','oklch(0.58 0.11 220)')];
     const profT=sum(monthBills.filter(b=>b.categoria==='professores')), funcT=sum(monthBills.filter(b=>b.categoria==='funcionarios'));
     const folhaBills=monthBills.filter(b=>b.categoria==='professores'||b.categoria==='funcionarios');
+    const folhaSelN=Object.keys((S.sel&&S.sel.folha)||{}).length;
     const folhaPagos=folhaBills.filter(b=>b.pago).length;
     const folhaKpis=[
       {label:'Folha total · '+this.monthShort(comp), value:this.brl0(profT+funcT), sub:folhaBills.length+' colaboradores', valueStyle:{...mono,color:'oklch(0.27 0.02 260)'}},
@@ -2681,7 +3158,10 @@ class Component extends DCLogic {
     ];
 
     // vendors
-    const vendorList=S.vendors.map(v=>{ const cat=this.CATS.find(c=>c.key===v.categoria)||{label:v.categoria,color:'#888'}; return {nome:v.nome, contato:v.contato, catLabel:cat.label, catDot:{width:'9px',height:'9px',borderRadius:'3px',background:cat.color,flex:'0 0 auto'}, onEditar:()=>this.openEditVendor(v.id), onDelete:()=>this.askDelete('o fornecedor “'+v.nome+'”?', ()=>this.deleteVendor(v.id))}; });
+    const selVendMap=(S.sel&&S.sel.vendors)||{};
+    const vendorIds=S.vendors.map(v=>v.id);
+    const vendorSelN=Object.keys(selVendMap).length;
+    const vendorList=S.vendors.map(v=>{ const cat=this.CATS.find(c=>c.key===v.categoria)||{label:v.categoria,color:'#888'}; return {nome:v.nome, contato:v.contato, catLabel:cat.label, catDot:{width:'9px',height:'9px',borderRadius:'3px',background:cat.color,flex:'0 0 auto'}, selected:!!selVendMap[v.id], onToggleSel:()=>this.toggleSel('vendors',v.id), onEditar:()=>this.openEditVendor(v.id), onDelete:()=>this.askDelete('o fornecedor “'+v.nome+'”?', ()=>this.deleteVendor(v.id))}; });
 
     // festas
     const fstPill=(st)=>{ const m=this.FSTATUS[st]||this.FSTATUS.planejamento; return {meta:m, style:{background:m.bg,color:m.color,padding:'4px 11px',borderRadius:'20px',fontSize:'11.5px',fontWeight:600,whiteSpace:'nowrap'}}; };
@@ -2721,16 +3201,19 @@ class Component extends DCLogic {
     const relFestas=festasCalc.map(x=>({nome:x.f.nome, dataFmt:this.fmtDateFull(x.f.data), arrecadFmt:this.brl0(x.arrecad), custoFmt:this.brl0(x.custo), resultadoFmt:this.brlSigned(x.resultado)}));
 
     // nav + header
-    const titles={dashboard:['Painel financeiro','Visão geral dos custos e contas do mês'], pagamentos:['Pagamentos','Calendário de vencimentos e o que pagar hoje'], folha:['Folha de pagamento','Salários por professor e colaborador'], contas:['Contas a pagar','Registre, filtre e quite seus compromissos'], festas:['Festas e eventos','Arrecadação por aluno vs. custos de cada festa'], fornecedores:['Fornecedores','Quem você paga, por categoria'], relatorios:['Relatórios','Visão anual, categorias e resultado das festas']};
-    const navItems=[['dashboard','Painel'],['pagamentos','Pagamentos'],['folha','Folha de Pagamento'],['contas','Contas a Pagar'],['festas','Festas'],['fornecedores','Fornecedores'],['relatorios','Relatórios']].map(([k,label])=>{ const active=S.view===k; return {label, onClick:()=>this.setState({view:k}), style:{display:'flex',alignItems:'center',gap:'11px',padding:'10px 12px',borderRadius:'9px',fontSize:'13.5px',fontWeight:active?600:500,cursor:'pointer',border:'none',textAlign:'left',width:'100%',background:active?PRIMARY:'transparent',color:active?'#fff':'oklch(0.42 0.02 260)'}, dotStyle:{width:'7px',height:'7px',borderRadius:'2px',background:active?'#fff':'oklch(0.72 0.02 260)',flex:'0 0 auto'}}; });
+    const titles={dashboard:['Painel financeiro','Visão geral dos custos e contas do mês'], pagamentos:['Pagamentos','Calendário de vencimentos e o que pagar hoje'], folha:['Folha de pagamento','Salários por professor e colaborador'], contas:['Contas a pagar','Registre, filtre e quite seus compromissos'], receber:['Contas a receber','Mensalidades, festas, material e demais entradas'], festas:['Festas e eventos','Arrecadação por aluno vs. custos de cada festa'], fornecedores:['Fornecedores','Quem você paga, por categoria'], relatorios:['Relatórios','Visão anual, categorias e resultado das festas']};
+    const navItems=[['dashboard','Painel'],['pagamentos','Pagamentos'],['folha','Folha de Pagamento'],['contas','Contas a Pagar'],['receber','Contas a Receber'],['festas','Festas'],['fornecedores','Fornecedores'],['relatorios','Relatórios']].map(([k,label])=>{ const active=S.view===k; return {label, onClick:()=>this.setState({view:k}), style:{display:'flex',alignItems:'center',gap:'11px',padding:'8px 12px',borderRadius:'9px',fontSize:'13.5px',fontWeight:active?600:500,cursor:'pointer',border:'none',textAlign:'left',width:'100%',background:active?PRIMARY:'transparent',color:active?'#fff':'oklch(0.42 0.02 260)'}, dotStyle:{width:'7px',height:'7px',borderRadius:'2px',background:active?'#fff':'oklch(0.72 0.02 260)',flex:'0 0 auto'}}; });
 
     let headerBtnLabel='+ Nova conta', onHeaderBtn=()=>this.openAdd();
     if(S.view==='festas'){ headerBtnLabel='+ Nova festa'; onHeaderBtn=()=>this.openAddFesta(); }
     else if(S.view==='fornecedores'){ headerBtnLabel='+ Novo fornecedor'; onHeaderBtn=()=>this.openAddVendor(); }
     else if(S.view==='folha'){ headerBtnLabel='+ Adicionar colaborador'; onHeaderBtn=()=>this.openAddFolha('professores'); }
+    else if(S.view==='receber'){ headerBtnLabel='+ Nova receita'; onHeaderBtn=()=>this.openAddReceita(S.filterRCat); }
 
     // form helpers
     const f=S.form||{}, vf=S.vendorForm||{}, ff=S.festaForm||{}, cf=S.custoForm||{}, ef=S.empresaForm||{};
+    const rf=S.receitaForm||{}, rcf=S.rcatForm||{};
+    const urf=(k,v)=>this.setState(s=>({receitaForm:{...s.receitaForm,[k]:v}}));
     const uf=(k,v)=>this.setState(s=>({form:{...s.form,[k]:v}}));
     const uvf=(k,v)=>this.setState(s=>({vendorForm:{...s.vendorForm,[k]:v}}));
     const uff=(k,v)=>this.setState(s=>({festaForm:{...s.festaForm,[k]:v}}));
@@ -2739,12 +3222,17 @@ class Component extends DCLogic {
     const isFolhaCat=f.categoria==='professores'||f.categoria==='funcionarios';
 
     const inputStyle={width:'100%',padding:'9px 12px',border:'1px solid oklch(0.88 0.008 260)',borderRadius:'8px',fontSize:'13.5px',background:'#fff',marginTop:'6px',color:'oklch(0.27 0.02 260)'};
+    const inputStyleDoc={width:'100%',padding:'9px 12px',border:'1px solid oklch(0.88 0.008 260)',borderRadius:'8px',fontSize:'13.5px',background:'#fff',color:'oklch(0.27 0.02 260)',fontFamily:"'IBM Plex Mono',monospace",letterSpacing:'0.02em'};
     const fieldLabel={fontSize:'12.5px',fontWeight:600,color:'oklch(0.45 0.02 260)'};
     const primaryBtnStyle={background:PRIMARY,color:'#fff',border:'none',padding:'10px 17px',borderRadius:'9px',fontSize:'13.5px',fontWeight:600,cursor:'pointer',whiteSpace:'nowrap'};
     const cancelBtnStyle={background:'#fff',color:'oklch(0.4 0.02 260)',border:'1px solid oklch(0.88 0.008 260)',padding:'10px 17px',borderRadius:'9px',fontSize:'13.5px',fontWeight:600,cursor:'pointer'};
     const payBtnStyle={background:'oklch(0.95 0.045 162)',color:'oklch(0.42 0.11 158)',border:'none',padding:'6px 12px',borderRadius:'7px',fontSize:'12px',fontWeight:600,cursor:'pointer',whiteSpace:'nowrap'};
     const iconBtnStyle={background:'#fff',color:'oklch(0.45 0.02 260)',border:'1px solid oklch(0.9 0.008 260)',padding:'5px 10px',borderRadius:'7px',fontSize:'12px',fontWeight:500,cursor:'pointer'};
     const delBtnStyle={background:'#fff',color:'oklch(0.55 0.1 25)',border:'1px solid oklch(0.9 0.02 25)',padding:'5px 9px',borderRadius:'7px',fontSize:'12px',cursor:'pointer'};
+    const checkboxStyle={width:'16px',height:'16px',cursor:'pointer',accentColor:PRIMARY,flex:'0 0 auto',margin:0};
+    const bulkBarStyle={display:'flex',alignItems:'center',gap:'12px',padding:'11px 18px',marginBottom:'14px',background:'oklch(0.97 0.02 255)',border:'1px solid oklch(0.84 0.06 255)',borderRadius:'10px'};
+    const bulkDelBtnStyle={background:'oklch(0.55 0.16 25)',color:'#fff',border:'none',padding:'8px 15px',borderRadius:'8px',fontSize:'13px',fontWeight:600,cursor:'pointer',whiteSpace:'nowrap'};
+    const bulkClearBtnStyle={background:'#fff',color:'oklch(0.45 0.02 260)',border:'1px solid oklch(0.85 0.02 260)',padding:'8px 13px',borderRadius:'8px',fontSize:'12.5px',fontWeight:600,cursor:'pointer'};
     const addRowStyle={background:'oklch(0.975 0.004 260)',color:PRIMARY,border:'1px dashed oklch(0.82 0.02 260)',padding:'9px 14px',borderRadius:'8px',fontSize:'13px',fontWeight:600,cursor:'pointer',width:'100%'};
     const genBtnStyle={background:'#fff',color:'oklch(0.4 0.02 260)',border:'1px solid oklch(0.88 0.008 260)',padding:'9px 13px',borderRadius:'9px',fontSize:'12.5px',fontWeight:600,cursor:'pointer',whiteSpace:'nowrap'};
     const navArrowStyle={background:'transparent',border:'none',fontSize:'18px',cursor:'pointer',color:'oklch(0.4 0.02 260)',padding:'2px 9px',lineHeight:1,borderRadius:'6px'};
@@ -2761,23 +3249,35 @@ class Component extends DCLogic {
       nomeStyle:{fontSize:'13px', fontWeight:600},
     }));
     const escopoNome= uni==='geral'?'Geral · as 2 unidades':unitMeta(uni).nome;
+    const unidadeSelValue=uni;
+    const unidadeSelOptions=uniList.map(u=>({key:u.key, label:u.nome+' · '+u.sub}));
+    const unidadeUnica=this.numUnidades===1;
+    const unidadeMulti=this.numUnidades!==1;
+    const unidadeSelStyle={width:'100%', appearance:'none', WebkitAppearance:'none', padding:'9px 30px 9px 12px', border:'1px solid oklch(0.88 0.012 260)', borderRadius:'9px', fontSize:'13px', fontWeight:600, color:'oklch(0.3 0.02 260)', background:'#fff', cursor:'pointer', backgroundImage:"url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 10 10'><path d='M2 3.5L5 6.5L8 3.5' stroke='%23555' stroke-width='1.4' fill='none' stroke-linecap='round'/></svg>\")", backgroundRepeat:'no-repeat', backgroundPosition:'right 10px center'};
 
     // ---- extrato: importação (preview) ----
     const exRows=S.extratoRows||[];
     const exCatOptions=this.CATS.map(c=>({key:c.key, label:c.label}));
+    const exRCatOptions=this.RCATS.map(c=>({key:c.key, label:c.label}));
     const exSelecionados=exRows.filter(r=>r.incluir);
+    const exEntradas=exSelecionados.filter(r=>r.tipo==='entrada');
+    const exSaidas=exSelecionados.filter(r=>r.tipo!=='entrada');
+    const exTotalSaidas=exSaidas.reduce((a,r)=>a+r.valor,0);
+    const exTotalEntradas=exEntradas.reduce((a,r)=>a+r.valor,0);
     const exTotal=exSelecionados.reduce((a,r)=>a+r.valor,0);
-    const exRowsView=exRows.map((r,i)=>({
-      incluir:r.incluir, data:this.fmtDateFull(r.data), descricao:r.descricao, valorFmt:this.brl(r.valor),
+    const exRowsView=exRows.map((r,i)=>{ const isEntrada=r.tipo==='entrada'; return {
+      incluir:r.incluir, isEntrada, data:this.fmtDateFull(r.data), descricao:r.descricao, valorFmt:(isEntrada?'+ ':'− ')+this.brl(r.valor),
       categoria:r.categoria, auto:r.auto, dup:!!r.dup, aClassificar:r.categoria==='a_classificar',
+      catOptions: isEntrada?exRCatOptions:exCatOptions,
+      tipoLabel:isEntrada?'Entrada':'Saída', tipoStyle:{fontSize:'9.5px', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.03em', padding:'1px 7px', borderRadius:'20px', color:isEntrada?'oklch(0.44 0.11 158)':'oklch(0.5 0.14 28)', background:isEntrada?'oklch(0.95 0.045 162)':'oklch(0.96 0.04 28)', flex:'0 0 auto'},
       rowStyle:{display:'grid', gridTemplateColumns:'32px 88px 1fr 108px 172px', gap:'10px', padding:'8px 14px', borderBottom:'1px solid oklch(0.96 0.005 260)', fontSize:'12.5px', alignItems:'center', background:r.incluir?'#fff':'oklch(0.978 0.004 260)'},
-      descStyle:{whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', opacity:r.incluir?1:0.5},
-      valStyle:{fontFamily:"'IBM Plex Mono',monospace", fontWeight:600, textAlign:'right', opacity:r.incluir?1:0.5},
+      descStyle:{whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', opacity:r.incluir?1:0.5, display:'flex', alignItems:'center', gap:'7px', minWidth:0},
+      valStyle:{fontFamily:"'IBM Plex Mono',monospace", fontWeight:600, textAlign:'right', opacity:r.incluir?1:0.5, color:isEntrada?'oklch(0.44 0.11 158)':'oklch(0.42 0.1 28)'},
       badgeStyle:{fontSize:'9.5px', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.03em', padding:'1px 6px', borderRadius:'20px', marginLeft:'7px', color:r.dup?'oklch(0.5 0.02 260)':(r.auto?'oklch(0.44 0.11 158)':'oklch(0.5 0.13 68)'), background:r.dup?'oklch(0.94 0.005 260)':(r.auto?'oklch(0.95 0.045 162)':'oklch(0.96 0.05 82)')},
       badgeText:r.dup?'já importado':(r.auto?'auto':'manual'),
       onToggle:()=>this.toggleExtratoRow(i), onCat:(e)=>this.setExtratoRowCat(i, e.target.value),
       catSelStyle:{padding:'6px 8px', border:'1px solid '+(r.categoria==='a_classificar'?'oklch(0.78 0.12 68)':'oklch(0.9 0.008 260)'), borderRadius:'7px', fontSize:'11.5px', width:'100%', background:r.categoria==='a_classificar'?'oklch(0.97 0.045 82)':'#fff', color:'oklch(0.27 0.02 260)'},
-    }));
+    }; });
     const exUnidadeNome = uni==='geral' ? (unitMeta('u1').nome+' — padrão, pois "Geral" está selecionado') : unitMeta(uni).nome;
     const exAClass=exSelecionados.filter(r=>r.categoria==='a_classificar').length;
 
@@ -2798,13 +3298,14 @@ class Component extends DCLogic {
     return {
       logoStyle:{width:'40px',height:'40px',borderRadius:'10px',background:PRIMARY,color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:800,fontSize:'15px',letterSpacing:'0.02em',flex:'0 0 auto'},
       primaryColor:PRIMARY, mesCurto:this.monthShort(comp), totalMesFmt:this.brl0(total), atalho:monthBills.length+' contas neste mês',
+      sidebarSaldoFmt:this.brlSigned(saldoMes), sidebarSaldoStyle:{fontFamily:"'IBM Plex Mono',monospace",fontSize:'18px',fontWeight:700,marginTop:'4px',letterSpacing:'-0.01em',color:saldoMes>=0?'oklch(0.42 0.12 158)':'oklch(0.5 0.18 25)'}, sidebarSaldoSub:'Receitas '+this.brl0(recTotal)+' − Despesas '+this.brl0(total),
       viewTitle:(titles[S.view]||['',''])[0], viewSubtitle:(titles[S.view]||['',''])[1],
       navItems, primaryBtnStyle, headerBtnLabel, onHeaderBtn,
-      unidadeTabs, escopoNome,
-      showMonthNav:(S.view==='dashboard'||S.view==='pagamentos'||S.view==='folha'||S.view==='contas'),
+      unidadeTabs, escopoNome, unidadeSelValue, unidadeSelOptions, unidadeSelStyle, unidadeUnica, unidadeMulti, onUnidadeSel:e=>this.setState({unidade:e.target.value}),
+      showMonthNav:(S.view==='dashboard'||S.view==='pagamentos'||S.view==='folha'||S.view==='contas'||S.view==='receber'),
       mesLabel:this.monthName(comp), prevMonth:()=>this.setState({competencia:this.addMonths(comp,-1)}), nextMonth:()=>this.setState({competencia:this.addMonths(comp,1)}),
-      generateNext:()=>this.generateNext(), navArrowStyle, genBtnStyle, flash:S.flash,
-      isDashboard:S.view==='dashboard', isFolha:S.view==='folha', isContas:S.view==='contas', isFestas:S.view==='festas', isFornecedores:S.view==='fornecedores', isRelatorios:S.view==='relatorios',
+      generateNext:()=> S.view==='receber'?this.generateNextReceitas():this.generateNext(), navArrowStyle, genBtnStyle, flash:S.flash,
+      isDashboard:S.view==='dashboard', isFolha:S.view==='folha', isContas:S.view==='contas', isReceber:S.view==='receber', isFestas:S.view==='festas', isFornecedores:S.view==='fornecedores', isRelatorios:S.view==='relatorios',
       isPagamentos:S.view==='pagamentos', calWeekdays, calCells, pagKpis, pagPanel,
       pagPanelHeaderBg: (pagPanel.isHoje?'oklch(0.97 0.018 255)':'oklch(0.985 0.004 260)'),
       payAllBtnStyle:{...primaryBtnStyle, width:'100%', marginTop:'12px'},
@@ -2812,7 +3313,7 @@ class Component extends DCLogic {
       chartTabs, chartHbar:S.chartType==='hbar', chartVbar:S.chartType==='vbar', chartPie:S.chartType==='pie', pieStyle,
       reportMonth:S.reportMonth, reportFesta:S.reportFesta, onReportMonth:e=>this.setState({reportMonth:e.target.value}), onReportFesta:e=>this.setState({reportFesta:e.target.value}),
       festaOptions:S.festas.map(f=>({id:f.id, nome:f.nome})),
-      openMensal:()=>this.openReport('mensal'), openAnual:()=>this.openReport('anual'), openFestaRep:()=>this.openReport('festa'), openFolhaRep:()=>this.openReport('folha'), openCategorias:()=>this.openReport('categorias'),
+      openMensal:()=>this.openReport('mensal'), openAnual:()=>this.openReport('anual'), openFestaRep:()=>this.openReport('festa'), openFolhaRep:()=>this.openReport('folha'), openRecebimentos:()=>this.openReport('recebimentos'), openCategorias:()=>this.openReport('categorias'),
       closeReport:()=>this.closeReport(), doPrint:()=>window.print(),
       // login / autenticação
       logged:S.logged, notLogged:!S.logged,
@@ -2837,6 +3338,8 @@ class Component extends DCLogic {
       goContas:()=>this.setState({view:'contas'}),
       temAtraso:atrB.length>0, alertaAtraso:atrB.length+(atrB.length===1?' conta vencida — total de ':' contas vencidas — total de ')+this.brl0(atr), payBtnStyle,
       folhaKpis, folhaGrupos, addRowStyle,
+      checkboxStyle, bulkBarStyle, bulkDelBtnStyle, bulkClearBtnStyle,
+      folhaHasSel:folhaSelN>0, folhaSelLabel:folhaSelN+' selecionado'+(folhaSelN>1?'s':''), onFolhaBulkDelete:()=>this.bulkDeleteBills('folha','lançamento','lançamentos'), onFolhaClearSel:()=>this.clearSel('folha'),
       cnabTotal:folhaBills.length, cnabComplete:folhaBills.filter(b=>b.cpf&&b.banco&&b.agencia&&b.conta).length,
       cnabResumo:folhaBills.filter(b=>b.cpf&&b.banco&&b.agencia&&b.conta).length+' de '+folhaBills.length+' colaboradores com dados bancários completos · '+this.brl0(profT+funcT),
       cnabIncompleto:folhaBills.some(b=>!(b.cpf&&b.banco&&b.agencia&&b.conta)),
@@ -2849,7 +3352,7 @@ class Component extends DCLogic {
       // importar extrato
       openExtratoBanco:()=>this.openExtrato('extrato'), openExtratoCartao:()=>this.openExtrato('cartao'), closeExtrato:()=>this.closeExtrato(), extratoModalOpen:S.extratoModalOpen,
       extratoTitulo: S.extratoModo==='cartao'?'Importar fatura do cartão de crédito':'Importar extrato bancário',
-      extratoSubtitulo: S.extratoModo==='cartao'?'Arquivo CSV, planilha ou texto colado da fatura. Cada compra vira um gasto pago; pagamentos de fatura e estornos são ignorados.':'Arquivo CSV, planilha ou texto colado do extrato (Bradesco, Itaú…). Importo só as saídas; entradas e créditos são ignorados.',
+      extratoSubtitulo: S.extratoModo==='cartao'?'Arquivo CSV, planilha ou texto colado da fatura. Cada compra vira um gasto pago; pagamentos de fatura e estornos são ignorados.':'Arquivo CSV, planilha ou texto colado do extrato (Bradesco, Itaú…). Saídas viram contas a pagar (pagas) e entradas/créditos viram contas a receber (recebidas).',
       extratoTexto:S.extratoTexto, onExtratoTexto:(e)=>this.setExtratoTexto(e.target.value), lerExtratoTexto:()=>this.lerExtratoTexto(), extratoTemTexto:!!(S.extratoTexto && S.extratoTexto.trim()),
       extratoIgnoradosLabel: S.extratoModo==='cartao'?'pagamento(s) de fatura / estorno(s) ignorado(s) — só importo as compras.':'entrada(s)/crédito(s) ignorada(s) — só importo saídas.',
       extratoDups:S.extratoDups, extratoTemDups:(S.extratoDups||0)>0,
@@ -2859,9 +3362,11 @@ class Component extends DCLogic {
       extratoRowsView:exRowsView, extratoCatOptions:exCatOptions, extratoCount:exSelecionados.length,
       extratoTotalFmt:this.brl(exTotal), extratoIgnorados:S.extratoIgnorados, extratoTemIgnorados:(S.extratoIgnorados||0)>0,
       extratoUnidadeNome:exUnidadeNome, extratoAClass:exAClass, extratoTemAClass:exAClass>0,
+      extratoDestinoTexto: (S.extratoModo==='cartao') ? ('Cada compra entra em Contas a Pagar (paga) na '+exUnidadeNome+'. Edite depois se precisar.') : ('Saídas entram em Contas a Pagar (pagas) e entradas em Contas a Receber (recebidas), na '+exUnidadeNome+'.'),
+      extratoConfirmLabel: (()=>{ const p=[]; if(exSaidas.length) p.push(exSaidas.length+' saída(s)'); if(exEntradas.length) p.push(exEntradas.length+' entrada(s)'); return 'Importar '+(p.join(' + ')||(exSelecionados.length+' lançamento(s)')); })(),
       extratoSelAll:()=>this.extratoSelectAll(true), extratoSelNone:()=>this.extratoSelectAll(false),
       extratoPeriodo: exRows.length? (this.fmtDateFull(exRows[0].data)+' – '+this.fmtDateFull(exRows[exRows.length-1].data)) : '',
-      extratoDetectados: exRows.length+(exRows.length===1?' gasto identificado':' gastos identificados'),
+      extratoDetectados: exRows.length+(exRows.length===1?' lançamento identificado':' lançamentos identificados'),
       // gerenciar categorias
       catModalOpen:S.catModalOpen, openCatModal:()=>this.openCatModal(), closeCatModal:()=>this.closeCatModal(),
       catList, catFormOpen:!!cform, catForm:cform, catNew:()=>this.catNew(), catEditCancel:()=>this.catCancelForm(),
@@ -2872,8 +3377,51 @@ class Component extends DCLogic {
       irAClassificar:()=>this.setState({view:'contas', filterCat:'a_classificar', filterStatus:'all'}),
       catChips, statusChips, search:S.search, onSearch:(e)=>this.setState({search:e.target.value}),
       filteredBills, listaVazia:filteredBills.length===0, iconBtnStyle, delBtnStyle, contasHead,
+      contasHasSel:contasSelN>0, contasAllSel:this.selAllChecked('contas',contasIds), contasSelLabel:contasSelN+(contasSelN>1?' contas selecionadas':' conta selecionada'), onContasToggleAll:()=>this.toggleSelAll('contas',contasIds), onContasBulkDelete:()=>this.bulkDeleteBills('contas','conta','contas'), onContasClearSel:()=>this.clearSel('contas'),
       resumoContagem:filteredBills.length+(filteredBills.length===1?' conta exibida':' contas exibidas'), totalFiltradoFmt:this.brl(sum(fb)),
       vendorList,
+      vendorHasSel:vendorSelN>0, vendorAllSel:this.selAllChecked('vendors',vendorIds), vendorSelLabel:vendorSelN+(vendorSelN>1?' fornecedores selecionados':' fornecedor selecionado'), onVendorToggleAll:()=>this.toggleSelAll('vendors',vendorIds), onVendorBulkDelete:()=>this.bulkDeleteVendors(), onVendorClearSel:()=>this.clearSel('vendors'),
+      // ---- contas a receber ----
+      rcatChips, rstatusChips, searchRec:S.searchRec, onSearchRec:(e)=>this.setState({searchRec:e.target.value}),
+      openRCatModal:()=>this.openRCatModal(), receberHead,
+      receitaList, receberVazia:receitaList.length===0,
+      receberTotalFmt:this.brl(recAtivas.filter(r=>{ if(S.filterRCat!=='all'&&r.categoria!==S.filterRCat) return false; if(S.filterRStatus!=='all'&&this.statusRec(r)!==S.filterRStatus) return false; return true; }).reduce((s,r)=>s+r.valor,0)),
+      receberContagem:receitaList.length+(receitaList.length===1?' receita exibida':' receitas exibidas'),
+      recKpis:[
+        {label:'Receita total · '+this.monthShort(comp), value:this.brl0(recTotal), sub:recAtivas.length+' lançamentos', valueStyle:{...mono,color:'oklch(0.44 0.11 158)'}},
+        {label:'Recebido', value:this.brl0(recRecebido), sub:recRecebidoArr.length+' entradas', valueStyle:{...mono,color:'oklch(0.44 0.11 158)'}},
+        {label:'A receber', value:this.brl0(recAReceber), sub:(recPendArr.length+recAtrasadoArr.length)+' em aberto', valueStyle:{...mono,color:'oklch(0.5 0.13 68)'}},
+        {label:'Em atraso', value:this.brl0(recAtrasado), sub:recAtrasadoArr.length+' vencidas', valueStyle:{...mono,color:recAtrasado>0?'oklch(0.5 0.18 25)':'oklch(0.6 0.02 260)'}},
+      ],
+      receberHasSel:receberSelN>0, receberAllSel:this.selAllChecked('receber',receberIds), receberSelLabel:receberSelN+(receberSelN>1?' receitas selecionadas':' receita selecionada'), onReceberToggleAll:()=>this.toggleSelAll('receber',receberIds), onReceberBulkDelete:()=>this.bulkDeleteReceitas(), onReceberClearSel:()=>this.clearSel('receber'),
+      // ---- saldo do mês (painel) ----
+      saldoMesFmt:this.brlSigned(saldoMes), saldoMesPositivo:saldoMes>=0,
+      saldoMesValueStyle:{fontFamily:"'IBM Plex Mono',monospace",fontSize:'40px',fontWeight:700,letterSpacing:'-0.02em',marginTop:'4px',color:saldoMes>=0?'oklch(0.44 0.12 158)':'oklch(0.5 0.18 25)'},
+      saldoReceitasFmt:this.brl0(recTotal), saldoDespesasFmt:this.brl0(total),
+      saldoRealizadoFmt:this.brlSigned(saldoRealizado), saldoRealizadoSub:'recebido '+this.brl0(recRecebido)+' − pago '+this.brl0(pago),
+      saldoCardStyle:{background:saldoMes>=0?'linear-gradient(135deg, oklch(0.97 0.03 158), #fff)':'linear-gradient(135deg, oklch(0.97 0.03 25), #fff)', border:'1px solid '+(saldoMes>=0?'oklch(0.85 0.06 158)':'oklch(0.88 0.06 25)'), borderRadius:'14px', padding:'22px 26px', marginBottom:'18px'},
+      goReceber:()=>this.setState({view:'receber'}),
+      // ---- receita modal ----
+      receitaModalOpen:S.receitaModalOpen, receitaModalTitle:rf.id?'Editar receita':'Nova receita',
+      receitaForm:rf, rcategorias:this.RCATS.filter(c=>c.key!=='festas'),
+      onRDescricao:e=>urf('descricao',e.target.value), onRCategoria:e=>urf('categoria',e.target.value),
+      onRPagador:e=>urf('pagador',e.target.value), onRValor:e=>urf('valor',e.target.value),
+      onRVencimento:e=>urf('vencimento',e.target.value), onRUnidade:e=>urf('unidade',e.target.value),
+      onRRecorrente:e=>urf('recorrente',e.target.checked), onRRecebido:e=>urf('recebido',e.target.checked),
+      onRParcelas:e=>urf('parcelas',e.target.value),
+      rParcelaOpcoes:Array.from({length:12},(_,i)=>({v:String(i+1), label:i===0?'1× (à vista)':((i+1)+'× parcelas mensais')})),
+      rShowParcelas:!rf.id, rParcelaResumo:(()=>{ const np=parseInt(rf.parcelas)||1; const v=this.parseNum(rf.valor); if(np<=1||v<=0) return 'À vista.'; return np+'× de '+this.brl(Math.round((v/np)*100)/100)+' (uma por mês).'; })(),
+      rUnidadeOptions:this.UNIDADES.map(u=>({key:u.key, nome:u.nome+' — '+u.sub})),
+      closeReceitaModal:()=>this.closeReceitaModal(), saveReceita:()=>this.saveReceita(),
+      receitaDeleteStyle:{background:'#fff',color:rf.id?'oklch(0.55 0.13 25)':'transparent',border:rf.id?'1px solid oklch(0.9 0.03 25)':'none',padding:'10px 15px',borderRadius:'9px',fontSize:'13px',fontWeight:600,cursor:rf.id?'pointer':'default'},
+      receitaDeleteFromModal:()=> rf.id?this.askDelete('“'+(rf.descricao||'esta receita')+'”?', ()=>this.deleteReceita(rf.id)):this.closeReceitaModal(),
+      // ---- categorias de receita (modal) ----
+      rcatModalOpen:S.rcatModalOpen, rcatManage, rcatForm:rcf, rcatFormEditing:!!rcf.key,
+      rcatFormTitle:rcf.key?'Editar categoria':'Nova categoria de receita',
+      onRCatLabel:e=>this.rcatFormSet({label:e.target.value}),
+      rcatPalette:this.CAT_PALETTE.map(c=>({color:c, active:rcf.color===c, onClick:()=>this.rcatFormSet({color:c}), style:{width:'26px',height:'26px',borderRadius:'7px',background:c,cursor:'pointer',border:rcf.color===c?'3px solid oklch(0.3 0.02 260)':'2px solid #fff',boxShadow:'0 0 0 1px oklch(0.9 0.008 260)'}})),
+      closeRCatModal:()=>this.closeRCatModal(), saveRCat:()=>this.saveRCat(),
+      rcatSaveLabel:rcf.key?'Salvar':'Adicionar',
       festaCards, festaSel,
       relKpis, relCategorias, relMensal, relFestas, festasLiquidoFmt:this.brlSigned(festasLiquido), festasLiquidoStyle:{fontFamily:"'IBM Plex Mono',monospace",fontWeight:700,color:festasLiquido>=0?'oklch(0.44 0.11 158)':'oklch(0.5 0.18 25)'},
       // conta modal
@@ -2898,7 +3446,7 @@ class Component extends DCLogic {
       closeModal:()=>this.closeModal(), saveBill:()=>this.saveBill(), stop:(e)=>e.stopPropagation(),
       deleteFromModal:()=> f.id?this.askDelete('“'+(f.descricao||'este lançamento')+'”?', ()=>this.deleteBill(f.id)):this.closeModal(),
       modalDeleteStyle:{background:'#fff',color:f.id?'oklch(0.55 0.13 25)':'transparent',border:f.id?'1px solid oklch(0.9 0.03 25)':'none',padding:'10px 15px',borderRadius:'9px',fontSize:'13px',fontWeight:600,cursor:f.id?'pointer':'default',visibility:f.id?'visible':'hidden'},
-      inputStyle, fieldLabel, cancelBtnStyle,
+      inputStyle, inputStyleDoc, fieldLabel, cancelBtnStyle,
       // expose cargoOrForn for modal field binding
       // vendor modal
       vendorModalOpen:S.vendorModalOpen, vendorModalTitle:vf.id?'Editar fornecedor':'Novo fornecedor', vendorForm:vf,
