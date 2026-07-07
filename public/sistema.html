@@ -35,14 +35,18 @@
   <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; background:linear-gradient(150deg, oklch(0.32 0.07 262) 0%, oklch(0.24 0.05 262) 55%, oklch(0.2 0.03 262) 100%)">
     <div style="width:400px; max-width:100%; background:#fff; border-radius:16px; box-shadow:0 24px 70px rgba(10,20,50,0.4); overflow:hidden">
       <div style="padding:32px 34px 24px; text-align:center; border-bottom:1px solid oklch(0.94 0.008 260)">
-        <div style="width:56px; height:56px; border-radius:13px; background:#2952a3; color:#fff; font-weight:800; font-size:21px; letter-spacing:-0.02em; display:flex; align-items:center; justify-content:center; margin:0 auto 14px">{{ escolaSigla }}</div>
-        <div style="font-size:19px; font-weight:800; letter-spacing:-0.015em; color:oklch(0.24 0.02 260)">{{ escolaNome }}</div>
-        <div style="font-size:13px; color:oklch(0.55 0.02 260); margin-top:3px">{{ escolaSub }} · acesso restrito</div>
+        <div style="width:56px; height:56px; border-radius:13px; background:#2952a3; color:#fff; font-weight:800; font-size:24px; letter-spacing:-0.02em; display:flex; align-items:center; justify-content:center; margin:0 auto 14px">$</div>
+        <div style="font-size:19px; font-weight:800; letter-spacing:-0.015em; color:oklch(0.24 0.02 260)">Gestão Financeira</div>
+        <div style="font-size:13px; color:oklch(0.55 0.02 260); margin-top:3px">Entre com o usuário e a senha da sua empresa</div>
       </div>
       <div style="padding:26px 34px 30px; display:flex; flex-direction:column; gap:15px">
         <div>
+          <label style="font-size:12.5px; font-weight:600; color:oklch(0.42 0.02 260)">Usuário</label>
+          <input value="{{ loginUser }}" onChange="{{ onLoginUser }}" onKeyDown="{{ onLoginKey }}" type="text" autocapitalize="off" autocomplete="username" placeholder="ex: escolasaogregorio" autofocus="1" style="width:100%; box-sizing:border-box; padding:11px 13px; border:1px solid oklch(0.88 0.008 260); border-radius:9px; font-size:14px; margin-top:6px; background:#fff; color:oklch(0.27 0.02 260)" />
+        </div>
+        <div>
           <label style="font-size:12.5px; font-weight:600; color:oklch(0.42 0.02 260)">Senha de acesso</label>
-          <input value="{{ loginPass }}" onChange="{{ onLoginPass }}" onKeyDown="{{ onLoginKey }}" type="password" placeholder="••••••••" autofocus="1" style="width:100%; box-sizing:border-box; padding:11px 13px; border:1px solid oklch(0.88 0.008 260); border-radius:9px; font-size:14px; margin-top:6px; background:#fff; color:oklch(0.27 0.02 260)" />
+          <input value="{{ loginPass }}" onChange="{{ onLoginPass }}" onKeyDown="{{ onLoginKey }}" type="password" autocomplete="current-password" placeholder="••••••••" style="width:100%; box-sizing:border-box; padding:11px 13px; border:1px solid oklch(0.88 0.008 260); border-radius:9px; font-size:14px; margin-top:6px; background:#fff; color:oklch(0.27 0.02 260)" />
         </div>
         <sc-if value="{{ loginHasError }}" hint-placeholder-val="{{ false }}">
           <div style="background:oklch(0.96 0.04 25); color:oklch(0.45 0.13 25); padding:9px 13px; border-radius:8px; font-size:12.5px">{{ loginError }}</div>
@@ -52,7 +56,7 @@
           Manter conectado neste computador
         </label>
         <button onClick="{{ doLogin }}" style="width:100%; padding:12px; background:#2952a3; color:#fff; border:none; border-radius:9px; font-size:14.5px; font-weight:700; cursor:pointer; margin-top:2px">{{ loginBtnLabel }}</button>
-        <div style="font-size:11.5px; color:oklch(0.62 0.02 260); text-align:center; line-height:1.5; margin-top:4px">Acesso protegido. Os dados ficam salvos na nuvem e sincronizam entre os computadores da escola.</div>
+        <div style="font-size:11.5px; color:oklch(0.62 0.02 260); text-align:center; line-height:1.5; margin-top:4px">Acesso protegido. Cada empresa tem seus próprios dados, salvos na nuvem e sincronizados entre os computadores.</div>
       </div>
     </div>
   </div>
@@ -114,7 +118,9 @@
           </div>
           <button onClick="{{ generateNext }}" style="{{ genBtnStyle }}" title="Copiar contas recorrentes para o próximo mês">↻ Gerar mês seguinte</button>
         </sc-if>
-        <button onClick="{{ onHeaderBtn }}" style="{{ primaryBtnStyle }}">{{ headerBtnLabel }}</button>
+        <sc-if value="{{ showHeaderBtn }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ onHeaderBtn }}" style="{{ primaryBtnStyle }}">{{ headerBtnLabel }}</button>
+        </sc-if>
       </div>
     </header>
 
@@ -1309,7 +1315,7 @@
         <div style="padding:20px 24px; border-bottom:1px solid oklch(0.93 0.008 260); display:flex; align-items:center; justify-content:space-between">
           <div>
             <h3 style="margin:0; font-size:17px; font-weight:700">Importar cadastro de funcionários</h3>
-            <div style="font-size:12.5px; color:oklch(0.56 0.02 260); margin-top:2px">Cole os dados do seu outro sistema (Excel, CSV ou tabela). O sistema identifica as colunas automaticamente.</div>
+            <div style="font-size:12.5px; color:oklch(0.56 0.02 260); margin-top:2px">Envie uma planilha (.xls/.xlsx), CSV/TXT, ou cole os dados. O sistema identifica as colunas automaticamente.</div>
           </div>
           <button onClick="{{ closeImport }}" style="background:none; border:none; font-size:20px; cursor:pointer; color:oklch(0.55 0.02 260); line-height:1; padding:4px">✕</button>
         </div>
@@ -1318,6 +1324,16 @@
             <label style="{{ fieldLabel }}">Categoria padrão (quando não houver coluna de tipo):</label>
             <select value="{{ importCat }}" onChange="{{ onImportCat }}" style="padding:8px 11px; border:1px solid oklch(0.9 0.008 260); border-radius:8px; font-size:13px; background:oklch(0.985 0.003 260)"><option value="professores">Professores</option><option value="funcionarios">Funcionários</option></select>
           </div>
+          <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap">
+            <label style="display:inline-flex; align-items:center; gap:9px; padding:11px 16px; border:1.5px dashed oklch(0.78 0.02 260); border-radius:10px; cursor:pointer; font-size:13px; font-weight:600; color:{{ primaryColor }}; background:oklch(0.985 0.003 260)">
+              ⬆ Escolher arquivo (planilha, CSV ou TXT)
+              <input type="file" accept=".csv,.txt,.xls,.xlsx" onChange="{{ onImportFile }}" style="display:none" />
+            </label>
+            <sc-if value="{{ importTemArquivo }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:12.5px; color:oklch(0.5 0.02 260)">📄 {{ importFileName }}</div>
+            </sc-if>
+          </div>
+          <div style="font-size:12px; font-weight:600; color:oklch(0.5 0.02 260)">…ou cole os dados abaixo (copiado do Excel/Planilhas ou CSV):</div>
           <textarea value="{{ importText }}" onChange="{{ onImportText }}" placeholder="Cole aqui. Exemplo:&#10;Nome	Cargo	Salário	CPF	PIS	E-mail	Banco	Agência	Conta&#10;Daniela Souza	Matemática	6500	12345678901	12345678901	daniela@escola.com	237	1234	56789-0" style="width:100%; min-height:150px; padding:12px 14px; border:1px solid oklch(0.88 0.008 260); border-radius:9px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; line-height:1.5; resize:vertical; color:oklch(0.27 0.02 260)"></textarea>
           <div style="font-size:11.5px; color:oklch(0.56 0.02 260)">Dica: copie direto do Excel/Planilhas (colunas separadas por tabulação) ou cole um CSV. Colunas reconhecidas: nome, cargo/disciplina, tipo, salário, CPF, PIS, e-mail, banco, agência, conta.</div>
           <sc-if value="{{ importError }}" hint-placeholder-val="{{ false }}">
@@ -1400,6 +1416,13 @@
                 <span>➜ {{ extratoDestinoTexto }}</span>
               </div>
 
+              <sc-if value="{{ extratoTemConc }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; align-items:flex-start; gap:9px; background:oklch(0.96 0.03 250); border:1px solid oklch(0.85 0.06 250); border-radius:9px; padding:9px 13px; margin-bottom:8px; font-size:12px; color:oklch(0.34 0.06 255)">
+                  <span>🔗</span>
+                  <span><strong>{{ extratoConc }} lançamento(s) já tinham conta cadastrada</strong> (mesmo valor e data próxima). Por padrão vou <strong>quitar a conta que já existe</strong> em vez de criar outra, evitando a duplicação. Se for realmente um segundo gasto, troque para “Criar nova” na linha.</span>
+                </div>
+              </sc-if>
+
               <sc-if value="{{ extratoTemDups }}" hint-placeholder-val="{{ false }}">
                 <div style="display:flex; align-items:center; gap:9px; background:oklch(0.96 0.005 260); border:1px solid oklch(0.91 0.008 260); border-radius:9px; padding:8px 13px; margin-bottom:8px; font-size:12.5px; color:oklch(0.45 0.02 260)">
                   <span>⟳</span>
@@ -1419,11 +1442,19 @@
                     <div style="{{ r.rowStyle }}">
                       <input type="checkbox" checked="{{ r.incluir }}" onChange="{{ r.onToggle }}" style="width:16px; height:16px; cursor:pointer; accent-color:oklch(0.5 0.13 255)" />
                       <span style="font-family:'IBM Plex Mono',monospace">{{ r.data }}</span>
-                      <span style="{{ r.descStyle }}"><span style="{{ r.tipoStyle }}">{{ r.tipoLabel }}</span><span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ r.descricao }}</span><span style="{{ r.badgeStyle }}">{{ r.badgeText }}</span></span>
+                      <span style="{{ r.descStyle }}"><span style="{{ r.tipoStyle }}">{{ r.tipoLabel }}</span><span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ r.descricao }}</span><sc-if value="{{ r.matched }}" hint-placeholder-val="{{ false }}"><span style="{{ r.matchBadgeStyle }}" title="{{ r.matchInfo }}">🔗 já lançada</span></sc-if><sc-if value="{{ r.matched }}" hint-placeholder-val="{{ true }}"><span style="{{ r.badgeStyle }}">{{ r.badgeText }}</span></sc-if></span>
                       <span style="{{ r.valStyle }}">{{ r.valorFmt }}</span>
-                      <select value="{{ r.categoria }}" onChange="{{ r.onCat }}" style="{{ r.catSelStyle }}">
-                        <sc-for list="{{ r.catOptions }}" as="o" hint-placeholder-count="9"><option value="{{ o.key }}">{{ o.label }}</option></sc-for>
-                      </select>
+                      <sc-if value="{{ r.matched }}" hint-placeholder-val="{{ false }}">
+                        <select value="{{ r.reconcileValue }}" onChange="{{ r.onReconcile }}" style="{{ r.reconcileSelStyle }}" title="{{ r.matchInfo }}">
+                          <option value="conciliar">Quitar a já lançada</option>
+                          <option value="criar">Criar nova (2ª conta)</option>
+                        </select>
+                      </sc-if>
+                      <sc-if value="{{ r.matched }}" hint-placeholder-val="{{ true }}">
+                        <select value="{{ r.categoria }}" onChange="{{ r.onCat }}" style="{{ r.catSelStyle }}">
+                          <sc-for list="{{ r.catOptions }}" as="o" hint-placeholder-count="9"><option value="{{ o.key }}">{{ o.label }}</option></sc-for>
+                        </select>
+                      </sc-if>
                     </div>
                   </sc-for>
                 </div>
@@ -1615,81 +1646,92 @@
   <!-- ============ MODAL: EMPRESA PAGADORA ============ -->
   <sc-if value="{{ empresaModalOpen }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ closeEmpresa }}" style="position:fixed; inset:0; background:oklch(0.2 0.02 260 / 0.45); display:flex; align-items:center; justify-content:center; z-index:50; padding:20px">
-      <div onClick="{{ stop }}" style="background:#fff; border-radius:14px; width:560px; max-width:100%; max-height:90vh; overflow:auto; box-shadow:0 20px 60px rgba(0,0,0,0.25)">
-        <div style="padding:20px 24px; border-bottom:1px solid oklch(0.93 0.008 260); display:flex; align-items:center; justify-content:space-between">
+      <div onClick="{{ stop }}" style="background:#fff; border-radius:14px; width:860px; max-width:100%; max-height:92vh; overflow:auto; box-shadow:0 20px 60px rgba(0,0,0,0.25)">
+        <div style="padding:20px 28px; border-bottom:1px solid oklch(0.93 0.008 260); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:#fff; z-index:2">
           <div>
             <h3 style="margin:0; font-size:17px; font-weight:700">Cadastro da empresa</h3>
             <div style="font-size:12.5px; color:oklch(0.56 0.02 260); margin-top:2px">{{ empresaModalSub }}</div>
           </div>
           <button onClick="{{ closeEmpresa }}" style="background:none; border:none; font-size:20px; cursor:pointer; color:oklch(0.55 0.02 260); line-height:1; padding:4px">✕</button>
         </div>
-        <div style="padding:22px 24px; display:flex; flex-direction:column; gap:16px">
-          <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260)">Escola / Organização</div>
-          <div style="display:grid; grid-template-columns:1fr 96px; gap:14px">
-            <div><label style="{{ fieldLabel }}">Nome principal</label><input value="{{ orgNome }}" onChange="{{ onOrgNome }}" placeholder="Ex: Escola São Gregório" style="{{ inputStyle }}" /></div>
-            <div><label style="{{ fieldLabel }}">Sigla (logo)</label><input value="{{ orgSigla }}" onChange="{{ onOrgSigla }}" maxlength="3" placeholder="SG" style="{{ inputStyle }}" /></div>
-          </div>
-          <div><label style="{{ fieldLabel }}">Subtítulo</label><input value="{{ orgSub }}" onChange="{{ onOrgSub }}" placeholder="Ex: Gestão Financeira" style="{{ inputStyle }}" /></div>
-          <div>
-            <label style="{{ fieldLabel }}">Quantas unidades / campus?</label>
-            <div style="display:flex; gap:10px; margin-top:6px">
-              <button onClick="{{ setUma }}" style="{{ orgUmaStyle }}">1 unidade</button>
-              <button onClick="{{ setDuas }}" style="{{ orgDuasStyle }}">2 unidades</button>
+        <div style="padding:24px 28px; display:flex; flex-direction:column; gap:18px">
+
+          <div style="border:1px solid oklch(0.93 0.008 260); border-radius:12px; padding:18px 20px; background:oklch(0.988 0.003 260)">
+            <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260); margin-bottom:14px">Escola / Organização</div>
+            <div style="display:grid; grid-template-columns:1.6fr 1.4fr 96px; gap:16px">
+              <div><label style="{{ fieldLabel }}">Nome principal</label><input value="{{ orgNome }}" onChange="{{ onOrgNome }}" placeholder="Ex: Escola São Gregório" style="{{ inputStyle }}" /></div>
+              <div><label style="{{ fieldLabel }}">Subtítulo</label><input value="{{ orgSub }}" onChange="{{ onOrgSub }}" placeholder="Ex: Gestão Financeira" style="{{ inputStyle }}" /></div>
+              <div><label style="{{ fieldLabel }}">Sigla (logo)</label><input value="{{ orgSigla }}" onChange="{{ onOrgSigla }}" maxlength="3" placeholder="SG" style="{{ inputStyle }}" /></div>
             </div>
-          </div>
-          <div style="height:1px; background:oklch(0.93 0.008 260); margin:2px 0"></div>
-          <sc-if value="{{ duasUnidades }}" hint-placeholder-val="{{ true }}">
-            <div style="display:flex; gap:8px">
-              <sc-for list="{{ empresaTabs }}" as="t" hint-placeholder-count="2">
-                <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
-              </sc-for>
-            </div>
-          </sc-if>
-          <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260)">Identificação da unidade</div>
-          <div style="display:grid; grid-template-columns:1fr 1.4fr; gap:14px">
-            <div><label style="{{ fieldLabel }}">Nome da unidade</label><input value="{{ empresaForm.__uNome }}" onChange="{{ onEUNome }}" placeholder="Ex: Unidade I" style="{{ inputStyle }}" /></div>
-            <div><label style="{{ fieldLabel }}">Descrição (segmento)</label><input value="{{ empresaForm.__uSub }}" onChange="{{ onEUSub }}" placeholder="Ex: Ed. Infantil e Fund. I" style="{{ inputStyle }}" /></div>
-          </div>
-          <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260); margin-top:2px">Dados da empresa</div>
-          <div style="display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,1fr); gap:14px">
-            <div><label style="{{ fieldLabel }}">Razão social</label><input value="{{ empresaForm.razaoSocial }}" onChange="{{ onENome }}" style="{{ inputStyle }}" /></div>
-            <div style="min-width:0">
-              <label style="{{ fieldLabel }}">{{ empresaDocLabel }}</label>
-              <div style="display:flex; gap:8px; align-items:stretch; margin-top:6px">
-                <div style="display:flex; border:1px solid oklch(0.9 0.008 260); border-radius:8px; overflow:hidden; flex:0 0 auto">
-                  <button onClick="{{ onEDocCnpj }}" style="{{ eDocCnpjStyle }}">CNPJ</button>
-                  <button onClick="{{ onEDocCpf }}" style="{{ eDocCpfStyle }}">CPF</button>
-                </div>
-                <div style="flex:1; min-width:0"><input value="{{ empresaForm.cnpj }}" onChange="{{ onECnpj }}" inputmode="numeric" placeholder="{{ empresaDocPlaceholder }}" style="{{ inputStyleDoc }}" /></div>
+            <div style="margin-top:16px">
+              <label style="{{ fieldLabel }}">Quantas unidades / campus?</label>
+              <div style="display:flex; gap:10px; margin-top:6px">
+                <button onClick="{{ setUma }}" style="{{ orgUmaStyle }}">1 unidade</button>
+                <button onClick="{{ setDuas }}" style="{{ orgDuasStyle }}">2 unidades</button>
               </div>
             </div>
           </div>
-          <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260); margin-top:2px">Contato</div>
-          <div style="display:grid; grid-template-columns:1.6fr 1fr; gap:14px">
-            <div><label style="{{ fieldLabel }}">E-mail</label><input value="{{ empresaForm.email }}" onChange="{{ onEEmail }}" type="email" placeholder="financeiro@escola.com.br" style="{{ inputStyle }}" /></div>
-            <div><label style="{{ fieldLabel }}">Telefone</label><input value="{{ empresaForm.telefone }}" onChange="{{ onETelefone }}" inputmode="tel" placeholder="(11) 0000-0000" style="{{ inputStyle }}" /></div>
+
+          <div style="border:1px solid oklch(0.93 0.008 260); border-radius:12px; padding:18px 20px">
+            <sc-if value="{{ duasUnidades }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex; gap:8px; margin-bottom:16px">
+                <sc-for list="{{ empresaTabs }}" as="t" hint-placeholder-count="2">
+                  <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
+                </sc-for>
+              </div>
+            </sc-if>
+            <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260); margin-bottom:14px">Identificação da unidade</div>
+            <div style="display:grid; grid-template-columns:1fr 1.4fr; gap:16px">
+              <div><label style="{{ fieldLabel }}">Nome da unidade</label><input value="{{ empresaForm.__uNome }}" onChange="{{ onEUNome }}" placeholder="Ex: Unidade I" style="{{ inputStyle }}" /></div>
+              <div><label style="{{ fieldLabel }}">Descrição (segmento)</label><input value="{{ empresaForm.__uSub }}" onChange="{{ onEUSub }}" placeholder="Ex: Ed. Infantil e Fund. I" style="{{ inputStyle }}" /></div>
+            </div>
+            <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260); margin:20px 0 14px">Dados da empresa</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px">
+              <div><label style="{{ fieldLabel }}">Razão social</label><input value="{{ empresaForm.razaoSocial }}" onChange="{{ onENome }}" style="{{ inputStyle }}" /></div>
+              <div style="min-width:0">
+                <label style="{{ fieldLabel }}">{{ empresaDocLabel }}</label>
+                <div style="display:flex; gap:8px; align-items:stretch; margin-top:6px">
+                  <div style="display:flex; border:1px solid oklch(0.9 0.008 260); border-radius:8px; overflow:hidden; flex:0 0 auto">
+                    <button onClick="{{ onEDocCnpj }}" style="{{ eDocCnpjStyle }}">CNPJ</button>
+                    <button onClick="{{ onEDocCpf }}" style="{{ eDocCpfStyle }}">CPF</button>
+                  </div>
+                  <div style="flex:1; min-width:0"><input value="{{ empresaForm.cnpj }}" onChange="{{ onECnpj }}" inputmode="numeric" placeholder="{{ empresaDocPlaceholder }}" style="{{ inputStyleDoc }}" /></div>
+                </div>
+              </div>
+            </div>
+            <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260); margin:20px 0 14px">Contato</div>
+            <div style="display:grid; grid-template-columns:1.6fr 1fr; gap:16px">
+              <div><label style="{{ fieldLabel }}">E-mail</label><input value="{{ empresaForm.email }}" onChange="{{ onEEmail }}" type="email" placeholder="financeiro@escola.com.br" style="{{ inputStyle }}" /></div>
+              <div><label style="{{ fieldLabel }}">Telefone</label><input value="{{ empresaForm.telefone }}" onChange="{{ onETelefone }}" inputmode="tel" placeholder="(11) 0000-0000" style="{{ inputStyle }}" /></div>
+            </div>
           </div>
-          <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260); margin-top:2px">Conta pagadora (débito) · Bradesco</div>
-          <div style="display:grid; grid-template-columns:1.6fr 1.8fr 0.6fr 1.8fr 0.6fr; gap:10px">
-            <div><label style="{{ fieldLabel }}">Banco</label><input value="237" disabled="1" style="{{ inputStyle }}" /></div>
-            <div><label style="{{ fieldLabel }}">Agência</label><input value="{{ empresaForm.agencia }}" onChange="{{ onEAgencia }}" inputmode="numeric" style="{{ inputStyle }}" /></div>
-            <div><label style="{{ fieldLabel }}">DV</label><input value="{{ empresaForm.agenciaDV }}" onChange="{{ onEAgenciaDV }}" maxlength="1" style="{{ inputStyle }}" /></div>
-            <div><label style="{{ fieldLabel }}">Conta</label><input value="{{ empresaForm.conta }}" onChange="{{ onEConta }}" inputmode="numeric" style="{{ inputStyle }}" /></div>
-            <div><label style="{{ fieldLabel }}">DV</label><input value="{{ empresaForm.contaDV }}" onChange="{{ onEContaDV }}" maxlength="1" style="{{ inputStyle }}" /></div>
+
+          <div style="border:1px solid oklch(0.93 0.008 260); border-radius:12px; padding:18px 20px">
+            <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260); margin-bottom:14px">Conta pagadora (débito) · Bradesco</div>
+            <div style="display:grid; grid-template-columns:1.6fr 1.8fr 0.6fr 1.8fr 0.6fr; gap:12px">
+              <div><label style="{{ fieldLabel }}">Banco</label><input value="237" disabled="1" style="{{ inputStyle }}" /></div>
+              <div><label style="{{ fieldLabel }}">Agência</label><input value="{{ empresaForm.agencia }}" onChange="{{ onEAgencia }}" inputmode="numeric" style="{{ inputStyle }}" /></div>
+              <div><label style="{{ fieldLabel }}">DV</label><input value="{{ empresaForm.agenciaDV }}" onChange="{{ onEAgenciaDV }}" maxlength="1" style="{{ inputStyle }}" /></div>
+              <div><label style="{{ fieldLabel }}">Conta</label><input value="{{ empresaForm.conta }}" onChange="{{ onEConta }}" inputmode="numeric" style="{{ inputStyle }}" /></div>
+              <div><label style="{{ fieldLabel }}">DV</label><input value="{{ empresaForm.contaDV }}" onChange="{{ onEContaDV }}" maxlength="1" style="{{ inputStyle }}" /></div>
+            </div>
           </div>
-          <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260); margin-top:2px">Endereço</div>
-          <div style="display:grid; grid-template-columns:2.2fr 0.7fr; gap:14px">
-            <div><label style="{{ fieldLabel }}">Logradouro</label><input value="{{ empresaForm.endereco }}" onChange="{{ onEEndereco }}" style="{{ inputStyle }}" /></div>
-            <div><label style="{{ fieldLabel }}">Número</label><input value="{{ empresaForm.numero }}" onChange="{{ onENumero }}" style="{{ inputStyle }}" /></div>
-          </div>
-          <div style="display:grid; grid-template-columns:1.3fr 1.3fr 0.6fr 1fr; gap:12px">
-            <div><label style="{{ fieldLabel }}">Bairro</label><input value="{{ empresaForm.bairro }}" onChange="{{ onEBairro }}" style="{{ inputStyle }}" /></div>
-            <div><label style="{{ fieldLabel }}">Cidade</label><input value="{{ empresaForm.cidade }}" onChange="{{ onECidade }}" style="{{ inputStyle }}" /></div>
-            <div><label style="{{ fieldLabel }}">UF</label><input value="{{ empresaForm.uf }}" onChange="{{ onEUf }}" maxlength="2" style="{{ inputStyle }}" /></div>
-            <div><label style="{{ fieldLabel }}">CEP</label><input value="{{ empresaForm.cep }}" onChange="{{ onECep }}" inputmode="numeric" style="{{ inputStyle }}" /></div>
+
+          <div style="border:1px solid oklch(0.93 0.008 260); border-radius:12px; padding:18px 20px">
+            <div style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:oklch(0.5 0.02 260); margin-bottom:14px">Endereço</div>
+            <div style="display:grid; grid-template-columns:2.6fr 0.7fr 1.3fr; gap:16px">
+              <div><label style="{{ fieldLabel }}">Logradouro</label><input value="{{ empresaForm.endereco }}" onChange="{{ onEEndereco }}" style="{{ inputStyle }}" /></div>
+              <div><label style="{{ fieldLabel }}">Número</label><input value="{{ empresaForm.numero }}" onChange="{{ onENumero }}" style="{{ inputStyle }}" /></div>
+              <div><label style="{{ fieldLabel }}">Bairro</label><input value="{{ empresaForm.bairro }}" onChange="{{ onEBairro }}" style="{{ inputStyle }}" /></div>
+            </div>
+            <div style="display:grid; grid-template-columns:1.6fr 0.6fr 1fr; gap:16px; margin-top:16px">
+              <div><label style="{{ fieldLabel }}">Cidade</label><input value="{{ empresaForm.cidade }}" onChange="{{ onECidade }}" style="{{ inputStyle }}" /></div>
+              <div><label style="{{ fieldLabel }}">UF</label><input value="{{ empresaForm.uf }}" onChange="{{ onEUf }}" maxlength="2" style="{{ inputStyle }}" /></div>
+              <div><label style="{{ fieldLabel }}">CEP</label><input value="{{ empresaForm.cep }}" onChange="{{ onECep }}" inputmode="numeric" style="{{ inputStyle }}" /></div>
+            </div>
           </div>
         </div>
-        <div style="padding:16px 24px; border-top:1px solid oklch(0.93 0.008 260); display:flex; justify-content:flex-end; gap:10px">
+        <div style="padding:16px 28px; border-top:1px solid oklch(0.93 0.008 260); display:flex; justify-content:flex-end; gap:10px; position:sticky; bottom:0; background:#fff">
           <button onClick="{{ closeEmpresa }}" style="{{ cancelBtnStyle }}">Cancelar</button>
           <button onClick="{{ saveEmpresa }}" style="{{ primaryBtnStyle }}">Salvar</button>
         </div>
@@ -1873,7 +1915,8 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:880},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#2952a3&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#2952a3&quot;,&quot;#1f6f6b&quot;,&quot;#155e95&quot;,&quot;#3a4a8c&quot;],&quot;section&quot;:&quot;Aparência&quot;},&quot;esconderPagos&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Lista de contas&quot;}}">
 class Component extends DCLogic {
-  TODAY = '2026-06-28';
+  get TODAY(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  get THIS_MONTH(){ return this.TODAY.slice(0,7); }
   DEFAULT_CATS = [
     {key:'professores',  label:'Salários — Professores',  color:'oklch(0.52 0.13 255)'},
     {key:'funcionarios', label:'Salários — Funcionários',  color:'oklch(0.58 0.11 220)'},
@@ -1970,20 +2013,20 @@ class Component extends DCLogic {
   }
 
   state = {
-    view:'dashboard', competencia:'2026-06', unidade:'geral',
+    view:'dashboard', competencia:this.THIS_MONTH, unidade:'geral',
     receitas:this.seedReceitas(), rcats:this.seedRcats(), catRulesRec:{},
     filterRCat:'all', filterRStatus:'all', searchRec:'', sortKeyRec:'vencimento', sortDirRec:'asc',
     receitaModalOpen:false, receitaForm:null, rcatModalOpen:false, rcatForm:null,
     bills:this.seedBills(), vendors:this.seedVendors(), festas:this.seedFestas(),
-    logged:false, loginPass:'', loginLembrar:true, loginError:'', loginLoading:false, cloudStatus:'',
+    logged:false, loginUser:'', loginPass:'', loginLembrar:true, loginError:'', loginLoading:false, cloudStatus:'',
     filterCat:'all', filterStatus:'all', search:'', flash:'', sortKey:'vencimento', sortDir:'asc',
     sel:{contas:{}, folha:{}, vendors:{}, receber:{}},
-    selectedFesta:'f2', chartType:'hbar', selectedDay:'2026-06-28',
-    reportOpen:false, reportType:'', reportMonth:'2026-06', reportFesta:'f2',
+    selectedFesta:'f2', chartType:'hbar', selectedDay:this.TODAY,
+    reportOpen:false, reportType:'', reportMonth:this.THIS_MONTH, reportFesta:'f2',
     empresas:this.seedEmpresas(),
     modalOpen:false, vendorModalOpen:false, festaModalOpen:false, custoModalOpen:false, empresaModalOpen:false,
     cnabModalOpen:false, cnabForm:null,
-    valeModalOpen:false, valeForm:null, bonusModalOpen:false, bonusForm:null, importModalOpen:false, importText:'', importCat:'professores', importRows:null, importError:'',
+    valeModalOpen:false, valeForm:null, bonusModalOpen:false, bonusForm:null, importModalOpen:false, importText:'', importCat:'professores', importRows:null, importError:'', importFileName:'',
     cats:this.seedCats(), catRules:{}, catModalOpen:false, catForm:null, unidadesCustom:{}, org:this.seedOrg(),
     confirmOpen:false, confirmMsg:'', confirmLabel:'', confirmSub:'', confirmBtn:'', confirmDanger:true, confirmIcon:'⚠',
     extratoModalOpen:false, extratoModo:'extrato', extratoTexto:'', extratoRows:null, extratoError:'', extratoFileName:'', extratoBanco:'', extratoIgnorados:0, extratoDups:0,
@@ -1992,6 +2035,8 @@ class Component extends DCLogic {
   BANCOS=[['237','Bradesco'],['001','Banco do Brasil'],['104','Caixa Econômica'],['341','Itaú'],['033','Santander'],['260','Nubank'],['077','Inter'],['336','C6 Bank'],['748','Sicredi'],['756','Sicoob']];
 
   API_URL='/api/data';
+  normConta(s){ return String(s||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,''); }
+  authHeaders(extra){ const h=Object.assign({}, extra||{}); if(this._senha) h['x-senha']=this._senha; if(this._conta) h['x-conta']=this._conta; return h; }
   componentDidMount(){
     let bills=this.state.bills, vendors=this.state.vendors, festas=this.state.festas, empresas=this.state.empresas, cats=this.state.cats, catRules=this.state.catRules, unidadesCustom=this.state.unidadesCustom, org=this.state.org, logged=false;
     let receitas=this.state.receitas, rcats=this.state.rcats, catRulesRec=this.state.catRulesRec;
@@ -2011,11 +2056,11 @@ class Component extends DCLogic {
     } catch(e){}
     bills=this.backfillBank(bills);
     bills=this.backfillUnidade(bills);
-    let savedSenha=null;
-    try { savedSenha=localStorage.getItem('sg-senha'); } catch(e){}
-    if(savedSenha){ this._senha=savedSenha; logged=true; }
+    let savedSenha=null, savedConta=null;
+    try { savedSenha=localStorage.getItem('sg-senha'); savedConta=localStorage.getItem('sg-conta'); } catch(e){}
+    if(savedSenha && savedConta){ this._senha=savedSenha; this._conta=savedConta; logged=true; }
     this.setState({bills, vendors, festas, empresas, cats, catRules, unidadesCustom, org, receitas, rcats, catRulesRec, logged});
-    if(savedSenha) this.cloudPull(); // já logado neste computador: busca a versão da nuvem
+    if(logged) this.cloudPull(); // já logado neste computador: busca a versão da nuvem
   }
   // ---- sincronização com o banco Neon (/api/data) ----
   snapshot(p){ p=p||{}; const s=this.state; return {bills:p.bills||s.bills, vendors:p.vendors||s.vendors, festas:p.festas||s.festas, empresas:p.empresas||s.empresas, cats:p.cats||s.cats, catRules:p.catRules||s.catRules, unidadesCustom:p.unidadesCustom||s.unidadesCustom, org:p.org||s.org, receitas:p.receitas||s.receitas, rcats:p.rcats||s.rcats, catRulesRec:p.catRulesRec||s.catRulesRec}; }
@@ -2040,7 +2085,7 @@ class Component extends DCLogic {
   cloudPull(){
     if(!this._senha) return;
     this.setState({cloudStatus:'sincronizando'});
-    fetch(this.API_URL, {headers:{'x-senha':this._senha}}).then(r=>{
+    fetch(this.API_URL, {headers:this.authHeaders()}).then(r=>{
       if(r.status===401){ this.flash('Sua senha de acesso mudou no servidor. Entre novamente.'); this.logout(); return null; }
       if(!r.ok) throw new Error('rede');
       return r.json();
@@ -2052,37 +2097,47 @@ class Component extends DCLogic {
     clearTimeout(this._syncTimer);
     this.setState({cloudStatus:'salvando'});
     this._syncTimer=setTimeout(()=>{
-      fetch(this.API_URL, {method:'POST', headers:{'Content-Type':'application/json','x-senha':this._senha}, body:JSON.stringify(payload)})
+      fetch(this.API_URL, {method:'POST', headers:this.authHeaders({'Content-Type':'application/json'}), body:JSON.stringify(payload)})
         .then(r=>{ if(r.status===401){ this.setState({cloudStatus:'erro'}); return; } this.setState({cloudStatus:r.ok?'ok':'erro'}); })
         .catch(()=>this.setState({cloudStatus:'offline'}));
     }, 700);
   }
+  onLoginUser(v){ this.setState({loginUser:v, loginError:''}); }
   onLoginPass(v){ this.setState({loginPass:v, loginError:''}); }
   toggleLembrar(){ this.setState(s=>({loginLembrar:!s.loginLembrar})); }
   doLogin(){
+    const conta=this.normConta(this.state.loginUser);
     const senha=this.state.loginPass||'';
+    if(!conta){ this.setState({loginError:'Digite o usuário da empresa.'}); return; }
     if(!senha){ this.setState({loginError:'Digite a senha.'}); return; }
     this.setState({loginLoading:true, loginError:''});
-    fetch(this.API_URL, {headers:{'x-senha':senha}}).then(r=>{
-      if(r.status===401){ this.setState({loginLoading:false, loginError:'Senha incorreta.', loginPass:''}); return; }
+    fetch(this.API_URL, {headers:{'x-conta':conta,'x-senha':senha}}).then(r=>{
+      if(r.status===401){ this.setState({loginLoading:false, loginError:'Usuário ou senha incorretos.', loginPass:''}); return; }
       if(!r.ok) throw new Error('rede');
       return r.json().then(dados=>{
-        this._senha=senha;
-        try { if(this.state.loginLembrar) localStorage.setItem('sg-senha', senha); else localStorage.removeItem('sg-senha'); } catch(e){}
-        const nuvemVazia = !dados || !dados.bills; // primeira vez: banco ainda sem dados
-        this.hydrate(dados);
-        this.setState({logged:true, loginLoading:false, loginPass:'', loginError:'', cloudStatus:'ok'});
-        if(nuvemVazia){ this.cloudSave(this.snapshot()); } // semeia a nuvem com o que já existe neste computador
+        this._senha=senha; this._conta=conta;
+        try { if(this.state.loginLembrar){ localStorage.setItem('sg-senha', senha); localStorage.setItem('sg-conta', conta); } else { localStorage.removeItem('sg-senha'); localStorage.removeItem('sg-conta'); } } catch(e){}
+        const nuvemVazia = !dados || !dados.bills; // primeira vez desta empresa: banco ainda sem dados
+        if(nuvemVazia){
+          // empresa nova: começa do zero (não herda dados de outra empresa)
+          const orgNova={nome:'Minha Empresa', sub:'Gestão Financeira', sigla:'ME', numUnidades:1};
+          const vazio={bills:[], vendors:[], festas:[], empresas:this.seedEmpresas(), cats:this.seedCats(), catRules:{}, unidadesCustom:{}, org:orgNova, receitas:[], rcats:this.seedRcats(), catRulesRec:{}};
+          this.setState(Object.assign({}, vazio, {unidade:'u1', logged:true, loginLoading:false, loginPass:'', loginUser:'', loginError:'', cloudStatus:'ok'}));
+          this.cloudSave(vazio);
+        } else {
+          this.hydrate(dados);
+          this.setState({logged:true, loginLoading:false, loginPass:'', loginUser:'', loginError:'', cloudStatus:'ok'});
+        }
       });
     }).catch(()=>{
-      // sem internet: permite entrar offline apenas se a senha já foi usada com sucesso neste computador
-      let cached=null; try { cached=localStorage.getItem('sg-senha'); } catch(e){}
-      if(cached && cached===senha){ this._senha=senha; this.setState({logged:true, loginLoading:false, loginPass:'', loginError:'', cloudStatus:'offline'}); }
+      // sem internet: permite entrar offline apenas se usuário+senha já foram usados neste computador
+      let cachedS=null, cachedC=null; try { cachedS=localStorage.getItem('sg-senha'); cachedC=localStorage.getItem('sg-conta'); } catch(e){}
+      if(cachedS && cachedS===senha && cachedC && cachedC===conta){ this._senha=senha; this._conta=conta; this.setState({logged:true, loginLoading:false, loginPass:'', loginUser:'', loginError:'', cloudStatus:'offline'}); }
       else this.setState({loginLoading:false, loginError:'Sem conexão com o servidor. Verifique a internet e tente de novo.', loginPass:''});
     });
   }
   onLoginKey(e){ if(e.key==='Enter') this.doLogin(); }
-  logout(){ this._senha=null; try { localStorage.removeItem('sg-senha'); } catch(e){} this.setState({logged:false, loginPass:'', loginError:'', cloudStatus:''}); }
+  logout(){ this._senha=null; this._conta=null; try { localStorage.removeItem('sg-senha'); localStorage.removeItem('sg-conta'); } catch(e){} this.setState({logged:false, loginPass:'', loginUser:'', loginError:'', cloudStatus:''}); }
   cloudLabel(){ const m={sincronizando:'Sincronizando…', salvando:'Salvando…', ok:'Salvo na nuvem', offline:'Offline — salvo no computador', erro:'Erro ao salvar'}; return m[this.state.cloudStatus]||'Somente neste computador'; }
   cloudDotStyle(){ const c={ok:'oklch(0.6 0.14 158)', salvando:'oklch(0.7 0.13 90)', sincronizando:'oklch(0.7 0.13 90)', offline:'oklch(0.65 0.02 260)', erro:'oklch(0.6 0.18 25)'}[this.state.cloudStatus]||'oklch(0.75 0.02 260)'; return {width:'8px', height:'8px', borderRadius:'50%', background:c, flex:'0 0 auto'}; }
   mergeCats(saved){
@@ -2434,9 +2489,39 @@ class Component extends DCLogic {
     if(rows.length===0) return {rows:[], error:'Não consegui identificar nenhum funcionário. Verifique se há ao menos a coluna de nome.'};
     return {rows, error:''};
   }
-  openImport(){ this.setState({importModalOpen:true, importText:'', importRows:null, importError:'', importCat:'professores'}); }
+  openImport(){ this.setState({importModalOpen:true, importText:'', importRows:null, importError:'', importCat:'professores', importFileName:''}); }
   closeImport(){ this.setState({importModalOpen:false}); }
   previewImport(){ const r=this.parseImport(this.state.importText, this.state.importCat); this.setState({importRows:r.rows, importError:r.error}); }
+  onImportFile(e){
+    const file=e.target.files && e.target.files[0]; if(!file) return;
+    e.target.value='';
+    const isPlanilha=/\.xlsx?$/i.test(file.name);
+    const reader=new FileReader();
+    reader.onload=()=>{
+      const buf=new Uint8Array(reader.result);
+      if(isPlanilha){
+        this.loadXLSX().then(XLSX=>{
+          try{
+            const wb=XLSX.read(buf,{type:'array'});
+            const ws=wb.Sheets[wb.SheetNames[0]];
+            const tsv=XLSX.utils.sheet_to_csv(ws,{FS:'\t'});
+            const r=this.parseImport(tsv, this.state.importCat);
+            this.setState({importText:tsv, importFileName:file.name, importRows:r.rows, importError:r.error});
+          }catch(err){ this.setState({importError:'Não consegui ler esta planilha. Tente exportar como CSV.', importFileName:file.name, importRows:null}); }
+        }).catch(()=>this.setState({importError:'Para ler planilhas (.xls/.xlsx) preciso de internet na primeira vez. Sem conexão, exporte como CSV ou cole o texto.', importFileName:file.name, importRows:null}));
+        return;
+      }
+      let text='';
+      try {
+        text=new TextDecoder('utf-8',{fatal:false}).decode(buf);
+        if(text.indexOf('\uFFFD')>=0){ text=new TextDecoder('windows-1252').decode(buf); }
+      } catch(err){ text=''; }
+      const r=this.parseImport(text, this.state.importCat);
+      this.setState({importText:text, importFileName:file.name, importRows:r.rows, importError:r.error});
+    };
+    reader.onerror=()=>this.setState({importError:'Não consegui ler o arquivo.', importFileName:file.name, importRows:null});
+    reader.readAsArrayBuffer(file);
+  }
   confirmImport(){
     const rows=this.state.importRows||[]; if(!rows.length) return;
     const c=this.state.competencia;
@@ -2654,11 +2739,30 @@ class Component extends DCLogic {
     (this.state.receitas||[]).forEach(r=>{ if(r.cancelado) return; const k='e|'+r.vencimento+'|'+Number(r.valor).toFixed(2)+'|'+this.normDesc(r.descricao); seen[k]=(seen[k]||0)+1; });
     let dups=0;
     rows.forEach(r=>{ const k=(r.tipo==='entrada'?'e|':'s|')+r.data+'|'+r.valor.toFixed(2)+'|'+this.normDesc(r.descricao); if(seen[k]>0){ seen[k]--; r.dup=true; r.incluir=false; dups++; } });
+    // conciliação: casa cada saída/entrada com uma conta/receita JÁ LANÇADA (mesmo valor, data próxima) para não duplicar
+    const claimed={};
+    const daysBetween=(a,b)=>Math.abs(Math.round((new Date(a+'T00:00')-new Date(b+'T00:00'))/86400000));
+    rows.forEach(r=>{
+      if(r.dup) return;
+      if(r.tipo==='entrada'){
+        const cands=(this.state.receitas||[]).filter(x=>!x.cancelado && !claimed['r'+x.id] && Number(x.valor).toFixed(2)===r.valor.toFixed(2) && daysBetween(x.vencimento, r.data)<=6);
+        if(!cands.length) return;
+        cands.sort((a,b)=> (a.recebido?1:0)-(b.recebido?1:0) || daysBetween(a.vencimento,r.data)-daysBetween(b.vencimento,r.data));
+        const m=cands[0]; claimed['r'+m.id]=1; r.matchId=m.id; r.matchTipo='rec'; r.matchDesc=m.descricao; r.matchVenc=m.vencimento; r.reconcile=true;
+      } else {
+        const cands=this.state.bills.filter(x=>!x.cancelado && !claimed['b'+x.id] && Number(x.valor).toFixed(2)===r.valor.toFixed(2) && daysBetween(x.vencimento, r.data)<=6);
+        if(!cands.length) return;
+        cands.sort((a,b)=> (a.pago?1:0)-(b.pago?1:0) || daysBetween(a.vencimento,r.data)-daysBetween(b.vencimento,r.data));
+        const m=cands[0]; claimed['b'+m.id]=1; r.matchId=m.id; r.matchTipo='bill'; r.matchDesc=m.descricao; r.matchVenc=m.vencimento; r.reconcile=true;
+      }
+    });
+    let conc=rows.filter(r=>r.matchId).length;
     rows.sort((a,b)=> a.data<b.data?-1:1);
     if(!rows.length){ this.setState({extratoRows:null, extratoError:(modo==='cartao'?'Não encontrei compras nesta fatura. Confira se o arquivo/texto tem data, descrição e valor em cada linha.':'Não encontrei lançamentos neste extrato. Confira se o arquivo/texto tem colunas de data e valor.'), extratoFileName:fileName, extratoBanco:banco, extratoIgnorados:ignorados}); return; }
-    this.setState({extratoRows:rows, extratoError:'', extratoFileName:fileName, extratoBanco:banco, extratoIgnorados:ignorados, extratoDups:dups});
+    this.setState({extratoRows:rows, extratoError:'', extratoFileName:fileName, extratoBanco:banco, extratoIgnorados:ignorados, extratoDups:dups, extratoConc:conc});
   }
   toggleExtratoRow(i){ this.setState(s=>{ const rows=s.extratoRows.slice(); rows[i]={...rows[i], incluir:!rows[i].incluir}; return {extratoRows:rows}; }); }
+  setExtratoReconcile(i,v){ this.setState(s=>{ const rows=s.extratoRows.slice(); rows[i]={...rows[i], reconcile:(v==='conciliar')}; return {extratoRows:rows}; }); }
   setExtratoRowCat(i,cat){ this.setState(s=>{ const rows=s.extratoRows.slice(); rows[i]={...rows[i], categoria:cat, auto:false}; return {extratoRows:rows}; }); }
   extratoSelectAll(v){ this.setState(s=>({extratoRows:(s.extratoRows||[]).map(r=>({...r, incluir:v}))})); }
   confirmExtrato(){
@@ -2666,23 +2770,29 @@ class Component extends DCLogic {
     if(!rows.length){ this.flash('Selecione ao menos um lançamento para importar.'); return; }
     const ui=this.state.unidade==='geral'?'u1':this.state.unidade;
     const lote='ex'+Date.now();
-    const saidas=rows.filter(r=>r.tipo!=='entrada');
-    const entradas=rows.filter(r=>r.tipo==='entrada');
+    // conciliação: linhas casadas com conta/receita já lançada → quitam a existente, não criam nova
+    const concBills=rows.filter(r=>r.matchId && r.reconcile && r.matchTipo==='bill');
+    const concRecs=rows.filter(r=>r.matchId && r.reconcile && r.matchTipo==='rec');
+    const criar=rows.filter(r=>!(r.matchId && r.reconcile));
+    const saidas=criar.filter(r=>r.tipo!=='entrada');
+    const entradas=criar.filter(r=>r.tipo==='entrada');
+    const concBillIds={}; concBills.forEach(r=>{ concBillIds[r.matchId]=r; });
+    const concRecIds={}; concRecs.forEach(r=>{ concRecIds[r.matchId]=r; });
     const novosBills=saidas.map((r,i)=>({ id:lote+'_s'+i, descricao:r.descricao, categoria:r.categoria, unidade:ui, cargo:'', fornecedor:this.merchantName(r.descricao), valor:r.valor, vencimento:r.data, recorrente:false, pago:true, comprovante:'', origem:'extrato', loteExtrato:lote }));
     const novasRec=entradas.map((r,i)=>({ id:lote+'_r'+i, descricao:r.descricao, categoria:r.categoria, unidade:ui, pagador:this.merchantName(r.descricao), valor:r.valor, vencimento:r.data, recorrente:false, recebido:true, cancelado:false, origem:'extrato', loteExtrato:lote }));
     const catRules={...(this.state.catRules||{})};
     const catRulesRec={...(this.state.catRulesRec||{})};
     saidas.forEach(r=>{ if(r.categoria && r.categoria!=='a_classificar'){ const sig=this.merchantSig(r.descricao); if(sig) catRules[sig]=r.categoria; } });
     entradas.forEach(r=>{ if(r.categoria && r.categoria!=='a_classificar'){ const sig=this.merchantSig(r.descricao); if(sig) catRulesRec[sig]=r.categoria; } });
-    const bills=[...this.state.bills, ...novosBills];
-    const receitas=[...this.state.receitas, ...novasRec];
+    const bills=[...this.state.bills.map(b=>{ const r=concBillIds[b.id]; return r? {...b, pago:true, origem:b.origem||'extrato'} : b; }), ...novosBills];
+    const receitas=[...this.state.receitas.map(x=>{ const r=concRecIds[x.id]; return r? {...x, recebido:true, origem:x.origem||'extrato'} : x; }), ...novasRec];
     const counts={}; rows.forEach(r=>{ const m=r.data.slice(0,7); counts[m]=(counts[m]||0)+1; });
     const mes=Object.keys(counts).sort((a,b)=>counts[b]-counts[a])[0] || this.state.competencia;
-    const view = novosBills.length>=novasRec.length ? 'pagamentos' : 'receber';
-    const selectedDay = (novosBills.length && saidas[0] && saidas[0].data.slice(0,7)===mes) ? saidas[0].data : this.state.selectedDay;
+    const view = (novosBills.length+concBills.length)>=(novasRec.length+concRecs.length) ? 'pagamentos' : 'receber';
+    const selectedDay = (saidas[0] && saidas[0].data.slice(0,7)===mes) ? saidas[0].data : this.state.selectedDay;
     this.setState({bills, receitas, catRules, catRulesRec, extratoModalOpen:false, view, competencia:mes, selectedDay});
     this.persist({bills, receitas, catRules, catRulesRec});
-    const partes=[]; if(novosBills.length) partes.push(novosBills.length+' saída(s) → contas a pagar (pagas)'); if(novasRec.length) partes.push(novasRec.length+' entrada(s) → contas a receber (recebidas)');
+    const partes=[]; if(novosBills.length) partes.push(novosBills.length+' saída(s) nova(s)'); if(novasRec.length) partes.push(novasRec.length+' entrada(s) nova(s)'); const nConc=concBills.length+concRecs.length; if(nConc) partes.push(nConc+' conciliada(s) com contas já lançadas');
     this.flash('Importado em '+this.monthName(mes)+': '+partes.join(' · ')+'.');
   }
 
@@ -3209,6 +3319,7 @@ class Component extends DCLogic {
     else if(S.view==='fornecedores'){ headerBtnLabel='+ Novo fornecedor'; onHeaderBtn=()=>this.openAddVendor(); }
     else if(S.view==='folha'){ headerBtnLabel='+ Adicionar colaborador'; onHeaderBtn=()=>this.openAddFolha('professores'); }
     else if(S.view==='receber'){ headerBtnLabel='+ Nova receita'; onHeaderBtn=()=>this.openAddReceita(S.filterRCat); }
+    const showHeaderBtn = S.view!=='relatorios';
 
     // form helpers
     const f=S.form||{}, vf=S.vendorForm||{}, ff=S.festaForm||{}, cf=S.custoForm||{}, ef=S.empresaForm||{};
@@ -3277,6 +3388,12 @@ class Component extends DCLogic {
       badgeText:r.dup?'já importado':(r.auto?'auto':'manual'),
       onToggle:()=>this.toggleExtratoRow(i), onCat:(e)=>this.setExtratoRowCat(i, e.target.value),
       catSelStyle:{padding:'6px 8px', border:'1px solid '+(r.categoria==='a_classificar'?'oklch(0.78 0.12 68)':'oklch(0.9 0.008 260)'), borderRadius:'7px', fontSize:'11.5px', width:'100%', background:r.categoria==='a_classificar'?'oklch(0.97 0.045 82)':'#fff', color:'oklch(0.27 0.02 260)'},
+      matched:!!r.matchId, reconcile:r.reconcile!==false,
+      reconcileValue:r.reconcile!==false?'conciliar':'criar',
+      onReconcile:(e)=>this.setExtratoReconcile(i, e.target.value),
+      reconcileSelStyle:{padding:'6px 8px', border:'1px solid '+(r.reconcile!==false?'oklch(0.7 0.11 250)':'oklch(0.78 0.12 45)'), borderRadius:'7px', fontSize:'11px', width:'100%', background:r.reconcile!==false?'oklch(0.96 0.03 250)':'oklch(0.97 0.05 60)', color:'oklch(0.3 0.05 260)', fontWeight:600},
+      matchInfo: r.matchId ? ('já lançada '+this.fmtDate(r.matchVenc)+' · '+(r.matchDesc||'').slice(0,28)) : '',
+      matchBadgeStyle:{fontSize:'9.5px', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.03em', padding:'1px 6px', borderRadius:'20px', marginLeft:'7px', color:'oklch(0.4 0.13 250)', background:'oklch(0.94 0.04 250)'},
     }; });
     const exUnidadeNome = uni==='geral' ? (unitMeta('u1').nome+' — padrão, pois "Geral" está selecionado') : unitMeta(uni).nome;
     const exAClass=exSelecionados.filter(r=>r.categoria==='a_classificar').length;
@@ -3300,7 +3417,7 @@ class Component extends DCLogic {
       primaryColor:PRIMARY, mesCurto:this.monthShort(comp), totalMesFmt:this.brl0(total), atalho:monthBills.length+' contas neste mês',
       sidebarSaldoFmt:this.brlSigned(saldoMes), sidebarSaldoStyle:{fontFamily:"'IBM Plex Mono',monospace",fontSize:'18px',fontWeight:700,marginTop:'4px',letterSpacing:'-0.01em',color:saldoMes>=0?'oklch(0.42 0.12 158)':'oklch(0.5 0.18 25)'}, sidebarSaldoSub:'Receitas '+this.brl0(recTotal)+' − Despesas '+this.brl0(total),
       viewTitle:(titles[S.view]||['',''])[0], viewSubtitle:(titles[S.view]||['',''])[1],
-      navItems, primaryBtnStyle, headerBtnLabel, onHeaderBtn,
+      navItems, primaryBtnStyle, headerBtnLabel, onHeaderBtn, showHeaderBtn,
       unidadeTabs, escopoNome, unidadeSelValue, unidadeSelOptions, unidadeSelStyle, unidadeUnica, unidadeMulti, onUnidadeSel:e=>this.setState({unidade:e.target.value}),
       showMonthNav:(S.view==='dashboard'||S.view==='pagamentos'||S.view==='folha'||S.view==='contas'||S.view==='receber'),
       mesLabel:this.monthName(comp), prevMonth:()=>this.setState({competencia:this.addMonths(comp,-1)}), nextMonth:()=>this.setState({competencia:this.addMonths(comp,1)}),
@@ -3317,8 +3434,9 @@ class Component extends DCLogic {
       closeReport:()=>this.closeReport(), doPrint:()=>window.print(),
       // login / autenticação
       logged:S.logged, notLogged:!S.logged,
-      loginPass:S.loginPass, loginLembrar:S.loginLembrar, loginLoading:S.loginLoading, loginBtnLabel:S.loginLoading?'Entrando…':'Entrar',
+      loginUser:S.loginUser, loginPass:S.loginPass, loginLembrar:S.loginLembrar, loginLoading:S.loginLoading, loginBtnLabel:S.loginLoading?'Entrando…':'Entrar',
       loginError:S.loginError, loginHasError:!!S.loginError,
+      onLoginUser:e=>this.onLoginUser(e.target.value),
       onLoginPass:e=>this.onLoginPass(e.target.value),
       onLoginKey:e=>this.onLoginKey(e), toggleLembrar:()=>this.toggleLembrar(), doLogin:()=>this.doLogin(),
       logout:()=>this.logout(),
@@ -3355,7 +3473,7 @@ class Component extends DCLogic {
       extratoSubtitulo: S.extratoModo==='cartao'?'Arquivo CSV, planilha ou texto colado da fatura. Cada compra vira um gasto pago; pagamentos de fatura e estornos são ignorados.':'Arquivo CSV, planilha ou texto colado do extrato (Bradesco, Itaú…). Saídas viram contas a pagar (pagas) e entradas/créditos viram contas a receber (recebidas).',
       extratoTexto:S.extratoTexto, onExtratoTexto:(e)=>this.setExtratoTexto(e.target.value), lerExtratoTexto:()=>this.lerExtratoTexto(), extratoTemTexto:!!(S.extratoTexto && S.extratoTexto.trim()),
       extratoIgnoradosLabel: S.extratoModo==='cartao'?'pagamento(s) de fatura / estorno(s) ignorado(s) — só importo as compras.':'entrada(s)/crédito(s) ignorada(s) — só importo saídas.',
-      extratoDups:S.extratoDups, extratoTemDups:(S.extratoDups||0)>0,
+      extratoDups:S.extratoDups, extratoTemDups:(S.extratoDups||0)>0, extratoConc:S.extratoConc, extratoTemConc:(S.extratoConc||0)>0,
       onExtratoFile:(e)=>this.onExtratoFile(e), confirmExtrato:()=>this.confirmExtrato(),
       extratoError:S.extratoError, extratoHasError:!!S.extratoError, extratoFileName:S.extratoFileName, extratoTemArquivo:!!S.extratoFileName,
       extratoBanco:S.extratoBanco||'Não identificado', extratoHasRows:exRows.length>0,
@@ -3363,7 +3481,7 @@ class Component extends DCLogic {
       extratoTotalFmt:this.brl(exTotal), extratoIgnorados:S.extratoIgnorados, extratoTemIgnorados:(S.extratoIgnorados||0)>0,
       extratoUnidadeNome:exUnidadeNome, extratoAClass:exAClass, extratoTemAClass:exAClass>0,
       extratoDestinoTexto: (S.extratoModo==='cartao') ? ('Cada compra entra em Contas a Pagar (paga) na '+exUnidadeNome+'. Edite depois se precisar.') : ('Saídas entram em Contas a Pagar (pagas) e entradas em Contas a Receber (recebidas), na '+exUnidadeNome+'.'),
-      extratoConfirmLabel: (()=>{ const p=[]; if(exSaidas.length) p.push(exSaidas.length+' saída(s)'); if(exEntradas.length) p.push(exEntradas.length+' entrada(s)'); return 'Importar '+(p.join(' + ')||(exSelecionados.length+' lançamento(s)')); })(),
+      extratoConfirmLabel: (()=>{ const sel=exSelecionados; const conc=sel.filter(r=>r.matchId && r.reconcile!==false).length; const novos=sel.length-conc; const p=[]; if(novos) p.push(novos+' novo(s)'); if(conc) p.push(conc+' conciliado(s)'); return 'Importar '+(p.join(' + ')||(sel.length+' lançamento(s)')); })(),
       extratoSelAll:()=>this.extratoSelectAll(true), extratoSelNone:()=>this.extratoSelectAll(false),
       extratoPeriodo: exRows.length? (this.fmtDateFull(exRows[0].data)+' – '+this.fmtDateFull(exRows[exRows.length-1].data)) : '',
       extratoDetectados: exRows.length+(exRows.length===1?' lançamento identificado':' lançamentos identificados'),
@@ -3489,6 +3607,7 @@ class Component extends DCLogic {
       importModalOpen:S.importModalOpen, importText:S.importText, importCat:S.importCat, importRows:S.importRows||[], importHasRows:!!(S.importRows&&S.importRows.length), importError:S.importError, importShowPreview:S.importRows!==null,
       importRowsView:(S.importRows||[]).map(r=>({nome:r.nome, cargo:r.cargo||'—', catLabel:r.categoria==='professores'?'Professor':'Funcionário', salarioFmt:this.brl(r.salario), cpfFmt:r.cpf||'—', bancoFmt:r.banco?(this.bancoNome(r.banco)+(r.conta?(' '+r.conta):'')):'—', emailFmt:r.email||'—'})),
       onImportText:e=>this.setState({importText:e.target.value, importRows:null}), onImportCat:e=>this.setState({importCat:e.target.value, importRows:null}),
+      onImportFile:(e)=>this.onImportFile(e), importFileName:S.importFileName, importTemArquivo:!!S.importFileName,
       previewImport:()=>this.previewImport(), confirmImport:()=>this.confirmImport(), closeImport:()=>this.closeImport(),
       importCount:(S.importRows||[]).length,
       // festa modal
